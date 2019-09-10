@@ -1,6 +1,8 @@
 @extends('layouts.basic')
 
 @section('content')
+    @if(!empty(Session::get('counter'))) <h1>{{ Session::get('counter')}}</h1> @endif
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -32,9 +34,16 @@
                 </div>
             </div>
         </div>
-
+        @if(env('GOOGLE_RECAPTCHA_KEY') && session('counter') > 3)
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <div class="g-recaptcha" data-sitekey="{{env('GOOGLE_RECAPTCHA_KEY')}}"></div>
+                </div>
+            </div>
+        @endif
         <button type="submit" class="btn btn-primary block full-width m-b">{{ __('Login') }}</button>
         @if (Route::has('password.request'))
+
             <a href="{{ route('password.request') }}">
                 <small>{{ __('Forgot Your Password?') }}</small>
             </a>
