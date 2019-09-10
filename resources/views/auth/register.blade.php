@@ -1,39 +1,65 @@
-@extends('layouts.app')
+@extends('layouts.basic')
 
 @section('content')
-
-    <div class="card text-center w-50 my-0 mx-auto animated fadeInDown">
-        <div class="card-header">
-            <h3>Register</h3>
+    <h3>Register to IN+</h3>
+    <p>Create account to see it in action.</p>
+    <form class="m-t" role="form" method="POST" action="{{ route('register') }}">
+        @csrf
+        <div class="form-group">
+            <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
+                   placeholder="First Name" value="{{ old('first_name') }}" required="" autocomplete="first_name" autofocus>
+            @error('first_name')
+            <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+           </span>
+            @enderror
         </div>
-        <div class="card-body">
-            <div class="text-center">
-            <form class="m-t" role="form" action="">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Name" required="">
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Email" required="">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" required="">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Phone" required="">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Address" required="">
-                </div>
-                <div class="form-group">
-                    <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div>
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
-
-                <p class="text-muted text-center"><small>Already have an account?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="">Login</a>
-            </form>
+        <div class="form-group">
+            <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
+                   placeholder="Last Name" value="{{ old('last_name') }}" required="" autocomplete="last_name" autofocus>
+            @error('last_name')
+            <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+           </span>
+            @enderror
         </div>
-    </div>
+        <div class="form-group">
+            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                   placeholder="Email" value="{{ old('email') }}" required="" autocomplete="email" autofocus>
+            @error('email')
+            <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+           </span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                   placeholder="Phone Number" value="{{ old('phone') }}" required="" autocomplete="phone" autofocus>
+            @error('phone')
+            <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+           </span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                   placeholder="Password" value="{{ old('password') }}" required="" autocomplete="password" autofocus>
+            @error('password')
+            <span class="invalid-feedback" role="alert">
+               <strong>{{ $message }}</strong>
+           </span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <input type="password" name="password_confirmation" class="form-control"
+                   placeholder="Confirm Password" required="" autocomplete="new-password" autofocus>
+        </div>
+        <div class="form-group">
+            <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div>
+        </div>
+        <button type="submit" class="btn btn-primary block full-width m-b">{{ __('Register') }}</button>
+        <p class="text-muted text-center"><small>Already have an account?</small></p>
+        <a class="btn btn-sm btn-white btn-block" href="{{ route('login') }}">Login</a>
+    </form>
 
-
-@stop
+@endsection
