@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
 {
@@ -30,7 +32,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-    protected $maxAttempts = 2;
+    protected $max_attempts;
     /**
      * Create a new controller instance.
      *
@@ -64,7 +66,6 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            Session::put('counter' , 0);
             return $this->sendLoginResponse($request);
         }
 
@@ -72,6 +73,7 @@ class LoginController extends Controller
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
+        $this->max_attempts = Cache::get(Str::lower($request->input($this->username())).'|'.$request->ip());
 
         return $this->sendFailedLoginResponse($request);
     }
@@ -99,6 +101,23 @@ class LoginController extends Controller
     }
 
     /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response' => 'sometimes|recaptcha',
+        ]);
+    }
+
+    /**
      * Get the failed login response instance.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -108,8 +127,12 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        $count = Session::get('counter');
-        Session::put('counter' , ++$count);
+        if ($this->max_attempts >= 3){
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+                'rechapcha' => 'Show rechapcha'
+            ]);
+        }
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);

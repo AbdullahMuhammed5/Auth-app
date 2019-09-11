@@ -13,7 +13,7 @@
 
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
+    {!! htmlScriptTagJsApi() !!}
 </head>
 
 <body class="gray-bg">
@@ -38,15 +38,7 @@
 <!-- Mainly scripts -->
 <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src='https://www.google.com/recaptcha/api.js'></script>
-<script>
-    $(document).ready(function(){
-        $('.i-checks').iCheck({
-            checkboxClass: 'icheckbox_square-green',
-            radioClass: 'iradio_square-green',
-        });
-    });
-</script>
+
 
 </body>
 

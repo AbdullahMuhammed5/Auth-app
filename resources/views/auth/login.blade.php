@@ -1,7 +1,6 @@
 @extends('layouts.basic')
 
 @section('content')
-    @if(!empty(Session::get('counter'))) <h1>{{ Session::get('counter')}}</h1> @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -34,10 +33,10 @@
                 </div>
             </div>
         </div>
-        @if(env('GOOGLE_RECAPTCHA_KEY') && session('counter') > 3)
+        @error('rechapcha')
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <div class="g-recaptcha" data-sitekey="{{env('GOOGLE_RECAPTCHA_KEY')}}"></div>
+                    {!! htmlFormSnippet() !!}
                 </div>
             </div>
         @endif
