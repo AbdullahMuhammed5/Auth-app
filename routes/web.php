@@ -23,6 +23,6 @@ Route::get('/', function () {
     return view('layouts.landing');
 })->name('landing');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
