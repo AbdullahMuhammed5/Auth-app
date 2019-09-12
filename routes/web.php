@@ -23,6 +23,11 @@ Route::get('/', function () {
     return view('layouts.landing');
 })->name('landing');
 
+Route::get('/dashboard', function () {
+    return view('dashboard.index');
+});
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('roles', 'RoleController');
