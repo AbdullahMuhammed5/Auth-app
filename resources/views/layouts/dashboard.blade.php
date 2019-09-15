@@ -10,7 +10,7 @@
 
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
@@ -49,14 +49,18 @@
                     </div>
                 </li>
                 <li class="active">
+                    <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span>
+                </li>
+                <li>
                     <a href="{{ route('roles.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Roles</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a href="{{ route('roles.index') }}">All</a></li>
-                        <li><a href="index.html">Add Role</a></li>
+                        @can('role-create')
+                        <li><a href="{{ route('roles.create') }}">Add Role</a></li>
+                        @endcan
                     </ul>
                 </li>
-
             </ul>
 
         </div>
@@ -192,6 +196,24 @@
 
             </nav>
         </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Data Tables</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{{ url('/dashboard') }}">Home</a>
+                    </li>
+                    <li class="active">
+                        <strong>Roles</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
         <div class="wrapper wrapper-content">
             @yield('content')
         </div>
@@ -211,6 +233,8 @@
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
 <script src="{{asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 
 <!-- Flot -->
 <script src="{{asset('js/plugins/flot/jquery.flot.js')}}"></script>
@@ -244,6 +268,35 @@
 
 <!-- Sparkline demo data  -->
 <script src="{{asset('js/demo/sparkline-demo.js')}}"></script>
+<!-- Page-Level Scripts -->
+<script>
+    $(document).ready(function(){
+        $('.dataTables-example').DataTable({
+            pageLength: 25,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy'},
+                {extend: 'csv'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {extend: 'pdf', title: 'ExampleFile'},
 
+                {extend: 'print',
+                    customize: function (win){
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+    });
+
+</script>
 </body>
 </html>

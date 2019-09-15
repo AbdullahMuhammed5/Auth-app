@@ -7,7 +7,6 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Basic Data Tables example with responsive plugin</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -34,30 +33,41 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
-                                    <th>Remissions</th>
+                                    <th>Permissions</th>
+                                    @canany(['role-edit', 'role-delete'])
                                     <th>Options</th>
+                                    @endcanany
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($roles as $role)
                                 <tr class="gradeX">
-                                    <td>Trident</td>
-                                    <td>Win 95+</td>
-                                    <td>4</td>
-                                    <td>X</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $role->description }}</td>
+                                    <td>
+                                        <ul>
+                                        @foreach ($role->permissions as $permission )
+                                            <li>{{ $permission->name }}</li>
+                                        @endforeach
+                                        </ul>
+                                    </td>
+                                    @canany(['role-edit', 'role-delete'])
+                                    <td>
+                                        @can('role-edit')
+                                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-primary">edit</a>
+                                        @endcan
+                                        @can('role-delete')
+                                            {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                            {!! Form::close() !!}
+                                        @endcan
+                                    </td>
+                                    @endcanany
                                 </tr>
+                                @endforeach
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
