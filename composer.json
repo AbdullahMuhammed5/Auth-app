@@ -15,7 +15,8 @@
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.0",
         "laravelcollective/html": "^6.0",
-        "spatie/laravel-permission": "^3.0"
+        "spatie/laravel-permission": "^3.0",
+        "webpatser/laravel-countries": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

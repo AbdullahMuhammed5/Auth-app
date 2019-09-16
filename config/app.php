@@ -164,6 +164,7 @@ return [
         Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        'Webpatser\Countries\CountriesServiceProvider',
         /*
          * Package Service Providers...
          */
@@ -230,6 +231,7 @@ return [
         'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Countries' => 'Webpatser\Countries\CountriesFacade',
 
     ],
 

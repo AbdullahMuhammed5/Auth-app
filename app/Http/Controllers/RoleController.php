@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -15,19 +16,6 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    function __construct()
-    {
-        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:role-create', ['only' => ['create','store']]);
-        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -43,7 +31,6 @@ class RoleController extends Controller
                 ->get();
             $role->permissions = $rolePermissions;
         }
-
         return view('dashboard.roles.index', compact('roles'));
 //        $roles = Role::orderBy('id','DESC')->paginate(5);
 //        return view('roles.index',compact('roles'))
@@ -64,17 +51,11 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param RoleRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-//        dd($request);
-        $request->validate([
-            'name' => 'required',
-            'permission' => 'required',
-        ]);
-
         $role = Role::create(['name' => $request->name, 'description' => $request->description]);
         $role->syncPermissions($request->input('permission'));
 
@@ -94,8 +75,7 @@ class RoleController extends Controller
             ->where("role_has_permissions.role_id",$id)
             ->get();
 
-
-        return view('roles.show',compact('role','rolePermissions'));
+        return view('dashboard.roles.show',compact('role','rolePermissions'));
     }
 
     /**
@@ -118,18 +98,12 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param RoleRequest $request
      * @param int $id
      * @return Response
-     * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(RoleRequest $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
-        ]);
-
         $role = Role::find($id);
         $role->name = $request->input('name');
         $role->description = $request->input('description');
@@ -150,6 +124,6 @@ class RoleController extends Controller
     {
         Role::findById($id)->delete();
         return redirect()->route('roles.index')
-            ->with('success','Role deleted successfully');
+            ->with('error','Role deleted successfully');
     }
 }

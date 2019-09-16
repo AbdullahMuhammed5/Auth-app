@@ -23,15 +23,15 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                            <img alt="image" class="img-circle" src="{{asset('img/profile_small.jpg')}}" />
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
                              </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">Profile</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="mailbox.html">Mailbox</a></li>
+                            <li><a href="{{ asset('profile.html') }}">Profile</a></li>
+                            <li><a href="{{ asset('contacts.html') }}">Contacts</a></li>
+                            <li><a href="{{ asset('mailbox.html') }}">Mailbox</a></li>
                             <li class="divider"></li>
                             <li><a class="fa fa-sign-out dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
@@ -49,7 +49,7 @@
                     </div>
                 </li>
                 <li class="active">
-                    <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span>
+                    <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
                 </li>
                 <li>
                     <a href="{{ route('roles.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Roles</span>
@@ -58,6 +58,16 @@
                         <li class="active"><a href="{{ route('roles.index') }}">All</a></li>
                         @can('role-create')
                         <li><a href="{{ route('roles.create') }}">Add Role</a></li>
+                        @endcan
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ route('cities.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cities</span>
+                        <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="{{ route('cities.index') }}">All</a></li>
+                        @can('city-create')
+                            <li><a href="{{ route('cities.create') }}">Add City</a></li>
                         @endcan
                     </ul>
                 </li>
@@ -81,6 +91,7 @@
                     <li>
                         <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
                     </li>
+
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
@@ -177,7 +188,6 @@
                         </ul>
                     </li>
 
-
                     <li><a class="fa fa-sign-out dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                    document.getElementById('logout-form').submit();">
@@ -204,18 +214,55 @@
                     <li>
                         <a href="{{ url('/dashboard') }}">Home</a>
                     </li>
-                    <li class="active">
-                        <strong>Roles</strong>
-                    </li>
+                    <?php
+                        use Illuminate\Support\Facades\DB;
+                        $segments = '';
+                        ?>
+                    @foreach(Request::segments() as $segment)
+                        <?php $segments .= '/'.$segment; ?>
+                        <li>
+                            @if(is_numeric($segment))
+                                <?php $name = DB::table(Request::segments()[0])->select('name')->whereId($segment)->first()->name?>
+                                <a href="{{ $segments }}" class="active">{{ucfirst($name)}}</a>
+                            @else
+                                <a href="{{ $segments }}" class="active">{{ucfirst($segment)}}</a>
+                            @endif
+                        </li>
+                    @endforeach
                 </ol>
             </div>
-            <div class="col-lg-2">
-
-            </div>
         </div>
-
-        <div class="wrapper wrapper-content">
-            @yield('content')
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
+        @if ($message = Session::get('error'))
+            <div class="alert alert-danger">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div
         </div>
         <div class="footer">
             <div class="pull-right">
