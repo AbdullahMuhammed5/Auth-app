@@ -8433,6 +8433,9 @@ body.md-skin {
   position: fixed;
   display: none;
 }
+.invalid-feedback{
+    color: darkred;
+}
 @media (min-width: 768px) {
   #page-wrapper {
     position: inherit;

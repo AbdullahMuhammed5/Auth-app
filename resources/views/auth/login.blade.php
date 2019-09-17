@@ -33,7 +33,8 @@
                 </div>
             </div>
         </div>
-        @error('rechapcha')
+
+        @if(session('counter') >= 3)
             <div class="row">
                 <div class="col-md-12 text-right">
                     {!! htmlFormSnippet() !!}
@@ -47,6 +48,7 @@
                 <small>{{ __('Forgot Your Password?') }}</small>
             </a>
         @endif
+
         <p class="text-muted text-center"><small>Do not have an account?</small></p>
         <a class="btn btn-sm btn-white btn-block" href="{{ route('register') }}">{{ _("Create an account") }}</a>
 
