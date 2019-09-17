@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Spatie\Permission\Models\Role;
@@ -79,12 +80,18 @@ class RegisterController extends Controller
     {
         $user = User::create([
             'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
+            'last_name' => $data['first_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone']
         ]);
         $user->assignRole([0 => "Visitor"]);
+        // send email with the template
+        Mail::send('auth.welcome', $user->toArray(), function ($message) use ($user) {
+            $message->to($user['email'], $user['first_name'])
+                ->subject('Welcome to Our App')
+                ->from('info@app.com', 'Admin');
+        });
         return $user;
     }
 }
