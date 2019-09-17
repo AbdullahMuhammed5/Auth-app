@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard.index');
-})->middleware('verified');
+});
 
 Auth::routes(['verify' => true]);
 

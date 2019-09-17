@@ -7,7 +7,6 @@ use App\Country;
 use App\Http\Requests\CityRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class CityController extends Controller
 {
@@ -36,7 +35,7 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CityRequest $request
      * @return Response
      */
     public function store(CityRequest $request)
@@ -73,7 +72,7 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CityRequest $request
      * @param  $id
      * @return Response
      */
@@ -93,7 +92,7 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        City::findOrfail($id)->delete();
+        City::findOrFail($id)->delete();
         return redirect()->route('cities.index')
             ->with('error','City Deleted successfully');
     }

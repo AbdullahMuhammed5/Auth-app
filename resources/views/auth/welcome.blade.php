@@ -1,6 +1,8 @@
-Hello {{ ucfirst($first_name) }},<br><br>
+Hello {{ ucfirst($user['first_name']) }},<br><br>
 
 Welcome to Our App.<br><br>
 
-Thank You,<br>
+We are glad to inform you that You've been registered Successfully. <br><br>
+
+Thank You For Joining us,<br>
 Admin

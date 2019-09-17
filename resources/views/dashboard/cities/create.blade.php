@@ -5,22 +5,16 @@
     <hr>
     {!! Form::open(array('route' => 'cities.store','method'=>'POST')) !!}
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-sm-4">
             <label for="city">Select City:</label>
-            <input type="text" name="name" id="city" class="form-control" placeholder="City Name">
+            {!! Form::text('city', null, ['placeholder' => 'City Name','class' => 'form-control']) !!}
         </div>
-
-        <div class="form-group col-md-4">
+        <div class="form-group col-sm-4">
             <label for="country">Select Country:</label>
-            <select id="country" name="country_id" class="form-control" >
-                <option value="" selected disabled>Select Country</option>
-                @foreach($countries as $key => $country)
-                    <option value="{{$key}}"> {{$country}}</option>
-                @endforeach
-            </select>
+            {!! Form::select('country_id', [''=> 'Select Country', $countries], null, ['class' => 'form-control']) !!}
         </div>
-        <div class="form-group col-md-2">
-            <button class="btn btn-primary" type="submit" style="margin-top: 23px">Add</button>
+        <div class="form-group col-sm-2">
+            {!! Form::submit('Submit!', ['class' => 'btn btn-primary', 'style'=>'margin-top: 23px']) !!}
         </div>
     </div>
     {!! Form::close() !!}

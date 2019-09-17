@@ -19,7 +19,7 @@
                 <td>{{ $role->description }}</td>
                 <td>
                     <ul>
-                        @foreach ($rolePermissions as $permission )
+                        @foreach ($role->permissions as $permission )
                             <li class="badge badge-success">{{ $permission->name }}</li>
                         @endforeach
                     </ul>
@@ -31,7 +31,7 @@
                         @endcan
                         @can('role-delete')
                             {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
                         @endcan
                     </td>

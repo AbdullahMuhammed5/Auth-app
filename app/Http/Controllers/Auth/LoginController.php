@@ -46,7 +46,7 @@ class LoginController extends Controller
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     protected function credentials(Request $request)
@@ -62,7 +62,7 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -79,7 +79,7 @@ class LoginController extends Controller
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -94,6 +94,23 @@ class LoginController extends Controller
         throw ValidationException::withMessages(
             array_merge($arr, [$this->username() => [trans('auth.failed')]])
         );
+    }
+    /**
+     * The user has been authenticated.
+     *
+     * @param Request $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $userRole = $user->roles->pluck('name')->first();
+        if ($userRole == "Admin"){
+            session('admin');
+            $this->redirectTo = '/dashboard';
+        }else{
+            $this->redirectTo = '/';
+        }
     }
 
 }

@@ -14,7 +14,7 @@
         <div class="col-sm-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Description:</strong>
-                {!! Form::text('description', null, array('placeholder' => 'Description','class' => 'form-control')) !!}
+                {!! Form::textarea('description', null, array('placeholder' => 'Description','class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-12 col-sm-12 col-md-12">
@@ -22,14 +22,14 @@
                 <strong>Permission:</strong>
                 <br/>
                 @foreach($permission as $value)
-                    <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'form-check-input')) }}
+                    <label>{{ Form::checkbox('permissions[]', $value->id, false, array('class' => 'form-check-input')) }}
                         {{ $value->name }}</label>
                     <br/>
                 @endforeach
             </div>
         </div>
         <div class="col-sm-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            {!! Form::submit('Submit!', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
     {!! Form::close() !!}

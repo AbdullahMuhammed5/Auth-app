@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\RoleRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -25,12 +23,6 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        foreach ($roles as $role){
-            $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-                ->where("role_has_permissions.role_id",$role['id'])
-                ->get();
-            $role->permissions = $rolePermissions;
-        }
         return view('dashboard.roles.index', compact('roles'));
 //        $roles = Role::orderBy('id','DESC')->paginate(5);
 //        return view('roles.index',compact('roles'))
@@ -44,7 +36,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission = Permission::get();
+        $permission = Permission::all();
         return view('dashboard.roles.create', compact('permission'));
     }
 
@@ -57,7 +49,7 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         $role = Role::create(['name' => $request->name, 'description' => $request->description]);
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
             ->with('success','Role created successfully');
@@ -71,11 +63,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
-            ->get();
-
-        return view('dashboard.roles.show',compact('role','rolePermissions'));
+        return view('dashboard.roles.show', compact('role'));
     }
 
     /**
@@ -86,13 +74,11 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::find($id);
-        $permission = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-            ->all();
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions->pluck('id','id')->all();
 
-        return view('dashboard.roles.edit', compact('role','permission','rolePermissions'));
+        return view('dashboard.roles.edit', compact('role','permissions','rolePermissions'));
     }
 
     /**
