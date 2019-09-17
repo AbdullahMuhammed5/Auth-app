@@ -31,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'dashboard';
+    protected $redirectTo = '/';
     protected $max_attempts;
     /**
      * Create a new controller instance.
@@ -51,18 +51,12 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        if(is_numeric($request->get($this->username()))){
-            return [
-                'phone'=>$request->get('phone'),
-                'password'=>$request->get('password')
-            ];
-        }
-        else{
-            return [
-                'email' => $request->get('email'),
-                'password'=>$request->get('password')
-            ];
-        }
+        $credentials = ['password'=>$request->get('password')];
+        if(is_numeric($request->get('email')))
+            $credentials['phone'] = $request->get('email');
+        else
+            $credentials['email'] = $request->get('email');
+        return $credentials;
     }
 
     /**

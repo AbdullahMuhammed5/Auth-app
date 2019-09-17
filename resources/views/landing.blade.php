@@ -33,13 +33,14 @@
                 <a class="navbar-brand" href="{{ route('landing') }}">WEBAPPLAYERS</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
                     @guest
                         <li><a class="page-scroll" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                         @if (Route::has('register'))
                             <li><a class="page-scroll" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @endif
                     @else
+                            <li><a class="page-scroll" href="{{ url('dashboard') }}">{{ __('Go To Dashboard') }}</a></li>
                         <li>
                             <a class="page-scroll" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
@@ -50,7 +51,9 @@
                                 @csrf
                             </form>
                         </li>
-                @endguest
+                    @endguest
+                </ul>
+            </div>
         </div>
     </nav>
 </div>

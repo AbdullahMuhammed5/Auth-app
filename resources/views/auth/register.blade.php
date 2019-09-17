@@ -41,12 +41,6 @@
            </span>
             @enderror
         </div>
-        <div class="col-sm-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Role:</strong>
-                {!! Form::select('roles[]', $roles,[], array('class' => 'form-control')) !!}
-            </div>
-        </div>
         <div class="form-group">
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                    placeholder="Password" value="{{ old('password') }}" required="" autocomplete="password" autofocus>
