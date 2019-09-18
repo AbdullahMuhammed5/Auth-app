@@ -6,13 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Dashboard v.2</title>
+    <title>INSPINIA | Dashboard </title>
 
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{asset('css/animate.css')}}" rel="stylesheet">
-    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
 </head>
 
@@ -26,7 +27,10 @@
                             <img alt="image" class="img-circle" src="{{asset('img/profile_small.jpg')}}" />
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
+                            <span class="clear"> <span class="block m-t-xs">
+                                    <strong class="font-bold">
+                                        {{ ucfirst(auth()->user()->first_name) . ' ' . ucfirst(auth()->user()->last_name)}}
+                                    </strong>
                              </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="{{ asset('profile.html') }}">Profile</a></li>
@@ -339,11 +343,9 @@
                     }
                 }
             ]
-
         });
-
     });
-
+    $("#metismenu").metisMenu();
 </script>
 </body>
 </html>

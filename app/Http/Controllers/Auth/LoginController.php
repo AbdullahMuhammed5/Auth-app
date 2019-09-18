@@ -82,7 +82,7 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request)
     {
         Session::put('counter', Cache::get($this->throttleKey($request)));
-        
+
         $arr = [];
         if (\session('counter') >= static::MAX_LOGIN_ATTEMPTS){
             $arr['rechapcha'] = 'Show rechapcha';

@@ -3,17 +3,21 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\RoleRequest;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 
 class RoleController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:role-create', ['only' => ['create','store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -24,9 +28,6 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         return view('dashboard.roles.index', compact('roles'));
-//        $roles = Role::orderBy('id','DESC')->paginate(5);
-//        return view('roles.index',compact('roles'))
-//            ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -54,27 +55,26 @@ class RoleController extends Controller
         return redirect()->route('roles.index')
             ->with('success','Role created successfully');
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Role $role
      * @return Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        $role = Role::find($id);
         return view('dashboard.roles.show', compact('role'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Role $role
      * @return Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        $role = Role::findOrFail($id);
         $permissions = Permission::all();
         $rolePermissions = $role->permissions->pluck('id','id')->all();
 
@@ -85,12 +85,11 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      *
      * @param RoleRequest $request
-     * @param int $id
+     * @param Role $role
      * @return Response
      */
-    public function update(RoleRequest $request, $id)
+    public function update(RoleRequest $request, Role $role)
     {
-        $role = Role::find($id);
         $role->name = $request->input('name');
         $role->description = $request->input('description');
         $role->save();

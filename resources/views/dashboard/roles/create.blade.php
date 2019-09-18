@@ -22,9 +22,10 @@
                 <strong>Permission:</strong>
                 <br/>
                 @foreach($permission as $value)
-                    <label>{{ Form::checkbox('permissions[]', $value->id, false, array('class' => 'form-check-input')) }}
-                        {{ $value->name }}</label>
-                    <br/>
+                    <div class="checkbox">
+                        {{ Form::checkbox('permissions[]', $value->id, false, array('class' => 'checkbox')) }}
+                        <label>{{ $value->name }}</label>
+                    </div>
                 @endforeach
             </div>
         </div>

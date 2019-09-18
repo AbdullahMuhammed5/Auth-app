@@ -21,6 +21,7 @@ class CreateCitiesTable extends Migration
                 ->references('id')
                 ->on('countries');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Country;
 use App\Http\Requests\CityRequest;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CityController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:city-list|city-create|city-edit|city-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:city-create', ['only' => ['create','store']]);
+        $this->middleware('permission:city-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:city-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,10 +54,10 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
-     * @return Response
+     * @param City $city
+     * @return void
      */
-    public function show($id)
+    public function show(City $city)
     {
         //
     }
@@ -59,12 +65,11 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  $id
+     * @param City $city
      * @return Response
      */
-    public function edit($id)
+    public function edit(City $city)
     {
-        $city = City::findOrFail($id);
         $countries = Country::pluck("name","id");
         return view('dashboard.cities.edit', compact('city', 'countries'));
     }
@@ -73,12 +78,12 @@ class CityController extends Controller
      * Update the specified resource in storage.
      *
      * @param CityRequest $request
-     * @param  $id
+     * @param City $city
      * @return Response
      */
-    public function update(CityRequest $request, $id)
+    public function update(CityRequest $request, City $city)
     {
-        $city = City::findOrFail($id)->update($request->all());
+        $city->update($request->all());
 
         return redirect()->route('cities.index')
             ->with('success','City Updated successfully');
