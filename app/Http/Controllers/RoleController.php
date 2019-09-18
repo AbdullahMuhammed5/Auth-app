@@ -44,7 +44,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param RoleRequest $request
+     * @param  RoleRequest $request
      * @return Response
      */
     public function store(RoleRequest $request)
@@ -53,7 +53,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
-            ->with('success','Role created successfully');
+            ->with('success', 'Role created successfully');
     }
 
     /**
@@ -70,7 +70,7 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Role $role
+     * @param  Role $role
      * @return Response
      */
     public function edit(Role $role)
@@ -78,14 +78,13 @@ class RoleController extends Controller
         $permissions = Permission::all();
         $rolePermissions = $role->permissions->pluck('id','id')->all();
 
-        return view('dashboard.roles.edit', compact('role','permissions','rolePermissions'));
+        return view('dashboard.roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param RoleRequest $request
-     * @param Role $role
+     * @param  RoleRequest $request Role $role
      * @return Response
      */
     public function update(RoleRequest $request, Role $role)
@@ -97,18 +96,18 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')
-            ->with('success','Role updated successfully');
+            ->with('success', 'Role updated successfully');
     }
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return  Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         Role::findById($id)->delete();
         return redirect()->route('roles.index')
-            ->with('error','Role deleted successfully');
+            ->with('error', 'Role deleted successfully');
     }
 }

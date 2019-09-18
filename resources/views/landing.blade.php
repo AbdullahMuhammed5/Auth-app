@@ -650,7 +650,6 @@
 <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
 <script src="{{ asset('js/plugins/wow/wow.min.js') }}"></script>
 
-
 <script>
 
     $(document).ready(function () {

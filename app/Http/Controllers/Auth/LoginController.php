@@ -45,23 +45,26 @@ class LoginController extends Controller
      * Get the needed authorization credentials from the request.
      *
      * @param Request $request
+     *
      * @return array
      */
     protected function credentials(Request $request)
     {
         $credentials = ['password'=>$request->get('password')];
-        if(is_numeric($request->get('email')))
+        if(is_numeric($request->get('email'))){
             $credentials['phone'] = $request->get('email');
-        else
+        }
+        else{
             $credentials['email'] = $request->get('email');
+        }
         return $credentials;
     }
     /**
      * Validate the user login request.
      *
      * @param Request $request
-     * @return void
      *
+     * @return void
      */
     protected function validateLogin(Request $request)
     {
@@ -84,7 +87,7 @@ class LoginController extends Controller
         Session::put('counter', Cache::get($this->throttleKey($request)));
 
         $arr = [];
-        if (\session('counter') >= static::MAX_LOGIN_ATTEMPTS){
+        if ( \session('counter') >= static::MAX_LOGIN_ATTEMPTS ){
             $arr['rechapcha'] = 'Show rechapcha';
         }
         throw ValidationException::withMessages(
@@ -94,19 +97,19 @@ class LoginController extends Controller
     /**
      * The user has been authenticated.
      *
-     * @param Request $request
+     * @param  Request $request
      * @param  mixed  $user
+     *
      * @return void
      */
     protected function authenticated(Request $request, $user)
     {
         $userRole = $user->roles->pluck('name')->first();
-        if ($userRole == "Admin"){
+        if ($userRole == "Admin") {
             session('admin');
             $this->redirectTo = '/dashboard';
-        }else{
+        }else
             $this->redirectTo = '/';
-        }
     }
 
 }

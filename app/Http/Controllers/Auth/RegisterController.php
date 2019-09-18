@@ -74,18 +74,11 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return User
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['first_name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'phone' => $data['phone']
-        ]);
-        $user->assignRole([0 => "Visitor"]);
+        $user = User::create(array_merge($data, ['password' => Hash::make($data['password'])]));
         dispatch(new \App\Jobs\WelcomeEmailJob($user));
         return $user;
     }
