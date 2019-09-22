@@ -93,7 +93,7 @@ class RoleController extends Controller
         $role->description = $request->input('description');
         $role->save();
 
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');

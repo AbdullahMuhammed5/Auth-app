@@ -1,7 +1,8 @@
 <?php
 
 /** @var Factory $factory */
-use App\Role;
+use App\City;
+use App\Country;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -16,10 +17,9 @@ use Illuminate\Database\Eloquent\Factory;
 |
 */
 
-$factory->define(Role::class, function (Faker $faker) {
+$factory->define(City::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'description' => $faker->sentence(10),
-        'permissions' => $faker->name
+        'name' => $faker->city,
+        'country_id' => Country::all()->random()->id,
     ];
 });

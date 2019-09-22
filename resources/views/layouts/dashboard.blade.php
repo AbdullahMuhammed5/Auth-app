@@ -10,7 +10,9 @@
 
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
@@ -266,7 +268,7 @@
                     </div>
                 </div>
             </div>
-        </div
+        </div>
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -280,6 +282,7 @@
 </div>
 
 <!-- Mainly scripts -->
+
 <script src="{{asset('js/jquery-3.1.1.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
@@ -298,33 +301,58 @@
 <script src="{{asset('js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
 <script src="{{asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
 
+
 <!-- Page-Level Scripts -->
-<script>
-    $(document).ready(function(){
-        $('.dataTables-example').DataTable({
-            pageLength: 5,
-            responsive: true,
-            dom: '<"html5buttons"B>lTfgitp',
-            buttons: [
-                { extend: 'copy'},
-                {extend: 'csv'},
-                {extend: 'excel', title: 'ExampleFile'},
-                {extend: 'pdf', title: 'ExampleFile'},
-
-                {extend: 'print',
-                    customize: function (win){
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '10px');
-
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }
+<script type="text/javascript">
+    $(function () {
+        let table = $('.dataTables-example').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('cities.get_all') }}",
+            columns: [
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
     });
 </script>
+<script type="text/javascript">
+    $(function () {
 
+        let table = $('#data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('cities.index') }}",
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'country', name: 'country'},
+                @canany(['city-edit', 'city-delete'])
+                {data: 'action', name: 'action', orderable: false, searchable: false,
+                    "render" : function(data, type, row) {
+                        return `
+                            <td>
+                            @can('city-edit')
+                            <a href="/cities/${row.id}/edit" class="btn btn-primary">edit</a>
+                            @endcan
+
+                            @can('city-delete')
+                            <form method="POST" action='cities/${row.id}'  style='display: inline'>
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-danger delete-user" value="Delete">
+                                </div>
+                            </form>
+                            @endcan
+                            </td>`;
+                    }
+                },
+                @endcanany
+            ]
+        });
+    });
+</script>
 </body>
 </html>

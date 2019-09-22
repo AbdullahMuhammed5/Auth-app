@@ -20,4 +20,9 @@ class City extends Model
     public function country(){
         return $this->belongsTo('App\Country');
     }
+
+    public function countryName()
+    {
+        return $this->belongsTo('App\Country')->select( 'name');
+    }
 }

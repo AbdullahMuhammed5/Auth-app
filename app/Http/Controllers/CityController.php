@@ -12,7 +12,11 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Country;
 use App\Http\Requests\CityRequest;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
 {
@@ -26,15 +30,27 @@ class CityController extends Controller
         $this->middleware('permission:city-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:city-delete', ['only' => ['destroy']]);
     }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cities = City::paginate(6);
-        return view('dashboard.cities.index', compact('cities'));
+        if ($request->ajax()) {
+            $data = DB::table('cities')
+                ->join('countries', 'cities.country_id', '=', 'countries.id')
+                ->select('cities.id', 'cities.name', 'countries.name as country')
+                ->where('deleted_at', NULL)
+                ->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('dashboard.cities.index');
     }
 
     /**
@@ -59,6 +75,16 @@ class CityController extends Controller
         City::create($request->all());
         return redirect()->route('cities.index')
             ->with('success', 'City created successfully');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return void
+     */
+    public function show()
+    {
+        //
     }
     /**
      * Show the form for editing the specified resource.
@@ -88,12 +114,13 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
+     * @param City $city
      * @return Response
+     * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(City $city)
     {
-        City::findOrFail($id)->delete();
+        $city->delete();
         return redirect()->route('cities.index')
             ->with('error', 'City Deleted successfully');
     }
