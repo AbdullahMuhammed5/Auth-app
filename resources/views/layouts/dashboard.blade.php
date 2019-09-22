@@ -305,20 +305,6 @@
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
     $(function () {
-        let table = $('.dataTables-example').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('cities.get_all') }}",
-            columns: [
-                {data: 'name', name: 'name'},
-                {data: 'description', name: 'description'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ]
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(function () {
 
         let table = $('#data-table').DataTable({
             processing: true,
@@ -328,28 +314,7 @@
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'country', name: 'country'},
-                @canany(['city-edit', 'city-delete'])
-                {data: 'action', name: 'action', orderable: false, searchable: false,
-                    "render" : function(data, type, row) {
-                        return `
-                            <td>
-                            @can('city-edit')
-                            <a href="/cities/${row.id}/edit" class="btn btn-primary">edit</a>
-                            @endcan
-
-                            @can('city-delete')
-                            <form method="POST" action='cities/${row.id}'  style='display: inline'>
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                <div class="form-group">
-                                    <input type="submit" class="btn btn-danger delete-user" value="Delete">
-                                </div>
-                            </form>
-                            @endcan
-                            </td>`;
-                    }
-                },
-                @endcanany
+                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
     });

@@ -48,6 +48,10 @@ class CityController extends Controller
                 ->get();
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('action', function ($row){
+                    return view('dashboard.cities.ActionButtons', compact('row'));
+                })
+                ->rawColumns(['action'])
                 ->make(true);
         }
         return view('dashboard.cities.index');
