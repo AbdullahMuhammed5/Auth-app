@@ -23,9 +23,10 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 });
 
-Auth::routes(['verify' => true]);
+Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('landing');
+
 Route::resource('roles', 'RoleController');
 Route::resource('cities', 'CityController');
 

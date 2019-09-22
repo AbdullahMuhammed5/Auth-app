@@ -30,8 +30,8 @@
                     </td>
                 @endcanany
             </tr>
+            {{ $cities->links() }}
         @endforeach
         </tbody>
     </table>
-
 @stop
