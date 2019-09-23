@@ -6,7 +6,7 @@
         @endcan
 
         @can('role-delete')
-            <form method="POST" action='roles/{{$row}}'  style='display: inline'>
+            <form method="POST" action='roles/{{$row->id}}'  style='display: inline'>
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">

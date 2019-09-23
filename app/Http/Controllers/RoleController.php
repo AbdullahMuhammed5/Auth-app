@@ -32,7 +32,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $data = Role::latest()->with('permissions')->get();
-
+        dd($data);
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

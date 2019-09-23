@@ -77,6 +77,16 @@
                         @endcan
                     </ul>
                 </li>
+                <li>
+                    <a href="{{ route('jobs.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Jobs</span>
+                        <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="{{ route('jobs.index') }}">All</a></li>
+                        @can('job-create')
+                            <li><a href="{{ route('jobs.create') }}">Add Job</a></li>
+                        @endcan
+                    </ul>
+                </li>
             </ul>
 
         </div>
@@ -330,6 +340,16 @@
                 {data: 'name', name: 'name'},
                 {data: 'description', name: 'description'},
                 {data: 'permissions', name: 'permissions'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+            @endif
+
+            @if (Request::is('jobs'))
+            ajax: "{{ route('jobs.index') }}",
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
             @endif
