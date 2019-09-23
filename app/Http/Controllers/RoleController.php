@@ -11,7 +11,6 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
-
 class RoleController extends Controller
 {
     function __construct()
@@ -32,7 +31,6 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $data = Role::latest()->with('permissions')->get();
-        dd($data);
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

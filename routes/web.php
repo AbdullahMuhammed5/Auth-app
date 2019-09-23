@@ -30,4 +30,4 @@ Route::get('/home', 'HomeController@index')->name('landing');
 Route::resource('roles', 'RoleController');
 Route::resource('cities', 'CityController');
 Route::resource('jobs', 'JobController');
-
+Route::resource('staff', 'StaffMemberController');
