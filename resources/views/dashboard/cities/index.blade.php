@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <table class="table table-striped table-bordered table-hover" id="data-table">
+    <table class="table table-striped table-bordered table-hover data-table">
         <thead>
         <tr>
             <th>ID</th>

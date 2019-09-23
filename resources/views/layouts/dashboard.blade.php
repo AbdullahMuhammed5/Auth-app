@@ -306,16 +306,33 @@
 <script type="text/javascript">
     $(function () {
 
-        let table = $('#data-table').DataTable({
+        let table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
+            fixedHeader: {
+                header: true,
+                footer: true
+            },
+            @if (Request::is('cities'))
             ajax: "{{ route('cities.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'country', name: 'country'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            @endif
+
+            @if (Request::is('roles'))
+            ajax: "{{ route('roles.index') }}",
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
+                {data: 'permissions', name: 'permissions'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
+            @endif
         });
     });
 </script>

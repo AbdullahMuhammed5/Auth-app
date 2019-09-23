@@ -29,5 +29,4 @@ Route::get('/home', 'HomeController@index')->name('landing');
 
 Route::resource('roles', 'RoleController');
 Route::resource('cities', 'CityController');
-Route::get('cities/get_all', 'CityController@getAll')->name('cities.get_all');
 

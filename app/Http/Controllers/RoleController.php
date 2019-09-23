@@ -4,9 +4,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Yajra\DataTables\DataTables;
 
 
 class RoleController extends Controller
@@ -22,12 +25,27 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::all();
-        return view('dashboard.roles.index', compact('roles'));
+        $data = Role::latest()->with('permissions')->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('permissions', function ($row){
+                    return view('dashboard.roles.permissions', compact('row'));
+                })
+                ->addColumn('action', function ($row){
+                    return view('dashboard.roles.ActionButtons', compact('row'));
+                })
+                ->rawColumns(['action', 'permissions'])
+                ->make(true);
+        }
+        return view('dashboard.roles.index');
     }
 
     /**
@@ -98,15 +116,17 @@ class RoleController extends Controller
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Role $role
      * @return  Response
+     * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(Role $role)
     {
-        Role::findById($id)->delete();
+        $role->delete();
         return redirect()->route('roles.index')
             ->with('error', 'Role deleted successfully');
     }
