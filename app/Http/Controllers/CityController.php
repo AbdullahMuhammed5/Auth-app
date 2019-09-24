@@ -15,7 +15,6 @@ use App\Http\Requests\CityRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
@@ -41,11 +40,7 @@ class CityController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::table('cities')
-                ->join('countries', 'cities.country_id', '=', 'countries.id')
-                ->select('cities.id', 'cities.name', 'countries.name as country')
-                ->where('deleted_at', NULL)
-                ->get();
+            $data = City::latest()->with('country');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row){
@@ -55,6 +50,13 @@ class CityController extends Controller
                 ->make(true);
         }
         return view('dashboard.cities.index');
+    }
+
+    public function getCities($id)
+    {
+        $cities= City::where("country_id", $id)
+            ->pluck("name", "id");
+        return response()->json($cities);
     }
 
     /**
@@ -101,10 +103,12 @@ class CityController extends Controller
         $countries = Country::pluck("name", "id");
         return view('dashboard.cities.edit', compact('city', 'countries'));
     }
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  CityRequest $request City $city
+     * @param CityRequest $request
+     * @param City $city
      * @return Response
      */
     public function update(CityRequest $request, City $city)

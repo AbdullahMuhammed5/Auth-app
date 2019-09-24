@@ -14,7 +14,9 @@ class CreateStaffMembersTable extends Migration
     public function up()
     {
         Schema::create('staff_members', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
+            $table->bigIncrements('id');
+
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -22,19 +24,13 @@ class CreateStaffMembersTable extends Migration
 
             $table->string('image', 250)->nullable();
 
-            $table->integer('role_id')->unsigned()->nullable();
-            $table->foreign('role_id')
-                ->references('id')
-                ->on('roles')
-                ->onDelete('cascade');
-
-            $table->integer('job_id')->unsigned()->nullable();
+            $table->unsignedInteger('job_id')->nullable();
             $table->foreign('job_id')
                 ->references('id')
                 ->on('jobs')
                 ->onDelete('cascade');
 
-            $table->integer('country_id')->unsigned()->nullable();
+            $table->unsignedInteger('country_id')->nullable();
             $table->foreign('country_id')
                 ->references('id')
                 ->on('countries')
@@ -42,6 +38,7 @@ class CreateStaffMembersTable extends Migration
 
             $table->string('city')->nullable();
             $table->string('gender');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -79,6 +79,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create(array_merge($data, ['password' => Hash::make($data['password'])]));
+        $user->assignRole([0 => "Visitor"]);
         dispatch(new \App\Jobs\WelcomeEmailJob($user));
         return $user;
     }

@@ -88,12 +88,12 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ route('staff.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Jobs</span>
+                    <a href="{{ route('staff.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Staff</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a href="{{ route('staff.index') }}">All</a></li>
                         @can('job-create')
-                            <li><a href="{{ route('staff.create') }}">Add Job</a></li>
+                            <li><a href="{{ route('staff.create') }}">Add Staff</a></li>
                         @endcan
                     </ul>
                 </li>
@@ -329,40 +329,70 @@
         let table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            fixedHeader: {
-                header: true,
-                footer: true
-            },
+            ajax: "{{ route(Request::segments()[0].'.index') }}",
             @if (Request::is('cities'))
-            ajax: "{{ route('cities.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
-                {data: 'country', name: 'country'},
+                {data: 'country.name', name: 'country'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             @endif
 
             @if (Request::is('roles'))
-            ajax: "{{ route('roles.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'description', name: 'description'},
                 {data: 'permissions', name: 'permissions'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
-            ]
+            ],
             @endif
 
             @if (Request::is('jobs'))
-            ajax: "{{ route('jobs.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'description', name: 'description'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            @endif
+
+            @if (Request::is('staff'))
+            columns: [
+                {data: 'user.id', name: 'user_id'},
+                {data: 'image', name: 'image'},
+                {data: 'user.first_name', name: 'name'},
+                {data: 'user.email', name: 'email'},
+                {data: 'user.phone', name: 'phone'},
+                {data: 'job.name', name: 'job'},
+                {data: 'user.roles[0].name', name: 'roles'},
+                {data: 'city', name: 'city'},
+                {data: 'country.name', name: 'country'},
+                {data: 'gender', name: 'gender'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
             @endif
+        });
+
+        $('#country').change(function(){
+            let cid = $(this).val();
+            if(cid){
+                $.ajax({
+                    type:"get",
+                    url:" {{url('/getCities')}}/"+cid,
+                    success:function(res){
+                        if(res){
+                            $('#city-wrapper').css('display', 'block')
+                            $("#city").empty();
+                            $("#city").append('<option>Select City</option>');
+                            $.each(res, function(key, value){
+                                $("#city").append('<option value="'+key+'">'+value+'</option>');
+                            });
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

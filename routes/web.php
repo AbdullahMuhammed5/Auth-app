@@ -31,3 +31,4 @@ Route::resource('roles', 'RoleController');
 Route::resource('cities', 'CityController');
 Route::resource('jobs', 'JobController');
 Route::resource('staff', 'StaffMemberController');
+Route::get('/getCities/{id}','CityController@getCities');

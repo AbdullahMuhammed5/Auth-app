@@ -94,22 +94,13 @@ class LoginController extends Controller
             array_merge($arr, [$this->username() => [trans('auth.failed')]])
         );
     }
-    /**
-     * The user has been authenticated.
-     *
-     * @param  Request $request
-     * @param  mixed  $user
-     *
-     * @return void
-     */
-    protected function authenticated(Request $request, $user)
+
+    protected function redirectPath()
     {
-        $userRole = $user->roles->pluck('name')->first();
-        if ($userRole == "Admin") {
-            session('admin');
-            $this->redirectTo = '/dashboard';
+        if (auth()->user()->hasRole('Admin')) {
+            return '/dashboard';
         }else
-            $this->redirectTo = '/';
+            return '/';
     }
 
 }

@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>Create new Staff</h1>
+    <h1>Edit {{$staff->user->first_name.' '.$staff->user->last_name}}</h1>
     <hr>
-    {!! Form::open(array('route' => 'staff.store','method'=>'POST', 'files' => true)) !!}
+    {!! Form::model($staff, array('route' => 'staff.store','method'=>'POST', 'files' => true)) !!}
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -59,5 +59,3 @@
     </div>
     {!! Form::close() !!}
 @endsection
-
-

@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateAdminUserSeeder::class);
         $this->call(CountriesSeeder::class);
         $this->call(JobSeeder::class);
+        $this->call(CitySeeder::class);
     }
 }

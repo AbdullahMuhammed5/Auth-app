@@ -30,8 +30,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Role::latest()->with('permissions')->get();
         if ($request->ajax()) {
+            $data = Role::latest()->with('permissions')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('permissions', function ($row){
@@ -53,8 +53,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission = Permission::all();
-        return view('dashboard.roles.create', compact('permission'));
+        $permissions = Permission::pluck('name', 'id')->all();
+        return view('dashboard.roles.create', compact('permissions'));
     }
 
     /**
@@ -65,7 +65,7 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        $role = Role::create(['name' => $request->name, 'description' => $request->description]);
+        $role = Role::create($request->only('name', 'description'));
         $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')
@@ -91,7 +91,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
+        $permissions = Permission::pluck('name', 'id')->all();
         $rolePermissions = $role->permissions->pluck('id','id')->all();
 
         return view('dashboard.roles.edit', compact('role', 'permissions', 'rolePermissions'));
@@ -100,15 +100,13 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  RoleRequest $request Role $role
+     * @param RoleRequest $request
+     * @param Role $role
      * @return Response
      */
     public function update(RoleRequest $request, Role $role)
     {
-        $role->name = $request->input('name');
-        $role->description = $request->input('description');
-        $role->save();
-
+        $role->update($request->only('name', 'description'));
         $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('roles.index')

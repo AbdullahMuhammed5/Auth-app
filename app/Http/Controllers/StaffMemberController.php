@@ -3,12 +3,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Http\Requests\StaffRequest;
+use App\Job;
 use App\StaffMember;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 class StaffMemberController extends Controller
@@ -30,21 +33,18 @@ class StaffMemberController extends Controller
      */
     public function index(Request $request)
     {
-        $staffs = StaffMember::latest()->with('user', 'country', 'roles', 'job')->get();
-//        dd($staffs);
-//        if ($request->ajax()) {
-//            return Datatables::of($data)
-//                ->addIndexColumn()
-//                ->addColumn('permissions', function ($row){
-//                    return view('dashboard.staffs.permissions', compact('row'));
-//                })
-//                ->addColumn('action', function ($row){
-//                    return view('dashboard.staffs.ActionButtons', compact('row'));
-//                })
-//                ->rawColumns(['action', 'permissions'])
-//                ->make(true);
-//        }
-        return view('dashboard.staffs.index', compact('staffs'));
+        $data = StaffMember::latest()->with('user', 'country', 'roles', 'job')->get();
+//        dd($data);
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row){
+                    return view('dashboard.staffs.ActionButtons', compact('row'));
+                })
+                ->rawColumns(['action', 'permissions'])
+                ->make(true);
+        }
+        return view('dashboard.staffs.index');
     }
 
     /**
@@ -54,20 +54,27 @@ class StaffMemberController extends Controller
      */
     public function create()
     {
-        $permission = Permission::all();
-        return view('dashboard.staffs.create', compact('permission'));
+        $countries = Country::pluck('name', 'id');
+        $jobs = Job::pluck('name', 'id');
+        return view('dashboard.staffs.create', compact('countries', 'jobs'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  staffRequest $request
+     * @param StaffRequest $request
      * @return Response
      */
-    public function store(staffRequest $request)
+    public function store(StaffRequest $request)
     {
-        $staff = staff::create(['name' => $request->name, 'description' => $request->description]);
-        $staff->syncPermissions($request->input('permissions'));
+        $usersInputs = $request->only('first_name', 'last_name', 'phone');
+        $usersInputs['email'] = $request->first_name.'.'.$request->last_name.'@'.'email.com';
+        $usersInputs['password'] = Hash::make('secret');
+        $user = User::create($usersInputs);
+
+        $staffInputs = $request->only('job_id', 'country_id', 'city', 'image', 'gender');
+        $staffInputs['user_id'] = $user->id;
+        StaffMember::create($staffInputs);
 
         return redirect()->route('staffs.index')
             ->with('success', 'staff created successfully');
@@ -92,10 +99,10 @@ class StaffMemberController extends Controller
      */
     public function edit(StaffMember $staff)
     {
-        $permissions = Permission::all();
-        $staffPermissions = $staff->permissions->pluck('id','id')->all();
-
-        return view('dashboard.staffs.edit', compact('staff', 'permissions', 'staffPermissions'));
+        dd($staff);
+        $countries = Country::pluck('name', 'id');
+        $jobs = Job::pluck('name', 'id');
+        return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
     }
 
     /**
