@@ -43,6 +43,7 @@ class CreateStaffsTable extends Migration
                 ->onDelete('cascade');
 
             $table->string('gender');
+            $table->boolean('isActive');
 
             $table->timestamps();
             $table->softDeletes();

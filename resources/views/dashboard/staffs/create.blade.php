@@ -49,6 +49,12 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
+                <label>{!! Form::radio('isActive' , 0, true) !!} Inactive</label>
+                <label>{!! Form::radio('isActive', 1, false) !!} Active</label>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
                 <label>Image:</label>
                 {!! Form::file('image', null, array('class' => 'form-control')) !!}
             </div>

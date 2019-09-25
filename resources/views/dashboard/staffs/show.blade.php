@@ -1,7 +1,14 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
+    <h2>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->first_name)}}
+        @if($staff->isActive)
+            <span class="glyphicon glyphicon-ok-sign glyphicon" style="color: green"></span> <span>Active</span>
+        @else
+            <span class="glyphicon glyphicon-remove-sign glyphicon" style="color: darkred"></span> <span>Inactive</span>
+        @endif
+    </h2>
+    <br>
     <table class="table table-striped table-bordered table-hover" >
         <thead>
         <tr>

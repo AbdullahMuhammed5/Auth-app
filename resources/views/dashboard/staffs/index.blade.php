@@ -15,6 +15,7 @@
             <th>City</th>
             <th>Country</th>
             <th>Gender</th>
+            <th>Status</th>
             @canany(['staff-edit', 'staff-delete'])
             <th>Options</th>
             @endcanany

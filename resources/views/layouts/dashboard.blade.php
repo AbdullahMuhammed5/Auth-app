@@ -372,6 +372,7 @@
                 {data: 'city.name', name: 'city'},
                 {data: 'country.name', name: 'country'},
                 {data: 'gender', name: 'gender'},
+                {data: 'isActive', name: 'isActive'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
             @endif

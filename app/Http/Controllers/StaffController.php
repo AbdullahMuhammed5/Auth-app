@@ -43,6 +43,9 @@ class StaffController extends Controller
                 ->addColumn('action', function ($row){
                     return view('dashboard.staffs.ActionButtons', compact('row'));
                 })
+                ->addColumn('isActive', function ($row){
+                    return $row->isActive == 0 ? 'InActive' : 'Active';
+                })
                 ->addColumn('image', function ($row){
                     $exists = Storage::disk('local')->exists("public/images/$row->image");
                     $url = $exists ? Storage::url("images/$row->image") : 'images/default-user.png';
@@ -82,7 +85,7 @@ class StaffController extends Controller
 
         $user->assignRole('staff');
 
-        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender');
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
         $staffInputs['user_id'] = $user->id;
         if ($image = $request['image']){
             $imageName = time().$image->getClientOriginalName();
@@ -135,7 +138,7 @@ class StaffController extends Controller
         $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
         $user->update($usersInputs);
 
-        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender');
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
         if ($image = $request['image']){
             $imageName = time().$image->getClientOriginalName();
             Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
