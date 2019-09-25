@@ -3,7 +3,7 @@
 @section('content')
     <h1>Create new Staff</h1>
     <hr>
-    {!! Form::open(array('route' => 'staff.store','method'=>'POST', 'files' => true)) !!}
+    {!! Form::open(array('route' => 'staffs.store','method'=>'POST', 'files' => true)) !!}
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -44,13 +44,13 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Gender:</label>
-                {!! Form::text('gender', null, array('placeholder' => 'Gender','class' => 'form-control')) !!}
+                {!! Form::select('gender', [''=>'Select Gender', 'Male'=>'Male', 'Female'=>'Female'], false, array('class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Image:</label>
-                {!! Form::file('image', null, array('placeholder' => 'Description','class' => 'form-control')) !!}
+                {!! Form::file('image', null, array('class' => 'form-control')) !!}
             </div>
         </div>
     </div>

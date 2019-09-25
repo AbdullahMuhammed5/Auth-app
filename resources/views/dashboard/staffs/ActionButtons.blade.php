@@ -1,12 +1,12 @@
 @canany(['staff-edit', 'staff-delete', 'staff-list'])
     <td>
-        <a href="/staff/{{$row->user_id}}" class="btn btn-info">View</a>
+        <a href="/staffs/{{$row->id}}" class="btn btn-info">View</a>
         @can('staff-edit')
-            <a href="/staff/{{$row->user_id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="/staffs/{{$row->id}}/edit" class="btn btn-primary">Edit</a>
         @endcan
 
         @can('staff-delete')
-            <form method="POST" action='staff/{{$row->user_id}}'  style='display: inline'>
+            <form method="POST" action='staffs/{{$row->id}}'  style='display: inline'>
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">

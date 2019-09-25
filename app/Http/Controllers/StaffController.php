@@ -6,15 +6,17 @@ namespace App\Http\Controllers;
 use App\Country;
 use App\Http\Requests\StaffRequest;
 use App\Job;
-use App\StaffMember;
+use App\Staff;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
-class StaffMemberController extends Controller
+class StaffController extends Controller
 {
     function __construct()
     {
@@ -33,7 +35,7 @@ class StaffMemberController extends Controller
      */
     public function index(Request $request)
     {
-        $data = StaffMember::latest()->with('user', 'country', 'roles', 'job')->get();
+        $data = Staff::latest()->get();
 //        dd($data);
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -41,7 +43,13 @@ class StaffMemberController extends Controller
                 ->addColumn('action', function ($row){
                     return view('dashboard.staffs.ActionButtons', compact('row'));
                 })
-                ->rawColumns(['action', 'permissions'])
+                ->addColumn('image', function ($row){
+                    $exists = Storage::disk('local')->exists("public/images/$row->image");
+                    $url = $exists ? Storage::url("images/$row->image") : 'images/default-user.png';
+
+                    return "<img src=".$url." style='width: 50px'>";
+                })
+                ->rawColumns(['action', 'image'])
                 ->make(true);
         }
         return view('dashboard.staffs.index');
@@ -68,13 +76,22 @@ class StaffMemberController extends Controller
     public function store(StaffRequest $request)
     {
         $usersInputs = $request->only('first_name', 'last_name', 'phone');
-        $usersInputs['email'] = $request->first_name.'.'.$request->last_name.'@'.'email.com';
+        $usersInputs['email'] = $request['first_name'].'.'.$request['last_name'].'@'.'email.com';
         $usersInputs['password'] = Hash::make('secret');
         $user = User::create($usersInputs);
 
-        $staffInputs = $request->only('job_id', 'country_id', 'city', 'image', 'gender');
+        $user->assignRole('staff');
+
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender');
         $staffInputs['user_id'] = $user->id;
-        StaffMember::create($staffInputs);
+        if ($image = $request['image']){
+            $imageName = time().$image->getClientOriginalName();
+            Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
+            $staffInputs['image'] = $imageName;
+        }else{
+            $staffInputs['image'] = "default-user.png";
+        }
+        Staff::create($staffInputs);
 
         return redirect()->route('staffs.index')
             ->with('success', 'staff created successfully');
@@ -83,10 +100,11 @@ class StaffMemberController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param StaffMember $staff
+     * //     *
+     * @param Staff $staff
      * @return Response
      */
-    public function show(StaffMember $staff)
+    public function show(Staff $staff)
     {
         return view('dashboard.staffs.show', compact('staff'));
     }
@@ -94,12 +112,11 @@ class StaffMemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param StaffMember $staff
+     * @param Staff $staff
      * @return Response
      */
-    public function edit(StaffMember $staff)
+    public function edit(Staff $staff)
     {
-        dd($staff);
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
         return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
@@ -108,17 +125,23 @@ class StaffMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param staffRequest $request staff $staff
-     * @param StaffMember $staff
+     * @param StaffRequest $request staff $staff
+     * @param Staff $staff
      * @return Response
      */
-    public function update(staffRequest $request, StaffMember $staff)
+    public function update(StaffRequest $request, Staff $staff)
     {
-        $staff->name = $request->input('name');
-        $staff->description = $request->input('description');
-        $staff->save();
+        $user = User::findOrFail($staff['user_id']);
+        $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
+        $user->update($usersInputs);
 
-        $staff->syncPermissions($request->input('permissions'));
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender');
+        if ($image = $request['image']){
+            $imageName = time().$image->getClientOriginalName();
+            Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
+            $staffInputs['image'] = $imageName;
+        }
+        $staff->update($staffInputs);
 
         return redirect()->route('staffs.index')
             ->with('success', 'staff updated successfully');
@@ -127,13 +150,15 @@ class StaffMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param StaffMember $staff
+     * @param Staff $staff
      * @return  Response
      * @throws Exception
      */
-    public function destroy(StaffMember $staff)
+    public function destroy(Staff $staff)
     {
+        User::findOrFail($staff->user_id)->delete();
         $staff->delete();
+        Storage::delete("images/$staff->image");
         return redirect()->route('staffs.index')
             ->with('error', 'staff deleted successfully');
     }

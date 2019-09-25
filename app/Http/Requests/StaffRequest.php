@@ -25,7 +25,7 @@ class StaffRequest extends FormRequest
     {
         return [
             'gender' => 'string',
-            'city' => 'string',
+            'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

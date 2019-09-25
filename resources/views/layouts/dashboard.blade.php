@@ -88,12 +88,12 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ route('staff.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Staff</span>
+                    <a href="{{ route('staffs.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Staff</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="{{ route('staff.index') }}">All</a></li>
+                        <li class="active"><a href="{{ route('staffs.index') }}">All</a></li>
                         @can('job-create')
-                            <li><a href="{{ route('staff.create') }}">Add Staff</a></li>
+                            <li><a href="{{ route('staffs.create') }}">Add Staff</a></li>
                         @endcan
                     </ul>
                 </li>
@@ -244,17 +244,19 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @foreach(Request::segments() as $segment)
-                        <?php $segments .= '/'.$segment; ?>
-                        <li>
-                            @if(is_numeric($segment))
-                                <?php $name = DB::table(Request::segments()[0])->select('name')->whereId($segment)->first()->name?>
-                                <a href="{{ $segments }}" class="active">{{ucfirst($name)}}</a>
-                            @else
-                                <a href="{{ $segments }}" class="active">{{ucfirst($segment)}}</a>
-                            @endif
-                        </li>
-                    @endforeach
+                    @if (!Request::is('staffs' || !Request::is('staffs/*')))
+                        @foreach(Request::segments() as $segment)
+                            <?php $segments .= '/'.$segment;?>
+                            <li>
+                                @if(is_numeric($segment))
+                                    <?php $name = DB::table(Request::segments()[0])->select('name')->whereId($segment)->first()->name?>
+                                    <a href="{{ $segments }}" class="active">{{ucfirst($name)}}</a>
+                                @else
+                                    <a href="{{ $segments }}" class="active">{{ucfirst($segment)}}</a>
+                                @endif
+                            </li>
+                        @endforeach
+                    @endif
                 </ol>
             </div>
         </div>
@@ -358,16 +360,16 @@
             ],
             @endif
 
-            @if (Request::is('staff'))
+            @if (Request::is('staffs'))
             columns: [
-                {data: 'user.id', name: 'user_id'},
+                {data: 'user.id', name: 'id'},
                 {data: 'image', name: 'image'},
                 {data: 'user.first_name', name: 'name'},
                 {data: 'user.email', name: 'email'},
                 {data: 'user.phone', name: 'phone'},
                 {data: 'job.name', name: 'job'},
                 {data: 'user.roles[0].name', name: 'roles'},
-                {data: 'city', name: 'city'},
+                {data: 'city.name', name: 'city'},
                 {data: 'country.name', name: 'country'},
                 {data: 'gender', name: 'gender'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
