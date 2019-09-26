@@ -38,9 +38,9 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Staff::latest()->get();
 //        dd($data);
         if ($request->ajax()) {
+            $data = Staff::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row){
@@ -91,9 +91,7 @@ class StaffController extends Controller
         $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
         $staffInputs['user_id'] = $user->id;
         if ($image = $request['image']){
-            $imageName = time().$image->getClientOriginalName();
-            Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
-            $staffInputs['image'] = $imageName;
+            $this->uploadImage($image);
         }else{
             $staffInputs['image'] = "default-user.png";
         }
@@ -143,9 +141,7 @@ class StaffController extends Controller
 
         $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
         if ($image = $request['image']){
-            $imageName = time().$image->getClientOriginalName();
-            Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
-            $staffInputs['image'] = $imageName;
+            $this->uploadImage($image);
         }
         $staff->update($staffInputs);
 
@@ -167,5 +163,11 @@ class StaffController extends Controller
         Storage::delete("images/$staff->image");
         return redirect()->route('staffs.index')
             ->with('error', 'staff deleted successfully');
+    }
+
+    public function uploadImage($image){
+        $imageName = time().$image->getClientOriginalName();
+        Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
+        $staffInputs['image'] = $imageName;
     }
 }

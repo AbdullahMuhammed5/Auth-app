@@ -30,7 +30,16 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+//        $asd = [
+//            (object)['data' => 'id', 'name' => 'id'],
+//            (object)['data'=> 'name', 'name'=> 'name'],
+//            (object)['data'=> 'description', 'name'=> 'description'],
+//            (object)['data'=> 'permissions', 'name'=> 'permissions'],
+//            (object)['data'=> 'action', 'name'=> 'action', 'orderable'=> false, 'searchable'=> false],
+//        ];
+//        dd(json_encode($asd));
         $data = Role::latest()->with('permissions')->get();
+//        $data[3] = json_encode($asd);
 //        dd($data);
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -93,7 +102,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::pluck('name', 'id')->all();
-        $rolePermissions = $role->permissions->pluck('id','id')->all();
+        $rolePermissions = $role['permissions']->pluck('id','id')->all();
 
         return view('dashboard.roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }

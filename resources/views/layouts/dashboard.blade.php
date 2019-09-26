@@ -11,9 +11,8 @@
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-{{--    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">--}}
-{{--    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
@@ -55,15 +54,15 @@
                         IN+
                     </div>
                 </li>
-                <li class="active">
+                <li>
                     <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
                 </li>
                 @can('role-list')
                 <li>
                     <a href="{{ route('roles.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Roles</span>
                         <span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a href="{{ route('roles.index') }}">All</a></li>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('roles.index') }}">All</a></li>
                         @can('role-create')
                         <li><a href="{{ route('roles.create') }}">Add Role</a></li>
                         @endcan
@@ -74,8 +73,8 @@
                 <li>
                     <a href="{{ route('cities.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cities</span>
                         <span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a href="{{ route('cities.index') }}">All</a></li>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('cities.index') }}">All</a></li>
                         @can('city-create')
                             <li><a href="{{ route('cities.create') }}">Add City</a></li>
                         @endcan
@@ -86,8 +85,8 @@
                 <li>
                     <a href="{{ route('jobs.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Jobs</span>
                         <span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a href="{{ route('jobs.index') }}">All</a></li>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('jobs.index') }}">All</a></li>
                         @can('job-create')
                             <li><a href="{{ route('jobs.create') }}">Add Job</a></li>
                         @endcan
@@ -96,10 +95,10 @@
                 @endcan
                 @can('staff-list')
                 <li>
-                    <a href="{{ route('staffs.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Staff</span>
+                    <a href="{{ route('staffs.index') }}"><i class="fa fa-users"></i><span class="nav-label">Staff</span>
                         <span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a href="{{ route('staffs.index') }}">All</a></li>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('staffs.index') }}">All</a></li>
                         @can('job-create')
                             <li><a href="{{ route('staffs.create') }}">Add Staff</a></li>
                         @endcan
@@ -253,7 +252,7 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @if (!Request::is('staffs' || !Request::is('staffs/*')))
+                    @if (!Request::is('staffs/*'))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>
@@ -332,6 +331,8 @@
 <script src="{{asset('js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
 <script src="{{asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
 
+<!-- iCheck -->
+<script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
 
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
@@ -413,7 +414,14 @@
                 });
             }
         });
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
     });
+
 </script>
 </body>
 </html>

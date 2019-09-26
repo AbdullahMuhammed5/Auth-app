@@ -3,9 +3,9 @@
 @section('content')
     <h2>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->last_name)}}
         @if($staff->isActive)
-            <span class="glyphicon glyphicon-ok-sign glyphicon" style="color: green"></span> <span>Active</span>
+            <span class="fa fa-circle" style="color: green"></span> <span>Active</span>
         @else
-            <span class="glyphicon glyphicon-remove-sign glyphicon" style="color: darkred"></span> <span>Inactive</span>
+            <span class="fa fa-circle" style="color: red"></span> <span>Inactive</span>
         @endif
     </h2>
     <br>
