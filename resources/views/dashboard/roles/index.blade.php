@@ -9,7 +9,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Permissions</th>
-            @canany(['role-edit', 'role-delete'])
+            @canany(['role-edit', 'role-delete', 'role-list'])
             <th>Options</th>
             @endcanany
         </tr>

@@ -8,7 +8,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            @canany(['job-edit', 'job-delete'])
+            @canany(['job-edit', 'job-delete', 'job-list'])
             <th>Options</th>
             @endcanany
         </tr>

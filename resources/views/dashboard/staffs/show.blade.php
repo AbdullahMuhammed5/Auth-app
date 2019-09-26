@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h2>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->first_name)}}
+    <h2>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->last_name)}}
         @if($staff->isActive)
             <span class="glyphicon glyphicon-ok-sign glyphicon" style="color: green"></span> <span>Active</span>
         @else
@@ -31,7 +31,7 @@
             <tr class="gradeX">
                 <td>{{ $staff->id }}</td>
                 <td><img src="{{ Storage::url("images/$staff->image") }}" style='width: 50px'></td>
-                <td>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->first_name)}}</td>
+                <td>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->last_name)}}</td>
                 <td>{{ $staff->user->email }}</td>
                 <td>{{ $staff->user->phone }}</td>
                 <td>{{ $staff->job->name }}</td>

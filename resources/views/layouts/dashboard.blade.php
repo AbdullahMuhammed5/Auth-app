@@ -10,9 +10,9 @@
 
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-{{--    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+{{--    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">--}}
+{{--    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
@@ -33,7 +33,8 @@
                                     <strong class="font-bold">
                                         {{ ucfirst(auth()->user()->first_name) . ' ' . ucfirst(auth()->user()->last_name)}}
                                     </strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                             </span>
+                                <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="{{ asset('profile.html') }}">Profile</a></li>
                             <li><a href="{{ asset('contacts.html') }}">Contacts</a></li>
@@ -57,6 +58,7 @@
                 <li class="active">
                     <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
                 </li>
+                @can('role-list')
                 <li>
                     <a href="{{ route('roles.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Roles</span>
                         <span class="fa arrow"></span></a>
@@ -67,6 +69,8 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
+                @can('city-list')
                 <li>
                     <a href="{{ route('cities.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cities</span>
                         <span class="fa arrow"></span></a>
@@ -77,6 +81,8 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
+                @can('job-list')
                 <li>
                     <a href="{{ route('jobs.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Jobs</span>
                         <span class="fa arrow"></span></a>
@@ -87,6 +93,8 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
+                @can('staff-list')
                 <li>
                     <a href="{{ route('staffs.index') }}"><i class="fa fa-th-large"></i><span class="nav-label">Staff</span>
                         <span class="fa arrow"></span></a>
@@ -97,6 +105,7 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
             </ul>
 
         </div>
@@ -331,13 +340,17 @@
         let table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
+            @if(Request::segments()[0] != "dashboard")
             ajax: "{{ route(Request::segments()[0].'.index') }}",
+            @endif
             @if (Request::is('cities'))
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
                 {data: 'country.name', name: 'country'},
+                @canany(['city-edit', 'city-delete'])
                 {data: 'action', name: 'action', orderable: false, searchable: false},
+                @endcan
             ],
             @endif
 
@@ -374,8 +387,11 @@
                 {data: 'gender', name: 'gender'},
                 {data: 'isActive', name: 'isActive'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
-            ]
+            ],
             @endif
+            language: {
+                "infoEmpty": "No records available - Got it?",
+            }
         });
 
         $('#country').change(function(){

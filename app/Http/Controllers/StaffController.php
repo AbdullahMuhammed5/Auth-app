@@ -3,12 +3,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Country;
 use App\Http\Requests\StaffRequest;
 use App\Job;
 use App\Staff;
 use App\User;
+use App\Country;
 use Exception;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -18,6 +19,8 @@ use Yajra\DataTables\DataTables;
 
 class StaffController extends Controller
 {
+    use SendsPasswordResetEmails;
+
     function __construct()
     {
         $this->middleware('permission:staff-list|staff-create|staff-edit|staff-delete', ['only' => ['index','store']]);
@@ -95,7 +98,7 @@ class StaffController extends Controller
             $staffInputs['image'] = "default-user.png";
         }
         Staff::create($staffInputs);
-
+        $this->broker()->sendResetLink(['email' => $user->email]);
         return redirect()->route('staffs.index')
             ->with('success', 'staff created successfully');
     }

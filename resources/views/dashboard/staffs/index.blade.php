@@ -16,7 +16,7 @@
             <th>Country</th>
             <th>Gender</th>
             <th>Status</th>
-            @canany(['staff-edit', 'staff-delete'])
+            @canany(['staff-edit', 'staff-delete', 'staff-list'])
             <th>Options</th>
             @endcanany
         </tr>
