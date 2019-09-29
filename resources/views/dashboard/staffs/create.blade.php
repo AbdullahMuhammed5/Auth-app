@@ -46,11 +46,11 @@
                 <label>Gender:</label>
                 {!! Form::select('gender', [''=>'Select Gender', 'Male'=>'Male', 'Female'=>'Female'], false, array('class' => 'form-control')) !!}
             </div>
-        </div>redone feat enrique iglesias r. city serayah & s lyrics
+        </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <label>{!! Form::radio('isActive' , 0, true) !!} Inactive</label>
-                <label>{!! Form::radio('isActive', 1, false) !!} Active</label>
+                <label>{!! Form::radio('is_active' , 0, true) !!} Inactive</label>
+                <label>{!! Form::radio('is_active', 1, false) !!} Active</label>
             </div>
         </div>
         <div class="col-sm-6">

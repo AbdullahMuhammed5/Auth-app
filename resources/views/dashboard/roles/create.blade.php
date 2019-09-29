@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-sm-12 col-md-12 text-center">
+        <div class="col-sm-12 col-md-12 text-center">
             {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>

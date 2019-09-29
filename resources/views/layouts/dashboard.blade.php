@@ -54,8 +54,8 @@
                         IN+
                     </div>
                 </li>
-                <li>
-                    <a href="{{ url('/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
+                <li class="active">
+                    <a href="{{ url('/dashboard') }}"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a>
                 </li>
                 @can('role-list')
                 <li>
@@ -71,7 +71,7 @@
                 @endcan
                 @can('city-list')
                 <li>
-                    <a href="{{ route('cities.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cities</span>
+                    <a href="{{ route('cities.index') }}"><i class="fa fa-building"></i> <span class="nav-label">Cities</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ route('cities.index') }}">All</a></li>
@@ -83,7 +83,7 @@
                 @endcan
                 @can('job-list')
                 <li>
-                    <a href="{{ route('jobs.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Jobs</span>
+                    <a href="{{ route('jobs.index') }}"><i class="fa fa-briefcase"></i> <span class="nav-label">Jobs</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ route('jobs.index') }}">All</a></li>
@@ -106,7 +106,6 @@
                 </li>
                 @endcan
             </ul>
-
         </div>
     </nav>
 
@@ -386,7 +385,7 @@
                 {data: 'city.name', name: 'city'},
                 {data: 'country.name', name: 'country'},
                 {data: 'gender', name: 'gender'},
-                {data: 'isActive', name: 'isActive'},
+                {data: 'is_active', name: 'is_active'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             @endif

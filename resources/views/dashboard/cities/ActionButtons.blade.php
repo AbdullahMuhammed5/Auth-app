@@ -1,11 +1,11 @@
 @canany(['city-edit', 'city-delete'])
     <td>
         @can('city-edit')
-            <a href="/cities/{{$row->id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="{{ route('cities.edit', $id) }}" class="btn btn-primary">Edit</a>
         @endcan
 
         @can('city-delete')
-            <form method="POST" action='cities/{{$row->id}}'  style='display: inline'>
+            <form method="POST" action='{{ route('cities.destroy', $id) }}'  style='display: inline'>
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">

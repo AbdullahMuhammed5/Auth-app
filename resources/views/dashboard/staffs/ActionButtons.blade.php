@@ -1,12 +1,12 @@
 @canany(['staff-edit', 'staff-delete', 'staff-list'])
     <td>
-        <a href="/staffs/{{$row->id}}" class="btn btn-info">View</a>
+        <a href="{{ route('staffs.show', $id) }}" class="btn btn-info">View</a>
         @can('staff-edit')
-            <a href="/staffs/{{$row->id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="{{ route('staffs.edit', $id) }}" class="btn btn-primary">Edit</a>
         @endcan
 
         @can('staff-delete')
-            <form method="POST" action='staffs/{{$row->id}}'  style='display: inline'>
+            <form method="POST" action='{{ route('staffs.destroy', $id) }}'  style='display: inline'>
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">

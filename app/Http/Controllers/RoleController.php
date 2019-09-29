@@ -43,9 +43,7 @@ class RoleController extends Controller
                 ->addColumn('permissions', function ($row){
                     return view('dashboard.roles.permissions', compact('row'));
                 })
-                ->addColumn('action', function ($row){
-                    return view('dashboard.roles.ActionButtons', compact('row'));
-                })
+                ->addColumn('action', 'dashboard.roles.ActionButtons')
                 ->rawColumns(['action', 'permissions'])
                 ->make(true);
         }

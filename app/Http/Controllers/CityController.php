@@ -35,9 +35,7 @@ class CityController extends Controller
             $data = City::latest()->with('country');
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row){
-                    return view('dashboard.cities.ActionButtons', compact('row'));
-                })
+                ->addColumn('action', 'dashboard.cities.ActionButtons')
                 ->rawColumns(['action'])
                 ->make(true);
         }

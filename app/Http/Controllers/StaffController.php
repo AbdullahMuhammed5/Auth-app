@@ -37,11 +37,9 @@ class StaffController extends Controller
             $data = Staff::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row){
-                    return view('dashboard.staffs.ActionButtons', compact('row'));
-                })
-                ->addColumn('isActive', function ($row){
-                    return $row->is_active == 0 ? 'InActive' : 'Active';
+                ->addColumn('action', 'dashboard.staffs.ActionButtons')
+                ->addColumn('is_active', function ($row){
+                    return $row->is_active == 0 ? 'Inactive' : 'Active';
                 })
                 ->addColumn('image', function ($row){
                     $exists = Storage::disk('local')->exists("public/images/$row->image");
@@ -104,7 +102,6 @@ class StaffController extends Controller
     /**
      * Display the specified resource.
      *
-     * //     *
      * @param Staff $staff
      * @return Response
      * @throws AuthorizationException

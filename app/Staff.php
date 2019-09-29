@@ -17,7 +17,7 @@ class Staff extends Model{
      */
 
     protected $fillable = [
-        'user_id', 'image', 'job_id', 'country_id', 'city_id', 'gender', 'isActive'
+        'user_id', 'image', 'job_id', 'country_id', 'city_id', 'gender', 'is_active'
     ];
 
     public function user(){

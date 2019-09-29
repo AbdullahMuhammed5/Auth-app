@@ -30,9 +30,7 @@ class JobController extends Controller
             $data = Job::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row){
-                    return view('dashboard.jobs.ActionButtons', compact('row'));
-                })
+                ->addColumn('action', 'dashboard.jobs.ActionButtons')
                 ->rawColumns(['action'])
                 ->make(true);
         }

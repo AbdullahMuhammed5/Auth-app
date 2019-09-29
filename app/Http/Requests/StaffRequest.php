@@ -24,7 +24,10 @@ class StaffRequest extends FormRequest
     public function rules()
     {
         return [
-            'gender' => 'string',
+            'first_name' =>'required|string',
+            'last_name' => 'required|string',
+            'phone' =>'required|numeric',
+            'gender' => 'required|string',
             'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
