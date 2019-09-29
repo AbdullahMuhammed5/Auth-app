@@ -9,6 +9,7 @@ use App\Staff;
 use App\User;
 use App\Country;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,14 +22,6 @@ class StaffController extends Controller
 {
     use SendsPasswordResetEmails;
 
-    function __construct()
-    {
-        $this->middleware('permission:staff-list|staff-create|staff-edit|staff-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:staff-create', ['only' => ['create','store']]);
-        $this->middleware('permission:staff-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:staff-delete', ['only' => ['destroy']]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +31,8 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-//        dd($data);
+        $this->authorize('viewAny', Staff::class);
+
         if ($request->ajax()) {
             $data = Staff::latest()->get();
             return Datatables::of($data)
@@ -47,7 +41,7 @@ class StaffController extends Controller
                     return view('dashboard.staffs.ActionButtons', compact('row'));
                 })
                 ->addColumn('isActive', function ($row){
-                    return $row->isActive == 0 ? 'InActive' : 'Active';
+                    return $row->is_active == 0 ? 'InActive' : 'Active';
                 })
                 ->addColumn('image', function ($row){
                     $exists = Storage::disk('local')->exists("public/images/$row->image");
@@ -65,9 +59,11 @@ class StaffController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function create()
     {
+        $this->authorize('create', Staff::class);
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
         return view('dashboard.staffs.create', compact('countries', 'jobs'));
@@ -78,9 +74,13 @@ class StaffController extends Controller
      *
      * @param StaffRequest $request
      * @return Response
+     * @throws AuthorizationException
+     * @throws Exception
      */
     public function store(StaffRequest $request)
     {
+        $this->authorize('create', Staff::class);
+
         $usersInputs = $request->only('first_name', 'last_name', 'phone');
         $usersInputs['email'] = $request['first_name'].'.'.$request['last_name'].'@'.'email.com';
         $usersInputs['password'] = Hash::make('secret');
@@ -88,10 +88,10 @@ class StaffController extends Controller
 
         $user->assignRole('staff');
 
-        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'is_active');
         $staffInputs['user_id'] = $user->id;
         if ($image = $request['image']){
-            $this->uploadImage($image);
+            $staffInputs['image'] = $this->uploadImage($image);
         }else{
             $staffInputs['image'] = "default-user.png";
         }
@@ -107,9 +107,11 @@ class StaffController extends Controller
      * //     *
      * @param Staff $staff
      * @return Response
+     * @throws AuthorizationException
      */
     public function show(Staff $staff)
     {
+        $this->authorize('view', $staff);
         return view('dashboard.staffs.show', compact('staff'));
     }
 
@@ -118,9 +120,11 @@ class StaffController extends Controller
      *
      * @param Staff $staff
      * @return Response
+     * @throws AuthorizationException
      */
     public function edit(Staff $staff)
     {
+        $this->authorize('viewAny', $staff);
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
         return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
@@ -132,16 +136,19 @@ class StaffController extends Controller
      * @param StaffRequest $request staff $staff
      * @param Staff $staff
      * @return Response
+     * @throws AuthorizationException
+     * @throws Exception
      */
     public function update(StaffRequest $request, Staff $staff)
     {
+        $this->authorize('viewAny', $staff);
         $user = User::findOrFail($staff['user_id']);
         $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
         $user->update($usersInputs);
 
-        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'isActive');
+        $staffInputs = $request->only('job_id', 'country_id', 'city_id', 'gender', 'is_active');
         if ($image = $request['image']){
-            $this->uploadImage($image);
+            $staffInputs['image'] = $this->uploadImage($image);
         }
         $staff->update($staffInputs);
 
@@ -158,6 +165,7 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
+        $this->authorize('viewAny', $staff);
         User::findOrFail($staff->user_id)->delete();
         $staff->delete();
         Storage::delete("images/$staff->image");
@@ -165,9 +173,16 @@ class StaffController extends Controller
             ->with('error', 'staff deleted successfully');
     }
 
+    /**
+     * Custom Function to upload image
+     *
+     * @param File $image
+     * @return  string
+     * @throws Exception
+     */
     public function uploadImage($image){
         $imageName = time().$image->getClientOriginalName();
         Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
-        $staffInputs['image'] = $imageName;
+        return $imageName;
     }
 }
