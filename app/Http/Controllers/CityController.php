@@ -13,13 +13,17 @@ use App\City;
 use App\Country;
 use App\Http\Requests\CityRequest;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(City::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,8 +33,6 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', City::class);
-
         if ($request->ajax()) {
             $data = City::latest()->with('country');
             return Datatables::of($data)
@@ -53,12 +55,9 @@ class CityController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
-     * @throws AuthorizationException
      */
     public function create()
     {
-        $this->authorize('create', City::class);
-
         $countries = Country::pluck("name", "id");
         return view('dashboard.cities.create', compact('countries'));
     }
@@ -68,11 +67,9 @@ class CityController extends Controller
      *
      * @param CityRequest $request
      * @return Response
-     * @throws AuthorizationException
      */
     public function store(CityRequest $request)
     {
-        $this->authorize('create', City::class);
         City::create($request->all());
         return redirect()->route('cities.index')
             ->with('success', 'City created successfully');
@@ -93,11 +90,9 @@ class CityController extends Controller
      *
      * @param City $city
      * @return Response
-     * @throws AuthorizationException
      */
     public function edit(City $city)
     {
-        $this->authorize('update', $city);
         $countries = Country::pluck("name", "id");
         return view('dashboard.cities.edit', compact('city', 'countries'));
     }
@@ -108,13 +103,10 @@ class CityController extends Controller
      * @param CityRequest $request
      * @param City $city
      * @return Response
-     * @throws AuthorizationException
      */
     public function update(CityRequest $request, City $city)
     {
-        $this->authorize('update', $city);
         $city->update($request->all());
-
         return redirect()->route('cities.index')
             ->with('success', 'City Updated successfully');
     }
@@ -128,7 +120,6 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        $this->authorize('delete', $city);
         $city->delete();
         return redirect()->route('cities.index')
             ->with('error', 'City Deleted successfully');

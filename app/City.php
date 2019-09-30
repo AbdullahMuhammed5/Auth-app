@@ -18,11 +18,11 @@ class City extends Model
     ];
 
     public function country(){
-        return $this->belongsTo('App\Country');
+        return $this->belongsTo(Country::Class);
     }
 
     public function countryName()
     {
-        return $this->belongsTo('App\Country')->select( 'name');
+        return $this->belongsTo(Country::Class)->select( 'name');
     }
 }

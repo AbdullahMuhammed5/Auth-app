@@ -44,7 +44,7 @@
         <div class="col-sm-6">
             <div class="form-group" id="city-wrapper">
                 <label>City:</label>
-                {{ Form::select('city_id', [$staff->city_id => $staff->city->name], $staff->city_id, array('class' => 'form-control', 'id' => 'city')) }}
+                {{ Form::select('city_id', [$staff->city_id => $staff->city->name], null, array('class' => 'form-control', 'id' => 'city')) }}
             </div>
         </div>
         <div class="col-sm-6">
@@ -71,3 +71,29 @@
     </div>
     {!! Form::close() !!}
 @endsection
+
+@push('get-cities')
+
+    <script>
+        $('#country').change(function(){
+            let cid = $(this).val();
+            if(cid){
+                $.ajax({
+                    type:"get",
+                    url:" {{url('/getCities')}}/"+cid,
+                    success:function(res){
+                        if(res){
+                            $('#city-wrapper').css('display', 'block')
+                            $("#city").empty();
+                            $("#city").append('<option value="">Select City</option>');
+                            $.each(res, function(key, value){
+                                $("#city").append('<option value="'+key+'">'+value+'</option>');
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+@endpush

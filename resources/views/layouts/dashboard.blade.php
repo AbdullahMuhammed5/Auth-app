@@ -394,26 +394,6 @@
             }
         });
 
-        $('#country').change(function(){
-            let cid = $(this).val();
-            if(cid){
-                $.ajax({
-                    type:"get",
-                    url:" {{url('/getCities')}}/"+cid,
-                    success:function(res){
-                        if(res){
-                            $('#city-wrapper').css('display', 'block')
-                            $("#city").empty();
-                            $("#city").append('<option>Select City</option>');
-                            $.each(res, function(key, value){
-                                $("#city").append('<option value="'+key+'">'+value+'</option>');
-                            });
-                        }
-                    }
-                });
-            }
-        });
-
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
@@ -422,5 +402,6 @@
     });
 
 </script>
+@stack('get-cities')
 </body>
 </html>

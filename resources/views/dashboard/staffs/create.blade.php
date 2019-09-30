@@ -19,6 +19,12 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
+                <label>Email:</label>
+                {!! Form::email('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
                 <label>Phone:</label>
                 {!! Form::text('phone', null, array('placeholder' => 'Phone','class' => 'form-control')) !!}
             </div>
@@ -49,7 +55,7 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <label>{!! Form::radio('is_active' , 0, true) !!} Inactive</label>
+                <label>{!! Form::radio('is_active' , 0, true, ['class'=>'ichecks']) !!} Inactive</label>
                 <label>{!! Form::radio('is_active', 1, false) !!} Active</label>
             </div>
         </div>
@@ -65,5 +71,32 @@
     </div>
     {!! Form::close() !!}
 @endsection
+
+@push('get-cities')
+
+    <script>
+        $('#country').change(function(){
+            let cid = $(this).val();
+            if(cid){
+                $.ajax({
+                    type:"get",
+                    url:" {{url('/getCities')}}/"+cid,
+                    success:function(res){
+                        if(res){
+                            $('#city-wrapper').css('display', 'block')
+                            $("#city").empty();
+                            $("#city").append('<option value="">Select City</option>');
+                            $.each(res, function(key, value){
+                                $("#city").append('<option value="'+key+'">'+value+'</option>');
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+@endpush
+
 
 
