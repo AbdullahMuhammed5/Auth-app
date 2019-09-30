@@ -40,9 +40,7 @@ class RoleController extends Controller
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('permissions', function ($row){
-                    return view('dashboard.roles.permissions', compact('row'));
-                })
+                ->addColumn('permissions', 'dashboard.roles.permissions')
                 ->addColumn('action', 'dashboard.roles.ActionButtons')
                 ->rawColumns(['action', 'permissions'])
                 ->make(true);
