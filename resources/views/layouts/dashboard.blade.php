@@ -105,6 +105,18 @@
                     </ul>
                 </li>
                 @endcan
+                @can('visitor-list')
+                    <li>
+                        <a href="{{ route('visitors.index') }}"><i class="fa fa-users"></i><span class="nav-label">Visitors</span>
+                            <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="{{ route('visitors.index') }}">All</a></li>
+                            @can('visitor-create')
+                                <li><a href="{{ route('visitors.create') }}">Add Visitor</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
             </ul>
         </div>
     </nav>
@@ -251,7 +263,7 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @if (!Request::is('staffs/*'))
+                    @if (!Request::is('staffs/*') && !Request::is('visitors/*'))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>

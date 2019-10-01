@@ -102,7 +102,6 @@ class StaffController extends Controller
     public function edit(Staff $staff)
     {
         $countries = Country::pluck('name', 'id');
-        $jobs = Job::pluck('name', 'id');
         return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
     }
 

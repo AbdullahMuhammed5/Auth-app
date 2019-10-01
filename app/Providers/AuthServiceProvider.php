@@ -8,7 +8,9 @@ use App\Policies\CityPolicy;
 use App\Policies\JobPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\StaffPolicy;
+use App\Policies\VisitorPolicy;
 use App\Staff;
+use App\Visitor;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Spatie\Permission\Models\Role;
@@ -25,7 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         Role::class => RolePolicy::class,
         City::class => CityPolicy::class,
         Job::class => JobPolicy::class,
-        Staff::class => StaffPolicy::class
+        Staff::class => StaffPolicy::class,
+        Visitor::class => VisitorPolicy::class
     ];
 
     /**
@@ -39,6 +42,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Admin') ? true : null;
-        });;
+        });
     }
 }

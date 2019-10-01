@@ -41,5 +41,6 @@ Route::prefix('jobs')->group(function(){
 });
 
 Route::resource('staffs', 'StaffController');
+Route::resource('visitors', 'VisitorController');
 
 Route::get('/getCities/{id}','CityController@getCities');

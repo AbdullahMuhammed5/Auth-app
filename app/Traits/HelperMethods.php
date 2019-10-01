@@ -46,6 +46,18 @@ trait HelperMethods{
             ['data' => 'gender', 'name' => 'gender'],
             ['data' => 'is_active', 'name' => 'is_active'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
+        ],
+        'visitors' => [
+            ['data' => 'user.id', 'name' => 'id'],
+            ['data' => 'image', 'name' => 'image'],
+            ['data' => 'user.first_name', 'name' => 'name'],
+            ['data' => 'user.email', 'name' => 'email'],
+            ['data' => 'user.phone', 'name' => 'phone'],
+            ['data' => 'city.name', 'name' => 'city'],
+            ['data' => 'country.name', 'name' => 'country'],
+            ['data' => 'gender', 'name' => 'gender'],
+            ['data' => 'is_active', 'name' => 'is_active'],
+            ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
         ]
     ];
 
