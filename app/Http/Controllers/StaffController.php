@@ -6,20 +6,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StaffRequest;
 use App\Job;
 use App\Staff;
-use App\User;
 use App\Country;
+use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class StaffController extends Controller
 {
-    use SendsPasswordResetEmails;
+    use SendsPasswordResetEmails, HelperMethods;
 
     public function __construct()
     {
@@ -35,8 +33,9 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
+        $columns = $this->getColumns('staff');
         if ($request->ajax()) {
-            $data = Staff::latest()->with(['user', 'city', 'country', 'job', 'user.roles'])->get();
+            $data = Staff::latest()->with(['user', 'city', 'country', 'job', 'user.roles']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.staffs.ActionButtons')
@@ -44,7 +43,7 @@ class StaffController extends Controller
                 ->rawColumns(['action', 'image'])
                 ->make(true);
         }
-        return view('dashboard.staffs.index');
+        return view('dashboard.staffs.index', compact('columns'));
     }
 
     /**
@@ -142,18 +141,5 @@ class StaffController extends Controller
         $staff->delete();
         return redirect()->route('staffs.index')
             ->with('error', 'staff deleted successfully');
-    }
-
-    /**
-     * Custom Function to upload image
-     *
-     * @param File $image
-     * @return  string
-     * @throws Exception
-     */
-    public function uploadImage($image){
-        $imageName = time().$image->getClientOriginalName();
-        Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
-        return $imageName;
     }
 }

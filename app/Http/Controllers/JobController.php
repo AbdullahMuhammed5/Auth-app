@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRequest;
 use App\Job;
+use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,7 @@ use Yajra\DataTables\DataTables;
 
 class JobController extends Controller
 {
+    use HelperMethods;
 
     public function __construct()
     {
@@ -28,15 +30,16 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
+        $columns = $this->getColumns('jobs');
         if ($request->ajax()) {
-            $data = Job::latest()->get();
+            $data = Job::latest();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.jobs.ActionButtons')
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('dashboard.jobs.index');
+        return view('dashboard.jobs.index', compact('columns'));
     }
 
     /**
@@ -58,7 +61,6 @@ class JobController extends Controller
     public function store(jobRequest $request)
     {
         job::create($request->all());
-
         return redirect()->route('jobs.index')
             ->with('success', 'job created successfully');
     }

@@ -32,8 +32,8 @@ Route::resource('cities', 'CityController');
 
 Route::prefix('jobs')->group(function(){
     Route::get('', 'JobController@index')->name('jobs.index');
-    Route::get('{job}', 'JobController@show')->name('jobs.show');
     Route::get('create', 'JobController@create')->name('jobs.create');
+    Route::get('{job}', 'JobController@show')->name('jobs.show');
     Route::post('', 'JobController@store')->name('jobs.store');
     Route::get('{job}/edit', 'JobController@edit')->middleware('WriterAndReporter')->name('jobs.edit');
     Route::patch('{job}', 'JobController@update')->name('jobs.update');

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,8 @@ use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
+    use HelperMethods;
+
     public function __construct()
     {
         $this->authorizeResource(Role::class);
@@ -27,18 +30,9 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-//        $asd = [
-//            (object)['data' => 'id', 'name' => 'id'],
-//            (object)['data'=> 'name', 'name'=> 'name'],
-//            (object)['data'=> 'description', 'name'=> 'description'],
-//            (object)['data'=> 'permissions', 'name'=> 'permissions'],
-//            (object)['data'=> 'action', 'name'=> 'action', 'orderable'=> false, 'searchable'=> false],
-//        ];
-//        dd(json_encode($asd));
-        $data = Role::latest()->with('permissions')->get();
-//        $data[3] = json_encode($asd);
-//        dd($data);
+        $columns = $this->getColumns('roles');
         if ($request->ajax()) {
+            $data = Role::latest()->with('permissions');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('permissions', 'dashboard.roles.permissions')
@@ -46,7 +40,7 @@ class RoleController extends Controller
                 ->rawColumns(['action', 'permissions'])
                 ->make(true);
         }
-        return view('dashboard.roles.index');
+        return view('dashboard.roles.index', compact('columns'));
     }
 
     /**

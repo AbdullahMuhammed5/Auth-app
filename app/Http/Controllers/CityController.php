@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Country;
 use App\Http\Requests\CityRequest;
+use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,6 +20,8 @@ use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
 {
+    use HelperMethods;
+
     public function __construct()
     {
         $this->authorizeResource(City::class);
@@ -33,6 +36,7 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
+        $columns = $this->getColumns('cities');
         if ($request->ajax()) {
             $data = City::latest()->with('country');
             return Datatables::of($data)
@@ -41,7 +45,7 @@ class CityController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('dashboard.cities.index');
+        return view('dashboard.cities.index', compact('columns'));
     }
 
     public function getCities($id)

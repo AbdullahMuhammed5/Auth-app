@@ -72,7 +72,7 @@
     {!! Form::close() !!}
 @endsection
 
-@push('get-cities')
+@push('ajax-get-cities')
 
     <script>
         $('#country').change(function(){

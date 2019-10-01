@@ -335,64 +335,21 @@
 
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
+
     $(function () {
-
-        let table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            @if(Request::segments()[0] != "dashboard")
-            ajax: "{{ route(Request::segments()[0].'.index') }}",
-            @endif
-            @if (Request::is('cities'))
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'country.name', name: 'country'},
-                @canany(['city-edit', 'city-delete'])
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-                @endcan
-            ],
-            @endif
-
-            @if (Request::is('roles'))
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'description', name: 'description'},
-                {data: 'permissions', name: 'permissions'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ],
-            @endif
-
-            @if (Request::is('jobs'))
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'description', name: 'description'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ],
-            @endif
-
-            @if (Request::is('staffs'))
-            columns: [
-                {data: 'user.id', name: 'id'},
-                {data: 'image', name: 'image'},
-                {data: 'user.first_name', name: 'name'},
-                {data: 'user.email', name: 'email'},
-                {data: 'user.phone', name: 'phone'},
-                {data: 'job.name', name: 'job'},
-                {data: 'user.roles[0].name', name: 'roles'},
-                {data: 'city.name', name: 'city'},
-                {data: 'country.name', name: 'country'},
-                {data: 'gender', name: 'gender'},
-                {data: 'is_active', name: 'is_active'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ],
-            @endif
-            language: {
-                "infoEmpty": "No records available - Got it?",
-            }
-        });
+        if($('.data-table').length) {
+            let table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                @if(Request::segments()[0] != "dashboard")
+                ajax: "{{ route(Request::segments()[0].'.index') }}",
+                @endif
+                columns: JSON.parse(@json($columns ?? "default")),
+                language: {
+                    "infoEmpty": "No records available - Got it?",
+                }
+            });
+        }
 
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
@@ -400,8 +357,7 @@
         });
 
     });
-
 </script>
-@stack('get-cities')
+@stack('ajax-get-cities')
 </body>
 </html>
