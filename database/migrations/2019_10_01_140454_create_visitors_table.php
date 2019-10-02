@@ -22,8 +22,6 @@ class CreateVisitorsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->string('image', 250)->nullable();
-
             $table->unsignedInteger('country_id')->nullable();
             $table->foreign('country_id')
                 ->references('id')

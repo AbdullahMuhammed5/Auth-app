@@ -49,8 +49,8 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <label>{!! Form::radio('is_active' , 0, null) !!} Inactive</label>
-                <label>{!! Form::radio('is_active', 1, null) !!} Active</label>
+                <label>{!! Form::radio('is_active' , 0, null, ['class'=>'i-checks']) !!} Inactive</label>
+                <label>{!! Form::radio('is_active', 1, null, ['class'=>'i-checks']) !!} Active</label>
             </div>
         </div>
         <div class="col-sm-6">

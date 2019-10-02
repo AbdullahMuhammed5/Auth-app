@@ -35,10 +35,13 @@ class VisitorController extends Controller
     {
         $columns = $this->getColumns('visitors');
         if ($request->ajax()) {
-            $data = Visitor::latest()->with(['user', 'city', 'country', 'user.roles']);
+            $data = Visitor::latest()->with(['user', 'city', 'country', 'user.roles', 'image']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.visitors.ActionButtons')
+                ->addColumn('is_active', function($row){
+                    return view('dashboard.visitors.toggleButton', compact('row'));
+                })
                 ->addColumn('image', 'dashboard.visitors.image')
                 ->rawColumns(['action', 'image'])
                 ->make(true);
@@ -66,14 +69,15 @@ class VisitorController extends Controller
      */
     public function store(VisitorRequest $request)
     {
-//        dd($request->all());
-        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email');
-        $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $visitorInputs['image'] = $request['image'] ?  $this->uploadImage($request['image']) : "default-user.png";
-        $usersInputs['password'] = Hash::make('secret');
+        $userInputs = $request->only('first_name', 'last_name', 'phone', 'email');
+        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
+        $imgPath = $request['image'] ?  $this->uploadImage($request['image']) : "default-user.png";
+        $userInputs['password'] = Hash::make('secret');
 
         $visitor = Visitor::create($visitorInputs);
-        $user = $visitor->user()->create($usersInputs);
+        $visitor->image()->create(['path' => $imgPath]);
+
+        $user = $visitor->user()->create($userInputs);
         $visitor->update(['user_id' => $user->id]);
         $user->assignRole('visitor');
 
@@ -116,14 +120,15 @@ class VisitorController extends Controller
      */
     public function update(VisitorRequest $request, Visitor $visitor)
     {
-        $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email');
+        $userInputs = $request->only('first_name', 'last_name', 'phone', 'email');
+        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
 
         if ($image = $request['image']){
-            $visitorInputs['image'] = $this->uploadImage($image);
+            $imgPath = $this->uploadImage($image);
+            $visitor->image()->update(['path' => $imgPath]);
         }
         $visitor->update($visitorInputs);
-        $visitor->user()->update($usersInputs);
+        $visitor->user()->update($userInputs);
 
         return redirect()->route('visitors.index')
             ->with('success', 'visitor updated successfully');
@@ -141,5 +146,11 @@ class VisitorController extends Controller
         $visitor->delete();
         return redirect()->route('visitors.index')
             ->with('error', 'visitor deleted successfully');
+    }
+
+    public function toggleActivity(Visitor $visitor){
+        $status = $visitor->is_active ? 0 : 1;
+        $visitor->update(['is_active' => $status]);
+        return "success";
     }
 }

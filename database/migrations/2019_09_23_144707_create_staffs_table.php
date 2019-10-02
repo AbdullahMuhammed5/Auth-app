@@ -22,8 +22,6 @@ class CreateStaffsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->string('image', 250)->nullable();
-
             $table->unsignedInteger('job_id')->nullable();
             $table->foreign('job_id')
                 ->references('id')

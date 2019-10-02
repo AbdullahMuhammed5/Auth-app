@@ -42,5 +42,7 @@ Route::prefix('jobs')->group(function(){
 
 Route::resource('staffs', 'StaffController');
 Route::resource('visitors', 'VisitorController');
+Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('toggleStaffStatus');
+Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('toggleVisitorStatus');
 
 Route::get('/getCities/{id}','CityController@getCities');

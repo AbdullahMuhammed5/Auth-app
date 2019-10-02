@@ -6,6 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>INSPINIA | Dashboard </title>
 
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
@@ -14,6 +17,7 @@
     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
 </head>
@@ -349,7 +353,7 @@
 <script type="text/javascript">
 
     $(function () {
-        if($('.data-table').length) {
+        if($('.data-table').length > 0  ) {
             let table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -357,9 +361,10 @@
                 ajax: "{{ route(Request::segments()[0].'.index') }}",
                 @endif
                 columns: JSON.parse(@json($columns ?? "default")),
-                language: {
-                    "infoEmpty": "No records available - Got it?",
-                }
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ]
             });
         }
 

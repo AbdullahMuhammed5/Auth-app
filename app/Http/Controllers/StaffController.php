@@ -35,12 +35,15 @@ class StaffController extends Controller
     {
         $columns = $this->getColumns('staff');
         if ($request->ajax()) {
-            $data = Staff::latest()->with(['user', 'city', 'country', 'job', 'user.roles']);
+            $data = Staff::latest()->with(['user', 'city', 'country', 'job', 'user.roles', 'image']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.staffs.ActionButtons')
+                ->addColumn('is_active', function ($row){
+                   return view('dashboard.staffs.toggleButton', compact('row'));
+                })
                 ->addColumn('image', 'dashboard.staffs.image')
-                ->rawColumns(['action', 'image'])
+                ->rawColumns(['action', 'image', 'is_active'])
                 ->make(true);
         }
         return view('dashboard.staffs.index', compact('columns'));
@@ -67,12 +70,14 @@ class StaffController extends Controller
      */
     public function store(StaffRequest $request)
     {
-        $staffInputs = $request->except('first_name', 'last_name', 'phone', 'email');
         $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $staffInputs['image'] = $request['image'] ?  $this->uploadImage($request['image']) : "default-user.png";
+        $staffInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
+        $imgPath = $request['image'] ?  $this->uploadImage($request['image']) : "default-user.png";
         $usersInputs['password'] = Hash::make('secret');
 
         $staff = Staff::create($staffInputs);
+        $staff->image()->create(['path' => $imgPath]);
+
         $user = $staff->user()->create($usersInputs);
         $staff->update(['user_id' => $user->id]);
         $user->assignRole('staff');
@@ -102,6 +107,7 @@ class StaffController extends Controller
     public function edit(Staff $staff)
     {
         $countries = Country::pluck('name', 'id');
+        $jobs = Job::pluck('name', 'id');
         return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
     }
 
@@ -116,10 +122,11 @@ class StaffController extends Controller
     public function update(StaffRequest $request, Staff $staff)
     {
         $usersInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $staffInputs = $request->except('first_name', 'last_name', 'phone', 'email');
+        $staffInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
 
         if ($image = $request['image']){
-            $staffInputs['image'] = $this->uploadImage($image);
+            $imgPath = $this->uploadImage($image);
+            $staff->image()->update(['path' => $imgPath]);
         }
         $staff->update($staffInputs);
         $staff->user()->update($usersInputs);
@@ -140,5 +147,11 @@ class StaffController extends Controller
         $staff->delete();
         return redirect()->route('staffs.index')
             ->with('error', 'staff deleted successfully');
+    }
+
+    public function toggleActivity(Staff $staff){
+        $status = $staff->is_active ? 0 : 1;
+        $staff->update(['is_active' => $status]);
+        return "success";
     }
 }

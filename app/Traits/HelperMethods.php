@@ -70,4 +70,5 @@ trait HelperMethods{
         Storage::disk('local')->put('public/images/'.$imageName,  File::get($image));
         return $imageName;
     }
+
 }

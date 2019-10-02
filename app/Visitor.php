@@ -19,10 +19,10 @@ class Visitor extends Model
         });
     }
 
-    public function getIsActiveAttribute($value)
-    {
-        return $value == 0 ? 'Inactive' : 'Active';
-    }
+//    public function getIsActiveAttribute($value)
+//    {
+//        return $value == 0 ? 'Inactive' : 'Active';
+//    }
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +30,7 @@ class Visitor extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'image', 'country_id', 'city_id', 'gender', 'is_active'
+        'user_id', 'country_id', 'city_id', 'gender', 'is_active'
     ];
 
     public function user(){
@@ -43,5 +43,13 @@ class Visitor extends Model
 
     public function city(){
         return $this->belongsTo(City::Class);
+    }
+
+    /**
+     * Get the Visitor's image.
+     */
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
     }
 }

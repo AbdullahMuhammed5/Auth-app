@@ -10,6 +10,9 @@ class Staff extends Model{
     use SoftDeletes;
     protected $table = 'staffs';
 
+    /**
+     * Override deleting behavior for parent
+     */
     public static function boot()
     {
         parent::boot();
@@ -20,10 +23,10 @@ class Staff extends Model{
         });
     }
 
-    public function getIsActiveAttribute($value)
-    {
-        return $value == 0 ? 'Inactive' : 'Active';
-    }
+//    public function getIsActiveAttribute($value)
+//    {
+//        return $value == 0 ? 'Inactive' : 'Active';
+//    }
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +34,7 @@ class Staff extends Model{
      * @var array
      */
     protected $fillable = [
-        'user_id', 'image', 'job_id', 'country_id', 'city_id', 'gender', 'is_active'
+        'user_id', 'job_id', 'country_id', 'city_id', 'gender', 'is_active'
     ];
 
     public function user(){
@@ -48,5 +51,13 @@ class Staff extends Model{
 
     public function city(){
         return $this->belongsTo(City::Class);
+    }
+
+    /**
+     * Get the Staff's image.
+     */
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
     }
 }
