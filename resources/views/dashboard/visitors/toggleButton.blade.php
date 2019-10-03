@@ -1,12 +1,12 @@
 <td>
     <div class="toggle-btn @if($row->is_active) active @endif">
-        <input type="checkbox" @if($row->is_active) checked @endif class="cb-value" onclick="return confirm('Are You Sure?')" />
+        <input type="checkbox" @if($row->is_active) checked @endif class="cb-value" id="{{$row->user->first_name.$row->id}}"/>
         <span class="round-btn"></span>
     </div>
 </td>
 
 <script>
-    $('.cb-value').click(function() {
+    $('#{{$row->user->first_name.$row->id}}').click(function() {
         let mainParent = $(this).parent('.toggle-btn');
         if($(mainParent).find('input.cb-value').is(':checked')) {
             $(mainParent).addClass('active');
@@ -18,12 +18,8 @@
             type: 'PUT',
             url: "{{route('toggleVisitorStatus', $row)}}",
             headers: { 'X-CSRF-TOKEN': csrf_token },
-            success:function(res){
-                console.log(res)
-            },
-            error: function(){
-                console.log(error)
-            }
+            success:(response) => console.log(response),
+            error: (error) => console.log(error)
         });
     });
 </script>

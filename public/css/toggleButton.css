@@ -39,7 +39,7 @@
     transition: all .30s ease-in-out;
 }
 
-.toggle-btn .cb-value {
+.toggle-btn .cb-value, .toggle-btn .cb-value1 {
     position: absolute;
     left: 0;
     right: 0;

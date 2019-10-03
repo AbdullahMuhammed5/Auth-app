@@ -310,6 +310,7 @@
                         <div class="ibox-content">
                             @yield('content')
                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -364,14 +365,17 @@
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'excel', 'pdf'
-                ]
+                ],
+                responsive: true
             });
+            console.log(table.rows().data());
         }
-
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
+
+
 
     });
 </script>
