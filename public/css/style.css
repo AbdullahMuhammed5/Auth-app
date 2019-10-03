@@ -8563,3 +8563,9 @@ body.md-skin {
     margin: 0;
   }
 }
+
+.actions-td{
+    display: flex;
+    place-items: flex-end;
+    justify-content: space-evenly;
+}

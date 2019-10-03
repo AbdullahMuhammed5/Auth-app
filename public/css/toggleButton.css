@@ -1,12 +1,12 @@
 
 .toggle-btn {
-    width: 80px;
-    height: 40px;
+    width: 60px;
+    height: 30px;
     margin: 10px;
     border-radius: 50px;
     display: inline-block;
     position: relative;
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAyklEQVQ4T42TaxHCQAyENw5wAhLACVUAUkABOCkSwEkdhNmbpHNckzv689L98toIAKjqGcAFwElEFr5ln6ruAMwA7iLyFBM/TPDuQSrxwf6fCKBoX2UMIYGYkg8BLOnVg2RiAEexGaQQq4w9e9klcxGLLAUwgDAcihlYAR1IvZA1sz/+AAaQjXhTQQVoe2Yo3E7UQiT2ijeQdojRtClOfVKvMVyVpU594kZK9zzySWTlcNqZY9tjCsUds00+A57z1e35xzlzJjee8xf0HYp+cOZQUQAAAABJRU5ErkJggg==") no-repeat 50px center #e74c3c;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAyklEQVQ4T42TaxHCQAyENw5wAhLACVUAUkABOCkSwEkdhNmbpHNckzv689L98toIAKjqGcAFwElEFr5ln6ruAMwA7iLyFBM/TPDuQSrxwf6fCKBoX2UMIYGYkg8BLOnVg2RiAEexGaQQq4w9e9klcxGLLAUwgDAcihlYAR1IvZA1sz/+AAaQjXhTQQVoe2Yo3E7UQiT2ijeQdojRtClOfVKvMVyVpU594kZK9zzySWTlcNqZY9tjCsUds00+A57z1e35xzlzJjee8xf0HYp+cOZQUQAAAABJRU5ErkJggg==") no-repeat 35px center #e74c3c;
     cursor: pointer;
     -webkit-transition: background-color .40s ease-in-out;
     -moz-transition: background-color .40s ease-in-out;
@@ -20,18 +20,18 @@
 }
 
 .toggle-btn.active .round-btn {
-    left: 45px;
+    left: 32px;
 }
 
 .toggle-btn .round-btn {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     background-color: #fff;
     border-radius: 50%;
     display: inline-block;
     position: absolute;
-    left: 5px;
-    top: 50%;
+    left: 10px;
+    top: 65%;
     margin-top: -15px;
     -webkit-transition: all .30s ease-in-out;
     -moz-transition: all .30s ease-in-out;

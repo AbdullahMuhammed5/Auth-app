@@ -2,7 +2,7 @@
 
 @section('content')
     <h2>{{ ucfirst($staff->user->first_name).' '. ucfirst($staff->user->last_name)}}
-        @if($staff->isActive)
+        @if($staff->is_active)
             <span class="fa fa-circle" style="color: green"></span> <span>Active</span>
         @else
             <span class="fa fa-circle" style="color: red"></span> <span>Inactive</span>

@@ -23,11 +23,6 @@ class Staff extends Model{
         });
     }
 
-//    public function getIsActiveAttribute($value)
-//    {
-//        return $value == 0 ? 'Inactive' : 'Active';
-//    }
-
     /**
      * The attributes that are mass assignable.
      *

@@ -2,7 +2,7 @@
 
 @section('content')
     <h2>{{ ucfirst($visitor->user->first_name).' '. ucfirst($visitor->user->last_name)}}
-        @if($visitor->isActive)
+        @if($visitor->is_active)
             <span class="fa fa-circle" style="color: green"></span> <span>Active</span>
         @else
             <span class="fa fa-circle" style="color: red"></span> <span>Inactive</span>
@@ -17,8 +17,6 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>job</th>
-            <th>Role</th>
             <th>City</th>
             <th>Country</th>
             <th>Gender</th>
@@ -30,12 +28,10 @@
         <tbody>
             <tr class="gradeX">
                 <td>{{ $visitor->id }}</td>
-                <td><img src="{{ Storage::url("images/$visitor->image") }}" style='width: 50px'></td>
+                <td><img src="{{ Storage::url("images/".$visitor->image->path) }}" style='width: 50px'></td>
                 <td>{{ ucfirst($visitor->user->first_name).' '. ucfirst($visitor->user->last_name)}}</td>
                 <td>{{ $visitor->user->email }}</td>
                 <td>{{ $visitor->user->phone }}</td>
-                <td>{{ $visitor->job->name }}</td>
-                <td>{{ $visitor->user->roles[0]->name }}</td>
                 <td>{{ $visitor->city->name }}</td>
                 <td>{{ $visitor->country->name }}</td>
                 <td>{{ $visitor->gender }}</td>

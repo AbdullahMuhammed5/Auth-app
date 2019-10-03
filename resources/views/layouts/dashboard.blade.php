@@ -58,11 +58,11 @@
                         IN+
                     </div>
                 </li>
-                <li class="active">
+                <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                     <a href="{{ url('/dashboard') }}"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a>
                 </li>
                 @can('role-list')
-                <li>
+                <li class="{{ Request::is('roles', 'roles/*') ? 'active' : '' }}">
                     <a href="{{ route('roles.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Roles</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -74,7 +74,7 @@
                 </li>
                 @endcan
                 @can('city-list')
-                <li>
+                <li class="{{ Request::is('cities', 'cities/*') ? 'active' : '' }}">
                     <a href="{{ route('cities.index') }}"><i class="fa fa-building"></i> <span class="nav-label">Cities</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -86,7 +86,7 @@
                 </li>
                 @endcan
                 @can('job-list')
-                <li>
+                <li class="{{ Request::is('jobs', 'jobs/*') ? 'active' : '' }}">
                     <a href="{{ route('jobs.index') }}"><i class="fa fa-briefcase"></i> <span class="nav-label">Jobs</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -98,7 +98,7 @@
                 </li>
                 @endcan
                 @can('staff-list')
-                <li>
+                <li class="{{ Request::is('staffs', 'staffs/*') ? 'active' : '' }}">
                     <a href="{{ route('staffs.index') }}"><i class="fa fa-users"></i><span class="nav-label">Staff</span>
                         <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -110,16 +110,16 @@
                 </li>
                 @endcan
                 @can('visitor-list')
-                    <li>
-                        <a href="{{ route('visitors.index') }}"><i class="fa fa-users"></i><span class="nav-label">Visitors</span>
-                            <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li><a href="{{ route('visitors.index') }}">All</a></li>
-                            @can('visitor-create')
-                                <li><a href="{{ route('visitors.create') }}">Add Visitor</a></li>
-                            @endcan
-                        </ul>
-                    </li>
+                <li class="{{ Request::is('visitors', 'visitors/*') ? 'active' : '' }}">
+                    <a href="{{ route('visitors.index') }}"><i class="fa fa-users"></i><span class="nav-label">Visitors</span>
+                        <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('visitors.index') }}">All</a></li>
+                        @can('visitor-create')
+                            <li><a href="{{ route('visitors.create') }}">Add Visitor</a></li>
+                        @endcan
+                    </ul>
+                </li>
                 @endcan
             </ul>
         </div>
@@ -368,14 +368,12 @@
                 ],
                 responsive: true
             });
-            console.log(table.rows().data());
+            // console.log(table.rows().data());
         }
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
-
-
 
     });
 </script>
