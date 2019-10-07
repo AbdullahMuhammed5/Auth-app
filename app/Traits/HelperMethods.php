@@ -58,6 +58,16 @@ trait HelperMethods{
             ['data' => 'gender', 'name' => 'gender'],
             ['data' => 'is_active', 'name' => 'is_active'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
+        ],
+        'news' => [
+            ['data' => 'id', 'name' => 'id'],
+            ['data' => 'staff.user.first_name', 'name' => 'image'],
+            ['data' => 'main_title', 'name' => 'main_title'],
+            ['data' => 'secondary_title', 'name' => 'secondary_title'],
+            ['data' => 'type', 'name' => 'type'],
+            ['data' => 'content', 'name' => 'content'],
+            ['data' => 'published', 'name' => 'published'],
+            ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
         ]
     ];
 

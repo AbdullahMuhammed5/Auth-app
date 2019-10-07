@@ -42,7 +42,11 @@ Route::prefix('jobs')->group(function(){
 
 Route::resource('staffs', 'StaffController');
 Route::resource('visitors', 'VisitorController');
+Route::resource('news', 'NewsController');
+
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('toggleStaffStatus');
 Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('toggleVisitorStatus');
+Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
 
 Route::get('/getCities/{id}','CityController@getCities');
+Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');

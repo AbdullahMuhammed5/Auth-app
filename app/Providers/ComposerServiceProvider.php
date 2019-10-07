@@ -24,7 +24,9 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('route', request()->segments()[0]);
-        View::composer('dashboard', 'App\Composers\DashboardComposer@compose');
+        if (count(request()->segments()) > 0){
+            View::share('route', request()->segments()[0]);
+        }
+//        View::composer('dashboard', 'App\Composers\DashboardComposer@compose');
     }
 }

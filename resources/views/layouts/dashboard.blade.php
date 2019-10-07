@@ -121,6 +121,18 @@
                     </ul>
                 </li>
                 @endcan
+                @can('news-list')
+                    <li class="{{ Request::is('news', 'news/*') ? 'active' : '' }}">
+                        <a href="{{ route('news.index') }}"><i class="fa fa-code"></i><span class="nav-label">News</span>
+                            <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="{{ route('news.index') }}">All</a></li>
+                            @can('news-create')
+                                <li><a href="{{ route('news.create') }}">Add news</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
             </ul>
         </div>
     </nav>
@@ -267,7 +279,7 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @if (!Request::is('staffs/*') && !Request::is('visitors/*'))
+                    @if (!Request::is('staffs/*') && !Request::is('visitors/*') && !Request::is('news/*'))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>
@@ -350,6 +362,8 @@
 <!-- iCheck -->
 <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
 
+<!-- ckeditor -->
+<script src="{{ asset('js/ckeditor.js') }}"></script>
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
 
@@ -368,15 +382,19 @@
                 ],
                 responsive: true
             });
-            // console.log(table.rows().data());
         }
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
-
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
     });
 </script>
 @stack('ajax-get-cities')
+@stack('ajax-get-authors')
 </body>
 </html>

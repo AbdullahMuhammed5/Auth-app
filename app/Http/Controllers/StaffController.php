@@ -49,6 +49,14 @@ class StaffController extends Controller
         return view('dashboard.staffs.index', compact('columns'));
     }
 
+    public function getAuthorsByJob($id)
+    {
+        $authors = Staff::with('user')
+            ->where('job_id', $id)->get()
+            ->pluck('user.full_name', 'id');
+        return $authors;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

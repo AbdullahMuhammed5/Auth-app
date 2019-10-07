@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>Edit {{$visitor->user->first_name.' '.$visitor->user->last_name}}</h1>
+    <h1>Edit {{$visitor->user->full_name}}</h1>
     <hr>
     {!! Form::model($visitor, array('route' => ['visitors.update', $visitor->id],'method'=>'PATCH', 'files' => true)) !!}
     <div class="row">
