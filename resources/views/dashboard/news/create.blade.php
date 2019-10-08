@@ -3,7 +3,7 @@
 @section('content')
     <h1>Create news</h1>
     <hr>
-    {!! Form::open(array('route' => 'news.store','method'=>'POST')) !!}
+    {!! Form::open(array('route' => 'news.store','method'=>'POST', 'files' => true)) !!}
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="form-group">
@@ -34,9 +34,14 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>{!! Form::radio('published' , 0, true, ['class'=>'i-checks']) !!} Draft</label>
-                <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Published</label>
+                <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Publish</label>
             </div>
         </div>
+        <div class="col-sm-6" style="display: flex; margin-bottom: 30px;">
+            <div>Choose Images: {!! Form::file('images[]', ['multiple']) !!}</div>
+            <div>Choose files: {!! Form::file('files[]', ['multiple']) !!}</div>
+        </div>
+
         <div class="col-sm-12 col-md-12 text-center">
             {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
         </div>

@@ -20,4 +20,12 @@ class News extends Model
     public function staff(){
         return $this->belongsTo(Staff::class, 'author_id');
     }
+
+    public function images(){
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function files(){
+        return $this->morphMany(File::class, 'fileble');
+    }
 }

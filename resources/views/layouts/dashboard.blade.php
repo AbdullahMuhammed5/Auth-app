@@ -363,7 +363,10 @@
 <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
 
 <!-- ckeditor -->
-<script src="{{ asset('js/ckeditor.js') }}"></script>
+<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+
+<!-- Custom Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
 
@@ -383,15 +386,6 @@
                 responsive: true
             });
         }
-        $('.i-checks').iCheck({
-            checkboxClass: 'icheckbox_square-green',
-            radioClass: 'iradio_square-green',
-        });
-        ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
     });
 </script>
 @stack('ajax-get-cities')

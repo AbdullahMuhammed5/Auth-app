@@ -62,7 +62,21 @@ class newsController extends Controller
      */
     public function store(NewsRequest $request)
     {
-        News::create($request->all());
+        $inserted = News::create($request->all());
+
+        if ($request->hasFile('images')){
+            foreach ($request['images'] as $image){
+                $imgPath = $this->uploadImage($image);
+                $inserted->images()->create(['path' => $imgPath]);
+            }
+        }
+        if ($request->hasFile('files')){
+            foreach ($request['files'] as $file){
+                $filePath = $this->uploadImage($file);
+                $inserted->files()->create(['path' => $filePath]);
+            }
+        }
+//        dd($request->all());
         return redirect()->route('news.index')
             ->with('success', 'news created successfully');
     }
@@ -123,5 +137,10 @@ class newsController extends Controller
         $status = $news->published ? 0 : 1;
         $news->update(['published' => $status]);
         return "success";
+    }
+
+    public function upload(Request $request){
+        $this->uploadImage($request['upload']);
+        return "Uploaded successfully!";
     }
 }

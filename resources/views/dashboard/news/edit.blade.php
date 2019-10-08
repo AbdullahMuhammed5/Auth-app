@@ -31,6 +31,12 @@
                 {!! Form::textarea('content',  null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
             </div>
         </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{!! Form::radio('published' , 0, null, ['class'=>'i-checks']) !!} Draft</label>
+                <label>{!! Form::radio('published', 1, null, ['class'=>'i-checks']) !!} Publish</label>
+            </div>
+        </div>
         <div class="col-sm-12 col-md-12 text-center">
             {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
         </div>

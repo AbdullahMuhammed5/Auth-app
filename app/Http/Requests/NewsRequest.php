@@ -28,7 +28,9 @@ class NewsRequest extends FormRequest
             'secondary_title' => 'min:3|max:250',
             'author_id' => 'required|int',
             'type'=> 'required|string',
-            'content'=> 'required|string'
+            'content'=> 'required|string',
+            'images' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'files' => 'file|mimes:pdf,xls|max:1024',
         ];
     }
 }
