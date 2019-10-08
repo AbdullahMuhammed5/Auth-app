@@ -10,6 +10,7 @@
             <th>Second Title</th>
             <th>Type</th>
             <th>Content</th>
+            <th>Related News</th>
             @canany(['news-edit', 'news-delete'])
                 <th>Options</th>
             @endcanany
@@ -22,6 +23,13 @@
                 <td>{{ $news->secondary_title }}</td>
                 <td>{{ $news->type }}</td>
                 <td>{{ $news->content }}</td>
+                <td>
+                    <ul>
+                        @foreach ($news->related as $related )
+                            <li class="badge badge-success">{{ $related->news->main_title }}</li>
+                        @endforeach
+                    </ul>
+                </td>
                 @canany(['news-edit', 'news-delete'])
                     <td>
                         @can('news-edit')

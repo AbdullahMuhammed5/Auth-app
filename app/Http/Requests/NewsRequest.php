@@ -29,8 +29,9 @@ class NewsRequest extends FormRequest
             'author_id' => 'required|int',
             'type'=> 'required|string',
             'content'=> 'required|string',
-            'images' => 'image|mimes:jpeg,png,jpg|max:1024',
-            'files' => 'file|mimes:pdf,xls|max:1024',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'files.*' => 'file|mimes:pdf,xls|max:1024',
+            'related' => 'array'
         ];
     }
 }

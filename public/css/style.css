@@ -8569,3 +8569,12 @@ body.md-skin {
     place-items: flex-end;
     justify-content: space-evenly;
 }
+
+#output {
+    padding: 20px;
+    background: #dadada;
+}
+
+#select-related {
+    width: 300px;
+}

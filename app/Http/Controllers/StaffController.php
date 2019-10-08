@@ -158,8 +158,7 @@ class StaffController extends Controller
     }
 
     public function toggleActivity(Staff $staff){
-        $status = $staff->is_active ? 0 : 1;
-        $staff->update(['is_active' => $status]);
+        $staff->update(['is_active' => !$staff->is_active]);
         return "success";
     }
 }

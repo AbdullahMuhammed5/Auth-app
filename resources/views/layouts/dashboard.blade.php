@@ -18,6 +18,8 @@
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
 </head>
@@ -366,6 +368,8 @@
 <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
 <!-- Custom Scripts -->
+<script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
 <script type="text/javascript">

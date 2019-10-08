@@ -28,4 +28,8 @@ class News extends Model
     public function files(){
         return $this->morphMany(File::class, 'fileble');
     }
+
+    public function related(){
+        return $this->hasMany(Related::class, 'news_id');
+    }
 }

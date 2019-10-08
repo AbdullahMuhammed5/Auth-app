@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsRequest;
 use App\News;
+use App\Related;
 use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Http\Request;
@@ -51,7 +52,8 @@ class newsController extends Controller
      */
     public function create()
     {
-        return view('dashboard.news.create');
+        $relatedNews = News::pluck('main_title', 'id');
+        return view('dashboard.news.create', compact('relatedNews'));
     }
 
     /**
@@ -63,7 +65,9 @@ class newsController extends Controller
     public function store(NewsRequest $request)
     {
         $inserted = News::create($request->all());
-
+        foreach ($request['related'] as $relatedId){
+            $inserted->related()->create(['news_id' => $inserted->id, 'related_id' => $relatedId]);
+        }
         if ($request->hasFile('images')){
             foreach ($request['images'] as $image){
                 $imgPath = $this->uploadImage($image);
@@ -76,7 +80,7 @@ class newsController extends Controller
                 $inserted->files()->create(['path' => $filePath]);
             }
         }
-//        dd($request->all());
+        dd('success');
         return redirect()->route('news.index')
             ->with('success', 'news created successfully');
     }
@@ -101,8 +105,12 @@ class newsController extends Controller
     public function edit(News $news)
     {
         $type = $news->type == "News" ? 2 : 1;
+        $allNews = News::all()
+            ->pluck('main_title', 'id');
+        $relatedNews = Related::where('news_id', $news->id)->get()
+            ->pluck( 'related_id')->all();
         $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($type);
-        return view('dashboard.news.edit', compact('news', 'authors'));
+        return view('dashboard.news.edit', compact('news', 'authors', 'relatedNews', 'allNews'));
     }
 
     /**
@@ -114,7 +122,32 @@ class newsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
+
         $news->update($request->all());
+        foreach ($news->related as $relatedNews){
+            $relatedNews->delete();
+        }
+        foreach ($request->related as $relatedId){
+            $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
+        }
+        if ($request->hasFile('images')){
+            foreach ($news->images as $image){
+                $image->delete();
+            }
+            foreach ($request['files'] as $image){
+                $imgPath = $this->uploadImage($image);
+                $news->images()->create(['path' => $imgPath]);
+            }
+        }
+        if ($request->hasFile('files')){
+            foreach ($news->files as $file){
+                $file->delete();
+            }
+            foreach ($request['files'] as $file){
+                $filePath = $this->uploadImage($file);
+                $news->files()->create(['path' => $filePath]);
+            }
+        }
         return redirect()->route('news.index')
             ->with('success', 'news updated successfully');
     }
@@ -130,17 +163,12 @@ class newsController extends Controller
     {
         $news->delete();
         return redirect()->route('news.index')
-            ->with('error', 'news deleted successfully');
+            ->with('error', 'News deleted successfully');
     }
 
     public function togglePublishing(News $news){
-        $status = $news->published ? 0 : 1;
-        $news->update(['published' => $status]);
+        $news->update(['published' => !$news->published ]);
         return "success";
     }
 
-    public function upload(Request $request){
-        $this->uploadImage($request['upload']);
-        return "Uploaded successfully!";
-    }
 }

@@ -51,4 +51,3 @@ Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name(
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');
 
-Route::post('ckeditor/upload', 'NewsController@upload')->name('ckeditor.upload');

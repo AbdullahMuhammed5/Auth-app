@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>Create news</h1>
+    <h1>Create Post</h1>
     <hr>
     {!! Form::open(array('route' => 'news.store','method'=>'POST', 'files' => true)) !!}
     <div class="row">
@@ -31,24 +31,34 @@
                 {!! Form::textarea('content',  null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label>{!! Form::radio('published' , 0, true, ['class'=>'i-checks']) !!} Draft</label>
-                <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Publish</label>
+        <div class="col-sm-12" style=" margin-bottom: 30px;">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>{!! Form::radio('published' , 0, true, ['class'=>'i-checks']) !!} Draft</label>
+                    <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Publish</label>
+                </div>
+            </div>
+            <div class="col-sm-4" style="display: flex; flex-direction: column; align-items: flex-end;">
+                <div>Choose Images: {!! Form::file('images[]', ['multiple']) !!}</div>
+                <div>Choose files: {!! Form::file('files[]', ['multiple']) !!}</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Related News:</label>
+                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select">
+                        @foreach($relatedNews as $key => $value)
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="col-sm-6" style="display: flex; margin-bottom: 30px;">
-            <div>Choose Images: {!! Form::file('images[]', ['multiple']) !!}</div>
-            <div>Choose files: {!! Form::file('files[]', ['multiple']) !!}</div>
-        </div>
-
         <div class="col-sm-12 col-md-12 text-center">
             {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
     {!! Form::close() !!}
 @endsection
-
 
 @push('ajax-get-authors')
 

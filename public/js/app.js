@@ -11,7 +11,7 @@ $(function () {
         filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form'
     });
-
+    $(".chosen-select").chosen();
     // $('#news-type').change(function(){
     //     let typeID = $(this).val() == 'News' ? 2 : 1;
     //     $.ajax({
