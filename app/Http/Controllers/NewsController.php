@@ -80,7 +80,6 @@ class newsController extends Controller
                 $inserted->files()->create(['path' => $filePath]);
             }
         }
-        dd('success');
         return redirect()->route('news.index')
             ->with('success', 'news created successfully');
     }
@@ -122,13 +121,12 @@ class newsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
-
         $news->update($request->all());
         foreach ($news->related as $relatedNews){
             $relatedNews->delete();
         }
         foreach ($request->related as $relatedId){
-            $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
+            $ytry = $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
         }
         if ($request->hasFile('images')){
             foreach ($news->images as $image){

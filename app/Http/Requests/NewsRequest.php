@@ -31,7 +31,7 @@ class NewsRequest extends FormRequest
             'content'=> 'required|string',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
             'files.*' => 'file|mimes:pdf,xls|max:1024',
-            'related' => 'array'
+            'related' => 'array|max:10'
         ];
     }
 }

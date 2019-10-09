@@ -26,7 +26,9 @@
                 <td>
                     <ul>
                         @foreach ($news->related as $related )
-                            <li class="badge badge-success">{{ $related->news->main_title }}</li>
+                            <li class="badge badge-success">
+                                <a href="{{url('/news', $related->news->id)}}" style="color: white">{{ $related->news->main_title }}</a>
+                            </li>
                         @endforeach
                     </ul>
                 </td>
