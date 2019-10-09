@@ -392,7 +392,6 @@
         }
     });
 </script>
-@stack('ajax-get-cities')
-@stack('ajax-get-authors')
+{{--@stack('ajax-get-cities')--}}
 </body>
 </html>

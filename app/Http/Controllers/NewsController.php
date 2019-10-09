@@ -69,16 +69,10 @@ class newsController extends Controller
             $inserted->related()->create(['news_id' => $inserted->id, 'related_id' => $relatedId]);
         }
         if ($request->hasFile('images')){
-            foreach ($request['images'] as $image){
-                $imgPath = $this->uploadImage($image);
-                $inserted->images()->create(['path' => $imgPath]);
-            }
+            $this->createRelation($inserted, $request['images'], 'images');
         }
         if ($request->hasFile('files')){
-            foreach ($request['files'] as $file){
-                $filePath = $this->uploadImage($file);
-                $inserted->files()->create(['path' => $filePath]);
-            }
+            $this->createRelation($inserted, $request['files'], 'files');
         }
         return redirect()->route('news.index')
             ->with('success', 'news created successfully');
@@ -122,29 +116,23 @@ class newsController extends Controller
     public function update(NewsRequest $request, News $news)
     {
         $news->update($request->all());
-        foreach ($news->related as $relatedNews){
-            $relatedNews->delete();
-        }
-        foreach ($request->related as $relatedId){
-            $ytry = $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
+
+        if ($request->related){ // has related news
+            if ($request->related != $news->related){ // related news has changed (not the same)
+                $this->deleteOldRelation($news, 'related'); // delete old related news
+
+                foreach ($request->related as $relatedId){ // store new related
+                    $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
+                }
+            }
         }
         if ($request->hasFile('images')){
-            foreach ($news->images as $image){
-                $image->delete();
-            }
-            foreach ($request['files'] as $image){
-                $imgPath = $this->uploadImage($image);
-                $news->images()->create(['path' => $imgPath]);
-            }
+            $this->deleteOldRelation($news, 'images');
+            $this->createRelation($news, $request['images'], 'images');
         }
         if ($request->hasFile('files')){
-            foreach ($news->files as $file){
-                $file->delete();
-            }
-            foreach ($request['files'] as $file){
-                $filePath = $this->uploadImage($file);
-                $news->files()->create(['path' => $filePath]);
-            }
+            $this->deleteOldRelation($news, 'files');
+            $this->createRelation($news, $request['files'], 'files');
         }
         return redirect()->route('news.index')
             ->with('success', 'news updated successfully');
@@ -167,6 +155,19 @@ class newsController extends Controller
     public function togglePublishing(News $news){
         $news->update(['published' => !$news->published ]);
         return "success";
+    }
+
+    public function deleteOldRelation(News $news, $relation){
+        foreach ($news[$relation] as $relatedNews){
+            $relatedNews->delete();
+        }
+    }
+
+    public function createRelation(News $news, $items, $relation){
+        foreach ($items as $item){
+            $path = $this->uploadImage($item);
+            $news->$relation()->create(['path' => $path]);
+        }
     }
 
 }

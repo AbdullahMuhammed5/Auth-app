@@ -66,28 +66,3 @@
     {!! Form::close() !!}
 @endsection
 
-@push('ajax-get-cities')
-
-    <script>
-        $('#country').change(function(){
-            let cid = $(this).val();
-            if(cid){
-                $.ajax({
-                    type:"get",
-                    url:" {{url('/getCities')}}/"+cid,
-                    success:function(res){
-                        if(res){
-                            $('#city-wrapper').css('display', 'block')
-                            $("#city").empty();
-                            $("#city").append('<option value="">Select City</option>');
-                            $.each(res, function(key, value){
-                                $("#city").append('<option value="'+key+'">'+value+'</option>');
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    </script>
-
-@endpush

@@ -50,6 +50,8 @@
                             <option value="{{ $key }}">{{ $value }}</option>
                         @endforeach
                     </select>
+                    <span class="invalid-feedback" id="maxValueFeedback"
+                          style="display: none">You just hit the maximum length of related news.</span>
                 </div>
             </div>
         </div>
@@ -59,31 +61,3 @@
     </div>
     {!! Form::close() !!}
 @endsection
-
-@push('ajax-get-authors')
-
-    <script>
-        $('#news-type').change(function(){
-            let typeID = $(this).val() == 'News' ? 2 : 1;
-            $.ajax({
-                type:"get",
-                url:" {{url('/getAuthorsByJob')}}/"+typeID,
-                success:function(res){
-                    if(res){
-                        $('#author-wrapper').css('display', 'block')
-                        $("#author").empty();
-                        $("#author").append('<option value="">Select Author</option>');
-                        $.each(res, function(key, value){
-                            $("#author").append('<option value="'+key+'">'+value+'</option>');
-                        });
-                    }
-                },
-                error: (err)=>{
-                    console.log(err)
-                }
-            });
-        });
-
-    </script>
-
-@endpush
