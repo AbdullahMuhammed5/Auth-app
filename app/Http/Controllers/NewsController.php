@@ -160,12 +160,6 @@ class newsController extends Controller
         return "success";
     }
 
-//    public function deleteOldRelation(News $news, $relation){
-//        foreach ($news[$relation] as $relatedNews){
-//            $relatedNews->delete();
-//        }
-//    }
-
     public function createRelation(News $news, $items, $relation){
         foreach ($items as $item){
             $news->$relation()->create(['path' => time().$item->getClientOriginalName()]);
@@ -173,10 +167,10 @@ class newsController extends Controller
     }
 
     public function uploadToServer(Request $request){
-        dd($request);
-        foreach ($images->toArray() as $image){
-            $this->uploadImage($image);
+        foreach ($request['files'] as $file){
+            $this->uploadImage($file);
         }
+        return "success";
     }
 
 }

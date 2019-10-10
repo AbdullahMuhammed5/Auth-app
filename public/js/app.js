@@ -24,7 +24,7 @@ $(function () {
     });
 
     // file chosen select
-    $(".chosen-select").chosen();
+    $(".chosen-select").chosen({ max_selected_options: 10 });
 
     // handle request for authors based on post type
     $('#news-type').change(function(){
@@ -70,20 +70,28 @@ $(function () {
     });
 
     // handle upload image request
-    // $('#upload-image').change(()=>{
-    //     let csrf_token = $('meta[name="csrf-token"]').attr('content');
-    //     let images = $('#upload-image')[0].files;
-    //     let formData = new FormData();
-    //     formData.append("images", images);
-    //     // console.log(formData);
-    //     $.ajax({
-    //         type: 'post',
-    //         url: `${window.location.origin}/uploadToServer/${images}`,
-    //         data: { images: formData },
-    //         contentType: false,
-    //         processData: false,
-    //         headers: { 'X-CSRF-TOKEN': csrf_token },
-    //     })
-    // });
+    $.each($('.upload-files'), function(){
+        $(this).change(()=>{
+            let csrf_token = $('meta[name="csrf-token"]').attr('content');
+            event.preventDefault();
+            let formData = new FormData();
+            let files = $(this)[0].files;
+            for (let i = 0; i < files.length; i++){
+                formData.append("files[]", files[i]);
+            }
 
+            $.ajax({
+                method: 'post',
+                url: `${window.location.origin}/uploadToServer`,
+                data: formData ,
+                dataType:'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                headers: { 'X-CSRF-TOKEN': csrf_token },
+                success: (res) => console.log(res.success),
+                error: (err) => console.log(err)
+            })
+        });
+    })
 });
