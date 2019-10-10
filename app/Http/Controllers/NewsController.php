@@ -65,7 +65,6 @@ class newsController extends Controller
      */
     public function store(NewsRequest $request)
     {
-//        dd($request->all());
         $inserted = News::create($request->all());
         if ($request['related']){
             foreach ($request['related'] as $relatedId){
@@ -101,12 +100,11 @@ class newsController extends Controller
      */
     public function edit(News $news)
     {
-        $type = $news->type == "News" ? 2 : 1;
         $allNews = News::where('published', 1)->get()
             ->pluck('main_title', 'id');
         $relatedNews = Related::where('news_id', $news->id)->get()
             ->pluck( 'related_id')->all();
-        $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($type);
+        $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($news->type);
         return view('dashboard.news.edit', compact('news', 'authors', 'relatedNews', 'allNews'));
     }
 
@@ -153,24 +151,6 @@ class newsController extends Controller
         $news->delete();
         return redirect()->route('news.index')
             ->with('error', 'News deleted successfully');
-    }
-
-    public function togglePublishing(News $news){
-        $news->update(['published' => !$news->published ]);
-        return "success";
-    }
-
-    public function createRelation(News $news, $items, $relation){
-        foreach ($items as $item){
-            $news->$relation()->create(['path' => time().$item->getClientOriginalName()]);
-        }
-    }
-
-    public function uploadToServer(Request $request){
-        foreach ($request['files'] as $file){
-            $this->uploadImage($file);
-        }
-        return "success";
     }
 
 }

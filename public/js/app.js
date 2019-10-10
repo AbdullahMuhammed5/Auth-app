@@ -16,15 +16,16 @@ $(function () {
 
     // handle maximum value exceeded
     $('.chosen-select').change(()=>{
-        if($(".chosen-choices li.search-choice").length > 10) {
+        if($(".search-choice").length >= 2) {
             $('span#maxValueFeedback').css('display', 'block');
-        } else if ($(".chosen-choices li.search-choice").length <= 10){
-            $('span.maxValueFeedback').css('display', 'none');
+        }
+        if ($(".search-choice").length < 3){
+            $('span#maxValueFeedback').css('display', 'none');
         }
     });
 
     // file chosen select
-    $(".chosen-select").chosen({ max_selected_options: 10 });
+    $(".chosen-select").chosen({ max_selected_options: 3 });
 
     // handle request for authors based on post type
     $('#news-type').change(function(){
@@ -68,6 +69,32 @@ $(function () {
             });
         }
     });
+
+    // handle ajax get request - get data for select tag
+    // $.each($('.get-data-ajax-request'), function() {
+    //     $(this).change(function () {
+    //         let id = $(this).attr('id') == 'country' ? '#city' : '#author';
+    //         let route = $(this).attr('id') == 'country' ? 'getCities' : 'getAuthorsByJob';
+    //         // console.log(id)
+    //         let param = $(this).val();
+    //         if (param) {
+    //             $.ajax({
+    //                 type: "get",
+    //                 url: `${window.location.origin}/${route}/${param}`,
+    //                 success: function (res) {
+    //                     if (res) {
+    //                         $('#city-wrapper').css('display', 'block')
+    //                         $(`${id}`).empty();
+    //                         $(`${id}`).append('<option value="">Select City</option>');
+    //                         $.each(res, function (key, value) {
+    //                             $(`${id}`).append('<option value="' + key + '">' + value + '</option>');
+    //                         });
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 
     // handle upload image request
     $.each($('.upload-files'), function(){

@@ -38,7 +38,8 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Country:</label>
-                {{ Form::select('country_id', [0 => 'Select Country', $countries], $staff->country_id, array('class' => 'form-control', 'id' => 'country')) }}
+                {{ Form::select('country_id', [0 => 'Select Country', $countries], $staff->country_id,
+                array('class' => 'form-control get-data-ajax-request', 'id' => 'country')) }}
             </div>
         </div>
         <div class="col-sm-6">

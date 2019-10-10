@@ -18,7 +18,8 @@
         <div class="col-sm-12  col-md-6">
             <div class="form-group">
                 <label>Type:</label>
-                {!! Form::select('type', [ 'Article' => 'Article', 'News' => 'News' ], null, array('placeholder' => 'Select Type','class' => 'form-control', 'id'=>'news-type')) !!}
+                {!! Form::select('type', [ 'Article' => 'Article', 'News' => 'News' ], null,
+                array('placeholder' => 'Select Type','class' => 'form-control get-data-ajax-request', 'id'=>'news-type')) !!}
             </div>
             <div class="form-group" style="display: none" id="author-wrapper">
                 <label>Author:</label>
