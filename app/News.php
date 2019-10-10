@@ -13,6 +13,20 @@ class News extends Model
      *
      * @var array
      */
+    /**
+     * Override deleting behavior for parent
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($news)
+        {
+            $news->files()->delete();
+            $news->images()->delete();
+            $news->related()->delete();
+        });
+    }
     protected $fillable = [
         'main_title', 'secondary_title', 'author_id', 'type', 'content', 'published'
     ];

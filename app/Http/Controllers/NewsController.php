@@ -52,7 +52,8 @@ class newsController extends Controller
      */
     public function create()
     {
-        $relatedNews = News::pluck('main_title', 'id');
+        $relatedNews = News::where('published', 1)->get()
+            ->pluck('main_title', 'id');
         return view('dashboard.news.create', compact('relatedNews'));
     }
 
@@ -64,9 +65,12 @@ class newsController extends Controller
      */
     public function store(NewsRequest $request)
     {
+//        dd($request->all());
         $inserted = News::create($request->all());
-        foreach ($request['related'] as $relatedId){
-            $inserted->related()->create(['news_id' => $inserted->id, 'related_id' => $relatedId]);
+        if ($request['related']){
+            foreach ($request['related'] as $relatedId){
+                $inserted->related()->create(['news_id' => $inserted->id, 'related_id' => $relatedId]);
+            }
         }
         if ($request->hasFile('images')){
             $this->createRelation($inserted, $request['images'], 'images');
@@ -98,7 +102,7 @@ class newsController extends Controller
     public function edit(News $news)
     {
         $type = $news->type == "News" ? 2 : 1;
-        $allNews = News::all()
+        $allNews = News::where('published', 1)->get()
             ->pluck('main_title', 'id');
         $relatedNews = Related::where('news_id', $news->id)->get()
             ->pluck( 'related_id')->all();
@@ -119,19 +123,18 @@ class newsController extends Controller
 
         if ($request->related){ // has related news
             if ($request->related != $news->related){ // related news has changed (not the same)
-                $this->deleteOldRelation($news, 'related'); // delete old related news
-
+                $news->related()->delete(); // delete old related news
                 foreach ($request->related as $relatedId){ // store new related
                     $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
                 }
             }
         }
         if ($request->hasFile('images')){
-            $this->deleteOldRelation($news, 'images');
+            $news->images()->delete();
             $this->createRelation($news, $request['images'], 'images');
         }
         if ($request->hasFile('files')){
-            $this->deleteOldRelation($news, 'files');
+            $news->files()->delete();
             $this->createRelation($news, $request['files'], 'files');
         }
         return redirect()->route('news.index')
@@ -157,16 +160,22 @@ class newsController extends Controller
         return "success";
     }
 
-    public function deleteOldRelation(News $news, $relation){
-        foreach ($news[$relation] as $relatedNews){
-            $relatedNews->delete();
-        }
-    }
+//    public function deleteOldRelation(News $news, $relation){
+//        foreach ($news[$relation] as $relatedNews){
+//            $relatedNews->delete();
+//        }
+//    }
 
     public function createRelation(News $news, $items, $relation){
         foreach ($items as $item){
-            $path = $this->uploadImage($item);
-            $news->$relation()->create(['path' => $path]);
+            $news->$relation()->create(['path' => time().$item->getClientOriginalName()]);
+        }
+    }
+
+    public function uploadToServer(Request $request){
+        dd($request);
+        foreach ($images->toArray() as $image){
+            $this->uploadImage($image);
         }
     }
 

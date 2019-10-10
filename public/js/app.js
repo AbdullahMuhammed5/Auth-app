@@ -8,7 +8,6 @@ $(function () {
 
     // Ckeditor
     if ($('#editor').length){
-        alert("Asdas")
         CKEDITOR.replace('editor', {
             filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
             filebrowserUploadMethod: 'form'
@@ -69,4 +68,22 @@ $(function () {
             });
         }
     });
+
+    // handle upload image request
+    // $('#upload-image').change(()=>{
+    //     let csrf_token = $('meta[name="csrf-token"]').attr('content');
+    //     let images = $('#upload-image')[0].files;
+    //     let formData = new FormData();
+    //     formData.append("images", images);
+    //     // console.log(formData);
+    //     $.ajax({
+    //         type: 'post',
+    //         url: `${window.location.origin}/uploadToServer/${images}`,
+    //         data: { images: formData },
+    //         contentType: false,
+    //         processData: false,
+    //         headers: { 'X-CSRF-TOKEN': csrf_token },
+    //     })
+    // });
+
 });

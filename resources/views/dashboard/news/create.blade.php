@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="col-sm-4" style="display: flex; flex-direction: column; align-items: flex-end;">
-                <div>Choose Images: {!! Form::file('images[]', ['multiple']) !!}</div>
+                <div>Choose Images: {!! Form::file('images[]', ['multiple', 'id' => 'upload-image']) !!}</div>
                 <div>Choose files: {!! Form::file('files[]', ['multiple']) !!}</div>
             </div>
             <div class="col-sm-6">
