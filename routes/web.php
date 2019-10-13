@@ -19,16 +19,19 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('landing');
 
-Route::resource('roles', 'RoleController');
+// Route group
+Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::get('/dashboard', function () {
+        return view('dashboard.index');
+    })->name('dashboard');
+});
+
 Route::resource('cities', 'CityController');
+Route::resource('roles', 'RoleController');
 
 Route::prefix('jobs')->group(function(){
     Route::get('', 'JobController@index')->name('jobs.index');
@@ -47,6 +50,7 @@ Route::resource('news', 'NewsController');
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('toggleStaffStatus');
 Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('toggleVisitorStatus');
 Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
+
 Route::post('uploadToServer', 'NewsController@uploadToServer')->name('uploadToServer');
 
 Route::get('/getCities/{id}','CityController@getCities');

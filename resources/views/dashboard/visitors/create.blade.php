@@ -32,8 +32,8 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Country:</label>
-                {{ Form::select('country_id', [0 => 'Select Country', $countries], false,
-                array('class' => 'form-control get-data-ajax-request', 'id' => 'country')) }}
+                {{ Form::select('country_id', $countries, false,
+                array('class' => 'form-control get-data-ajax-request', 'id' => 'country', 'placeholder' => 'Select Country')) }}
             </div>
         </div>
         <div class="col-sm-6">
@@ -45,7 +45,8 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Gender:</label>
-                {!! Form::select('gender', [''=>'Select Gender', 'Male'=>'Male', 'Female'=>'Female'], false, array('class' => 'form-control')) !!}
+                {!! Form::select('gender', ['Male'=>'Male', 'Female'=>'Female'], false,
+                    array('placeholder' => 'Select Gender', 'class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-6">

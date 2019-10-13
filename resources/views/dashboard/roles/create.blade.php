@@ -12,7 +12,8 @@
             </div>
             <div class="form-group">
                 <label>Description:</label>
-                {!! Form::textarea('description', null, array('placeholder' => 'Description','class' => 'form-control', 'rows'=>3)) !!}
+                {!! Form::textarea('description', null,
+                array('placeholder' => 'Description','class' => 'form-control', 'rows'=>3)) !!}
             </div>
         </div>
         <div class="col-sm-12  col-md-6">

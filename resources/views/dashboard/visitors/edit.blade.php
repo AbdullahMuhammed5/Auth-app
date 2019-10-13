@@ -32,20 +32,22 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Country:</label>
-                {{ Form::select('country_id', [0 => 'Select Country', $countries], $visitor->country_id,
-                array('class' => 'form-control get-data-ajax-request', 'id' => 'country')) }}
+                {{ Form::select('country_id', $countries, $visitor->country_id,
+                array('class' => 'form-control get-data-ajax-request', 'id' => 'country', 'placeholder' => 'Select Country')) }}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group" id="city-wrapper">
                 <label>City:</label>
-                {{ Form::select('city_id', [$visitor->city_id => $visitor->city->name], null, array('class' => 'form-control', 'id' => 'city')) }}
+                {{ Form::select('city_id', $cities, null,
+                array('class' => 'form-control', 'id' => 'city')) }}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Gender:</label>
-                {!! Form::select('gender', ['Male'=>'Male', 'Female'=>'Female'], $visitor->gender, array('placeholder' => 'Select Gender','class' => 'form-control')) !!}
+                {!! Form::select('gender', ['Male'=>'Male', 'Female'=>'Female'], $visitor->gender,
+                array('placeholder' => 'Select Gender','class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-6">

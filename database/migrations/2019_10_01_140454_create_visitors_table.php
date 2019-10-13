@@ -36,8 +36,8 @@ class CreateVisitorsTable extends Migration
 
             $table->string('gender');
             $table->boolean('is_active');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

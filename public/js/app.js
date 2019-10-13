@@ -16,10 +16,10 @@ $(function () {
 
     // handle maximum value exceeded
     $('.chosen-select').change(()=>{
-        if($(".search-choice").length >= 2) {
+        if($(".search-choice").length >= 10) {
             $('span#maxValueFeedback').css('display', 'block');
         }
-        if ($(".search-choice").length < 3){
+        if ($(".search-choice").length < 11){
             $('span#maxValueFeedback').css('display', 'none');
         }
     });

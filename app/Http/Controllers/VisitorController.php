@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\Http\Requests\VisitorRequest;
 use App\Job;
 use App\Visitor;
@@ -81,7 +82,7 @@ class VisitorController extends Controller
 
         $user = $visitor->user()->create($userInputs);
         $visitor->update(['user_id' => $user->id]);
-        $user->assignRole('visitor');
+//        $user->assignRole('visitor');
 
         $this->broker()->sendResetLink(['email' => $user->email]);
         return redirect()->route('visitors.index')
@@ -109,7 +110,8 @@ class VisitorController extends Controller
     {
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
-        return view('dashboard.visitors.edit', compact('countries', 'jobs', 'visitor'));
+        $cities = City::where('country_id', $visitor->country_id)->pluck('name', 'id');
+        return view('dashboard.visitors.edit', compact('countries', 'jobs', 'visitor', 'cities'));
     }
 
     /**

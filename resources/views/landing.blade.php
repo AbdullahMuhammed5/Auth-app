@@ -40,11 +40,13 @@
                             <li><a class="page-scroll" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @endif
                     @else
+                        @if(count(auth()->user()->getRoleNames()))
                             <li><a class="page-scroll" href="{{ url('dashboard') }}">{{ __('Go To Dashboard') }}</a></li>
+                            @endif
                         <li>
                             <a class="page-scroll" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
-                                                   document.getElementById('logout-form').submit();">
+                               document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -36,7 +36,11 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
+        'admin' => [
+            'web',
+            'auth',
+            'role:Admin|staff'
+        ],
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -63,6 +67,7 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'WriterAndReporter' => \App\Http\Middleware\WriterAndReporter::class,
+//        'admin' => 'App\Http\Middleware\AdminMiddleware',
     ];
 
     /**

@@ -32,20 +32,20 @@
         <div class="col-sm-6">
             <label>Job:</label>
             <div class="form-group">
-                {{ Form::select('job_id', [0 => 'Select Job', $jobs], $staff->job_id, array('class' => 'form-control')) }}
+                {{ Form::select('job_id', $jobs, $staff->job_id, array('class' => 'form-control', 'placeholder' => 'Select Job')) }}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Country:</label>
                 {{ Form::select('country_id', [0 => 'Select Country', $countries], $staff->country_id,
-                array('class' => 'form-control get-data-ajax-request', 'id' => 'country')) }}
+                array('class' => 'form-control get-data-ajax-request', 'id' => 'country', 'placeholder' => 'Select Country')) }}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group" id="city-wrapper">
                 <label>City:</label>
-                {{ Form::select('city_id', [$staff->city_id => $staff->city->name], null, array('class' => 'form-control', 'id' => 'city')) }}
+                {{ Form::select('city_id', $cities, null, array('class' => 'form-control', 'id' => 'city')) }}
             </div>
         </div>
         <div class="col-sm-6">

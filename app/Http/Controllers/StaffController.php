@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\Http\Requests\StaffRequest;
 use App\Job;
 use App\Staff;
@@ -117,7 +118,8 @@ class StaffController extends Controller
     {
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
-        return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff'));
+        $cities = City::where('country_id', $staff->country_id)->pluck('name', 'id');
+        return view('dashboard.staffs.edit', compact('countries', 'jobs', 'staff', 'cities'));
     }
 
     /**
