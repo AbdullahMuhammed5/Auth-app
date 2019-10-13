@@ -30,7 +30,7 @@ class newsController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = $this->getColumns('news');
+        $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = News::latest()->with('staff.user');
             return Datatables::of($data)
@@ -151,6 +151,20 @@ class newsController extends Controller
         $news->delete();
         return redirect()->route('news.index')
             ->with('error', 'News deleted successfully');
+    }
+
+    public function getColumns()
+    {
+        return [
+            ['data' => 'id', 'name' => 'id'],
+            ['data' => 'staff.user.first_name', 'name' => 'image'],
+            ['data' => 'main_title', 'name' => 'main_title'],
+            ['data' => 'secondary_title', 'name' => 'secondary_title'],
+            ['data' => 'type', 'name' => 'type'],
+            ['data' => 'content', 'name' => 'content'],
+            ['data' => 'published', 'name' => 'published'],
+            ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
+        ];
     }
 
 }

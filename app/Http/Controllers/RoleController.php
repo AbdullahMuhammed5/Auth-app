@@ -30,13 +30,13 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = $this->getColumns('roles');
+        $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = Role::latest()->with('permissions');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('permissions', 'dashboard.roles.permissions')
-                ->addColumn('action', 'dashboard.roles.ActionButtons')
+                ->addColumn('action', 'includes.ActionButtons')
                 ->rawColumns(['action', 'permissions'])
                 ->make(true);
         }
@@ -122,5 +122,16 @@ class RoleController extends Controller
         $role->delete();
         return redirect()->route('roles.index')
             ->with('error', 'Role deleted successfully');
+    }
+
+    public function getColumns()
+    {
+        return [
+            ['data' => 'id', 'name' => 'id'],
+            ['data'=> 'name', 'name'=> 'name'],
+            ['data'=> 'description', 'name'=> 'description'],
+            ['data'=> 'permissions', 'name'=> 'permissions'],
+            ['data'=> 'action', 'name'=> 'action', 'orderable'=> false, 'searchable'=> false],
+        ];
     }
 }

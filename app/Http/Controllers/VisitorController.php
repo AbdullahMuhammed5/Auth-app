@@ -36,12 +36,12 @@ class VisitorController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = $this->getColumns('visitors');
+        $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = Visitor::latest()->with(['user', 'city', 'country', 'user.roles', 'image']);
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', 'dashboard.visitors.ActionButtons')
+                ->addColumn('action', 'includes.ActionButtons')
                 ->addColumn('is_active', function($row){
                     return view('dashboard.visitors.toggleButton', compact('row'));
                 })
@@ -72,17 +72,19 @@ class VisitorController extends Controller
      */
     public function store(VisitorRequest $request)
     {
-        $userInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
-        $imgPath = $request['image'] ?  $this->uploadImage($request['image']) : "default-user.png";
-        $userInputs['password'] = Hash::make('secret');
+        $inputs = $request->all();
 
-        $visitor = Visitor::create($visitorInputs);
+        // prepare image path to be stored in database as path
+        // if has file image then upload - else assign to default image
+        $imgPath = $request->hasFile('image')  ?  $this->uploadImage($request['image']) : "default-user.png";
+
+        $inputs['password'] = Hash::make('secret'); // set initial password
+
+        $visitor = Visitor::create($inputs);
         $visitor->image()->create(['path' => $imgPath]);
 
-        $user = $visitor->user()->create($userInputs);
+        $user = $visitor->user()->create($inputs);
         $visitor->update(['user_id' => $user->id]);
-//        $user->assignRole('visitor');
 
         $this->broker()->sendResetLink(['email' => $user->email]);
         return redirect()->route('visitors.index')
@@ -124,15 +126,14 @@ class VisitorController extends Controller
      */
     public function update(VisitorRequest $request, Visitor $visitor)
     {
-        $userInputs = $request->only('first_name', 'last_name', 'phone', 'email');
-        $visitorInputs = $request->except('first_name', 'last_name', 'phone', 'email', 'image');
+        $inputs = $request->all();
 
         if ($image = $request['image']){
             $imgPath = $this->uploadImage($image);
             $visitor->image()->update(['path' => $imgPath]);
         }
-        $visitor->update($visitorInputs);
-        $visitor->user()->update($userInputs);
+        $visitor->fill($inputs)->save();
+        $visitor->user->fill($inputs)->save();
 
         return redirect()->route('visitors.index')
             ->with('success', 'visitor updated successfully');
@@ -155,5 +156,21 @@ class VisitorController extends Controller
     public function toggleActivity(Visitor $visitor){
         $visitor->update(['is_active' => !$visitor->is_active ]);
         return "success";
+    }
+
+    public function getColumns()
+    {
+        return [
+            ['data' => 'user.id', 'name' => 'id'],
+            ['data' => 'image', 'name' => 'image'],
+            ['data' => 'user.first_name', 'name' => 'name'],
+            ['data' => 'user.email', 'name' => 'email'],
+            ['data' => 'user.phone', 'name' => 'phone'],
+            ['data' => 'city.name', 'name' => 'city'],
+            ['data' => 'country.name', 'name' => 'country'],
+            ['data' => 'gender', 'name' => 'gender'],
+            ['data' => 'is_active', 'name' => 'is_active'],
+            ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
+        ];
     }
 }

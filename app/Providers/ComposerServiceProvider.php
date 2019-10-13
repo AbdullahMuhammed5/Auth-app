@@ -25,7 +25,9 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         if (count(request()->segments()) > 0){
-            View::share('route', request()->segments()[0]);
+            $urlFirstSegment = request()->segments()[0];
+            View::share('route', $urlFirstSegment);
+            View::share('modelName', substr($urlFirstSegment,0,-1));
         }
 //        dd(request()->user());
 //        View::share('userHasRoles', count(request()->user()->getRoleNames()));

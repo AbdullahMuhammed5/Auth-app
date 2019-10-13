@@ -8,7 +8,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Country</th>
-            @canany(['city-edit', 'city-delete'])
+            @canany(['city-edit', 'city-delete', 'city-list'])
                 <th>Options</th>
             @endcanany
         </tr>

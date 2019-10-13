@@ -20,7 +20,7 @@ use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
 {
-    use HelperMethods;
+//    use HelperMethods;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = $this->getColumns('cities');
+        $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = City::latest()->with('country');
             return Datatables::of($data)
@@ -82,11 +82,12 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param City $city
      * @return void
      */
-    public function show()
+    public function show(City $city)
     {
-        //
+        return view('dashboard.cities.show', compact('city'));
     }
 
     /**
@@ -127,5 +128,15 @@ class CityController extends Controller
         $city->delete();
         return redirect()->route('cities.index')
             ->with('error', 'City Deleted successfully');
+    }
+
+    public function getColumns()
+    {
+        return [
+            ['data' => 'id', 'name' => 'id'],
+            ['data' => 'name', 'name' => 'name'],
+            ['data' => 'country.name', 'name' => 'country'],
+            ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false],
+        ];
     }
 }

@@ -367,9 +367,10 @@
 <!-- ckeditor -->
 <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
-<!-- Custom Scripts -->
 <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+
+<!-- Custom Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
@@ -383,7 +384,7 @@
                 ajax: "{{ route(Request::segments()[0].'.index') }}",
                 @endif
                 columns: JSON.parse(@json($columns ?? "default")),
-                dom: 'Bfrtip',
+                dom: 'lfrtipB',
                 buttons: [
                     'copy', 'excel', 'pdf'
                 ],

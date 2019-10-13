@@ -30,12 +30,12 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = $this->getColumns('jobs');
+        $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = Job::latest();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', 'dashboard.jobs.ActionButtons')
+                ->addColumn('action', 'includes.ActionButtons')
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -113,5 +113,15 @@ class JobController extends Controller
         $job->delete();
         return redirect()->route('jobs.index')
             ->with('error', 'Job deleted successfully');
+    }
+
+    public function getColumns()
+    {
+        return [
+            ['data' => 'id', 'name' => 'id'],
+            ['data'=> 'name', 'name'=> 'name'],
+            ['data'=> 'description', 'name'=> 'description'],
+            ['data'=> 'action', 'name'=> 'action', 'orderable'=> false, 'searchable'=> false],
+        ];
     }
 }

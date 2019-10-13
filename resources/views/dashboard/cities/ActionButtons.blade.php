@@ -1,6 +1,7 @@
-@canany(['city-edit', 'city-delete'])
+@canany(['city-edit', 'city-delete', 'city-list'])
 
     <div class="actions-td">
+        <a href="{{ route('cities.show', $id) }}"><i class="fa fa-eye fa-2x"></i></a>
 
         @can('city-edit')
             <a href="{{ route('cities.edit', $id) }}" style="color: #1ab394"><i class="fa fa-edit fa-2x"></i></a>
