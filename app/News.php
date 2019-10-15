@@ -8,11 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class News extends Model
 {
     use SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     /**
      * Override deleting behavior for parent
      */
@@ -22,11 +18,14 @@ class News extends Model
 
         static::deleting(function($news)
         {
-            $news->files()->delete();
-            $news->images()->delete();
             $news->related()->delete();
         });
     }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'main_title', 'secondary_title', 'author_id', 'type', 'content', 'published'
     ];

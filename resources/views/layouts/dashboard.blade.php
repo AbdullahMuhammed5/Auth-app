@@ -16,6 +16,8 @@
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/dropzone/basic.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
     <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
@@ -370,11 +372,14 @@
 <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 
+<!-- DROPZONE -->
+<script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>--}}
 <!-- Custom Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
 <script type="text/javascript">
-
+    Dropzone.autoDiscover = false;
     $(function () {
         if($('.data-table').length > 0  ) {
             let table = $('.data-table').DataTable({
@@ -393,5 +398,6 @@
         }
     });
 </script>
+@stack('dropzone-config')
 </body>
 </html>

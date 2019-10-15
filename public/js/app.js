@@ -25,7 +25,7 @@ $(function () {
     });
 
     // file chosen select
-    $(".chosen-select").chosen({ max_selected_options: 3 });
+    $(".chosen-select").chosen({ max_selected_options: 10 });
 
     // handle request for authors based on post type
     $('#news-type').change(function(){

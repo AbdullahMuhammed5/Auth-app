@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 
-class newsController extends Controller
+class NewsController extends Controller
 {
     use HelperMethods;
 
@@ -52,8 +52,7 @@ class newsController extends Controller
      */
     public function create()
     {
-        $relatedNews = News::where('published', 1)->get()
-            ->pluck('main_title', 'id');
+        $relatedNews = News::where('published', 1)->pluck('main_title','id')->all();
         return view('dashboard.news.create', compact('relatedNews'));
     }
 
@@ -66,16 +65,15 @@ class newsController extends Controller
     public function store(NewsRequest $request)
     {
         $inserted = News::create($request->all());
-        if ($request['related']){
-            foreach ($request['related'] as $relatedId){
-                $inserted->related()->create(['news_id' => $inserted->id, 'related_id' => $relatedId]);
-            }
+
+        if ($related = $request['related']){
+            $inserted->related()->createMany($this->getInputs($related, 'related_id'));
         }
-        if ($request->hasFile('images')){
-            $this->createRelation($inserted, $request['images'], 'images');
+        if ($images = $request['images']){
+            $inserted->images()->createMany($this->getInputs($images, 'path'));
         }
-        if ($request->hasFile('files')){
-            $this->createRelation($inserted, $request['files'], 'files');
+        if ($files = $request['files']){
+            $inserted->files()->createMany($this->getInputs($files, 'path'));
         }
         return redirect()->route('news.index')
             ->with('success', 'news created successfully');
@@ -100,10 +98,8 @@ class newsController extends Controller
      */
     public function edit(News $news)
     {
-        $allNews = News::where('published', 1)->get()
-            ->pluck('main_title', 'id');
-        $relatedNews = Related::where('news_id', $news->id)->get()
-            ->pluck( 'related_id')->all();
+        $allNews = News::where('published', 1)->pluck('main_title', 'id')->all();
+        $relatedNews = Related::where('news_id', $news->id)->pluck( 'related_id')->all();
         $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($news->type);
         return view('dashboard.news.edit', compact('news', 'authors', 'relatedNews', 'allNews'));
     }
@@ -117,23 +113,18 @@ class newsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
+//        dd($request->all());
         $news->update($request->all());
 
-        if ($request->related){ // has related news
-            if ($request->related != $news->related){ // related news has changed (not the same)
-                $news->related()->delete(); // delete old related news
-                foreach ($request->related as $relatedId){ // store new related
-                    $news->related()->create(['news_id' => $news->id, 'related_id' => $relatedId]);
-                }
-            }
+        if ($request->related){
+            $news->related()->delete(); // delete old related news
+            $news->related()->createMany($this->getInputs($request->related, 'related_id'));
         }
-        if ($request->hasFile('images')){
-            $news->images()->delete();
-            $this->createRelation($news, $request['images'], 'images');
+        if ($images = $request['images']){
+            $news->images()->createMany($this->getInputs($images, 'path'));
         }
-        if ($request->hasFile('files')){
-            $news->files()->delete();
-            $this->createRelation($news, $request['files'], 'files');
+        if ($files = $request['files']){
+            $news->files()->createMany($this->getInputs($files, 'path'));
         }
         return redirect()->route('news.index')
             ->with('success', 'news updated successfully');
@@ -153,6 +144,7 @@ class newsController extends Controller
             ->with('error', 'News deleted successfully');
     }
 
+    // get columns for datatable.
     public function getColumns()
     {
         return [
@@ -165,6 +157,15 @@ class newsController extends Controller
             ['data' => 'published', 'name' => 'published'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
         ];
+    }
+
+    // get array of rows to be inserted for many relations (images, files, related news).
+    public function getInputs($values, $fillableColumn){
+        $inputs = [];
+        foreach ($values as $value){
+            array_push($inputs, [$fillableColumn => $value]);
+        }
+        return $inputs;
     }
 
 }

@@ -51,7 +51,9 @@ Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name(
 Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('toggleVisitorStatus');
 Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
 
-Route::post('uploadToServer', 'NewsController@uploadToServer')->name('uploadToServer');
+Route::post('image/upload/store','ImageUploadController@fileStore');
+Route::post('image/delete','ImageUploadController@fileDestroy');
+Route::get('image/getData/{id}','ImageUploadController@getData');
 
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');

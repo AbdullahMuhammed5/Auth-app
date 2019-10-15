@@ -39,10 +39,6 @@
                     <label>{!! Form::radio('published', 1, null, ['class'=>'i-checks']) !!} Publish</label>
                 </div>
             </div>
-            <div class="col-sm-4" style="display: flex; flex-direction: column; align-items: flex-end;">
-                <div>Choose Images: {!! Form::file('images[]', ['multiple', 'class' => 'upload-files']) !!}</div>
-                <div>Choose files: {!! Form::file('files[]', ['multiple', 'class' => 'upload-files']) !!}</div>
-            </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
@@ -61,10 +57,22 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12">
+            <label for="document">Documents</label>
+            <div class="dropzone" id="dropzone">
+
+            </div>
+        </div>
         <div class="col-sm-12 col-md-12 text-center">
             {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
     {!! Form::close() !!}
 @endsection
+
+@push('dropzone-config')
+
+    @include('includes/dropzone-script')
+
+@endpush
 
