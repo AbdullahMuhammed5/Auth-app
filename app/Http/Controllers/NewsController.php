@@ -113,7 +113,6 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
-//        dd($request->all());
         $news->update($request->all());
 
         if ($request->related){
@@ -166,6 +165,16 @@ class NewsController extends Controller
             array_push($inputs, [$fillableColumn => $value]);
         }
         return $inputs;
+    }
+
+    // publish news or un publish it
+    public function togglePublishing(News $news){
+        $news->update(['published' => !$news->published ]);
+    }
+
+    public function getRelated(Request $request){
+        $query = $request['search'];
+        return News::where('main_title', 'like', "%$query%")->select('main_title', 'id')->get();
     }
 
 }

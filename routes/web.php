@@ -56,5 +56,6 @@ Route::post('image/delete','ImageUploadController@fileDestroy');
 Route::get('image/getData/{id}','ImageUploadController@getData');
 
 Route::get('/getCities/{id}','CityController@getCities');
+Route::get('/getRelated','NewsController@getRelated');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');
 

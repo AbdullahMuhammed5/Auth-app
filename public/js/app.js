@@ -25,7 +25,32 @@ $(function () {
     });
 
     // file chosen select
-    $(".chosen-select").chosen({ max_selected_options: 10 });
+    $(".chosen-select").select2({
+        ajax: {
+            dataType: 'json',
+            type: "GET",
+            url: `${window.location.origin}/getRelated`,
+            data: function (params) {
+                console.log(params)
+                if (params){
+                    return {
+                        search: params.term,
+                    };
+                }
+            },
+            processResults: function (data) {
+                console.log(data)
+                let res = data.map(function (item) {
+                    return {id: item.id, text: item.main_title};
+                });
+                return {
+                    results: res
+                };
+            }
+        },
+        minimumInputLength: 1,
+        max_selected_options: 10
+    });
 
     // handle request for authors based on post type
     $('#news-type').change(function(){
@@ -120,5 +145,6 @@ $(function () {
                 error: (err) => console.log(err)
             })
         });
-    })
+    });
+
 });

@@ -43,9 +43,7 @@
                 <div class="form-group">
                     <label>Related News:</label>
                     <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select">
-                        @foreach($relatedNews as $key => $value)
-                            <option value="{{ $key }}">{{ $value }}</option>
-                        @endforeach
+
                     </select>
                     <span class="invalid-feedback" id="maxValueFeedback"
                           style="display: none">You just hit the maximum length of related news.</span>

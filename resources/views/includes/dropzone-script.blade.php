@@ -2,10 +2,10 @@
     Dropzone.autoDiscover = false;
     $(function () {
         if($('#dropzone')){
-            let uploadedDocumentMap = {}
+            let uploadedDocumentMap = {};
             const headers = {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            };
             $('div#dropzone').dropzone({
                 type: 'POST',
                 url: '{{ url("image/upload/store") }}',
