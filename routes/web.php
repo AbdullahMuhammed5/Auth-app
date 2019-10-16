@@ -47,13 +47,15 @@ Route::resource('staffs', 'StaffController');
 Route::resource('visitors', 'VisitorController');
 Route::resource('news', 'NewsController');
 
-Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('toggleStaffStatus');
-Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('toggleVisitorStatus');
+Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('staffToggleStatus');
+Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('visitorToggleStatus');
 Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
 
-Route::post('image/upload/store','ImageUploadController@fileStore');
-Route::post('image/delete','ImageUploadController@fileDestroy');
-Route::get('image/getData/{id}','ImageUploadController@getData');
+Route::prefix('files')->group(function() {
+    Route::post('store', 'FileUploadController@fileStore');
+    Route::post('delete', 'FileUploadController@fileDestroy');
+    Route::get('getById/{id}', 'FileUploadController@getById');
+});
 
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getRelated','NewsController@getRelated');

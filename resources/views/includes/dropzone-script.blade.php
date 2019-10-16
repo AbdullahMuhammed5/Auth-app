@@ -8,7 +8,7 @@
             };
             $('div#dropzone').dropzone({
                 type: 'POST',
-                url: '{{ url("image/upload/store") }}',
+                url: '{{ url("files/store") }}',
                 headers: headers,
                 maxFilesize: 1,
                 renameFile: function(file) {
@@ -26,7 +26,7 @@
                     $.ajax({
                         headers: headers,
                         type: 'POST',
-                        url: '{{ url("image/delete") }}',
+                        url: '{{ url("files/delete") }}',
                         data: {filename: name, type: type},
                         success: function (data){
                             console.log(name + " has been successfully removed!!");
@@ -50,7 +50,7 @@
                         let thisDropzone = this;
 
                         $.get({
-                            url: '{{ url("/image/getData/$news->id") }}',
+                            url: '{{ url("/files/getById/$news->id") }}',
                             headers: headers ,
                             success : function(data) {
                                 $.each(data, function(key, value){

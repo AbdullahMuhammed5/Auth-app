@@ -29,7 +29,7 @@ class StaffRequest extends FormRequest
             'phone' => 'required|numeric|unique:users,id,'.$this->checkIdExists(),
             'email' => 'required|email|unique:users,id,'.$this->checkIdExists(),
             'gender' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'file' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 

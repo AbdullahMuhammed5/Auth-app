@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\File as FileModel;
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class ImageUploadController extends Controller
+class FileUploadController extends Controller
 {
     protected $imagesAcceptedTypes = ['jpeg', 'jpg', 'png'];
 
-    public function fileStore(Request $request)
+    public function fileStore(?Request $request, ?UploadedFile $fileData = null)
     {
-        $fileName = $request->file->getClientOriginalName();
-        Storage::disk('local')->put('public/uploads/'.$fileName,  File::get($request->file));
+        $file = $fileData ? $fileData : $request['file'];
+        $fileName = $fileData ? time().$file->getClientOriginalName() : $file->getClientOriginalName();
+        Storage::disk('local')->put('public/uploads/'.$fileName,  File::get($file));
         return $fileName;
     }
 
@@ -26,7 +29,7 @@ class ImageUploadController extends Controller
         if (in_array($fileType, $this->imagesAcceptedTypes)){ // if file is image delete from DB if exist
             Image::where('path', $filename)->delete();
         } else{ // if file not image, delete from DB if exist
-            \App\File::where('path', $filename)->delete();
+            FileModel::where('path', $filename)->delete();
         }
         $exists = Storage::disk('local')->exists("public/uploads/$filename");
         if ($exists) {
@@ -35,10 +38,10 @@ class ImageUploadController extends Controller
         return $filename;
     }
 
-    public function getData(Request $request){ // get data for dropzone init function
+    public function getById(Request $request){ // get data for dropzone init function
         $newsId = $request['id'];
         $images = Image::where('imageable_id', $newsId)->get('path');
-        $files = \App\File::where('fileble_id', $newsId)->get('path');
+        $files = FileModel::where('fileble_id', $newsId)->get('path');
         $files = array_merge($files->toArray(), $images->toArray());
         $result = [];
         foreach ($files as $file){

@@ -31,20 +31,15 @@ $(function () {
             type: "GET",
             url: `${window.location.origin}/getRelated`,
             data: function (params) {
-                console.log(params)
                 if (params){
                     return {
-                        search: params.term,
+                        search: params.term
                     };
                 }
             },
             processResults: function (data) {
-                console.log(data)
-                let res = data.map(function (item) {
-                    return {id: item.id, text: item.main_title};
-                });
                 return {
-                    results: res
+                    results: data
                 };
             }
         },

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\City;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Requests\StaffRequest;
 use App\Job;
 use App\Staff;
@@ -41,7 +42,7 @@ class StaffController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', 'includes.ActionButtons')
                 ->addColumn('is_active', function ($row){
-                   return view('dashboard.staffs.toggleButton', compact('row'));
+                   return view('includes.toggleButton', compact('row'));
                 })
                 ->addColumn('image', 'dashboard.staffs.image')
                 ->rawColumns(['action', 'image', 'is_active'])
@@ -84,7 +85,9 @@ class StaffController extends Controller
 
         // prepare image path to be stored in database as path
         // if has file image then upload - else assign to default image
-        $imgPath = $request->hasFile('image') ?  $this->uploadImage($request['image']) : "default-user.png";
+        $imgPath = $request->hasFile('file') ?
+            app('App\Http\Controllers\FileUploadController')->fileStore(null, $request['file']) :
+            "default-user.png";
 
         $inputs['password'] = Hash::make('secret'); // set initial password
 
@@ -137,8 +140,8 @@ class StaffController extends Controller
     {
         $inputs = $request->all();
 
-        if ($image = $request['image']){
-            $imgPath = $this->uploadImage($image);
+        if ($image = $request['file']){
+            $imgPath = app('App\Http\Controllers\FileUploadController')->fileStore(null, $image);
             $staff->image()->update(['path' => $imgPath]);
         }
         $staff->fill($inputs)->save();
@@ -164,13 +167,13 @@ class StaffController extends Controller
 
     public function toggleActivity(Staff $staff){
         $staff->update(['is_active' => !$staff->is_active]);
-        return "success";
+        return response()->json("success");
     }
 
     public function getColumns()
     {
         return  [
-            ['data' => 'user.id', 'name' => 'id'],
+            ['data' => 'id', 'name' => 'id'],
             ['data' => 'image', 'name' => 'image'],
             ['data' => 'user.first_name', 'name' => 'name'],
             ['data' => 'user.email', 'name' => 'email'],

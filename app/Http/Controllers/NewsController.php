@@ -172,9 +172,21 @@ class NewsController extends Controller
         $news->update(['published' => !$news->published ]);
     }
 
+    // get related news based on search
     public function getRelated(Request $request){
-        $query = $request['search'];
-        return News::where('main_title', 'like', "%$query%")->select('main_title', 'id')->get();
+        $term = trim($request['search']);
+
+        if (empty($term)) {
+            return \Response::json([]);
+        }
+        $result = News::where('main_title', 'like', "%$term%")->select('main_title', 'id')->get();
+        $formatted_news = [];
+
+        foreach ($result as $news) {
+            $formatted_news[] = ['id' => $news->id, 'text' => $news->main_title];
+        }
+
+        return \Response::json($formatted_news);
     }
 
 }

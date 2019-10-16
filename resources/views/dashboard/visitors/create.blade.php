@@ -58,7 +58,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Image:</label>
-                {!! Form::file('image', null, array('class' => 'form-control')) !!}
+                {!! Form::file('file', null, array('class' => 'form-control')) !!}
             </div>
         </div>
     </div>

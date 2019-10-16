@@ -11,7 +11,7 @@
         let csrf_token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: 'PUT',
-            url: "{{route('toggleStaffStatus', $row)}}",
+            url: "{{route($modelName.'ToggleStatus', $row)}}",
             headers: { 'X-CSRF-TOKEN': csrf_token },
             success:(response) => {
                 if($(mainParent).find('input.cb-value').is(':checked')) {
