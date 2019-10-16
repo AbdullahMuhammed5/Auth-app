@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Visitor;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class VisitorRequest extends FormRequest
 {
+    protected $acceptedGender = ['Male', 'Female'];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,7 +31,7 @@ class VisitorRequest extends FormRequest
             'last_name' => 'required|string',
             'phone' => 'required|numeric|unique:users,id,'.$this->checkIdExists(),
             'email' => 'required|email|unique:users,id,'.$this->checkIdExists(),
-            'gender' => 'required|string',
+            'gender' => 'required|'.Rule::in(Visitor::$acceptedGender),
             'file' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }

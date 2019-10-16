@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\News;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NewsRequest extends FormRequest
@@ -27,7 +29,7 @@ class NewsRequest extends FormRequest
             'main_title' => 'required|min:3|max:150',
             'secondary_title' => 'min:3|max:250',
             'author_id' => 'required|int',
-            'type'=> 'required|string',
+            'type' => 'required|'.Rule::in(News::$types),
             'content'=> 'required|string',
             'images.*' => 'string',
             'files.*' => 'string',

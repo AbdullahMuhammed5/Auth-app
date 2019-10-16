@@ -18,7 +18,7 @@
         <div class="col-sm-12  col-md-6">
             <div class="form-group">
                 <label>Type:</label>
-                {!! Form::select('type', [ 'Article' => 'Article', 'News' => 'News' ], null,
+                {!! Form::select('type', $types, null,
                 array('placeholder' => 'Select Type','class' => 'form-control get-data-ajax-request', 'id'=>'news-type')) !!}
             </div>
             <div class="form-group" style="display: none" id="author-wrapper">
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-sm-12" style=" margin-bottom: 30px;">
-            <div class="col-sm-2">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label>{!! Form::radio('published' , 0, true, ['class'=>'i-checks']) !!} Draft</label>
                     <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Publish</label>

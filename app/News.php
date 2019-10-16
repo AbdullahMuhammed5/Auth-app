@@ -2,12 +2,15 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class News extends Model
 {
     use SoftDeletes;
+
+    public static $types = ['News' => 'News', 'Article' => 'Article'];
 
     /**
      * Override deleting behavior for parent
@@ -44,5 +47,16 @@ class News extends Model
 
     public function related(){
         return $this->hasMany(Related::class, 'news_id');
+    }
+
+    /**
+     * Scope a query to only include published enws.
+     *
+     * @param Builder $query
+     * @return void
+     */
+    public function scopePublished($query)
+    {
+        $query->whereIsPublished(True);
     }
 }

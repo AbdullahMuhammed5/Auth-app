@@ -59,7 +59,8 @@ class VisitorController extends Controller
     public function create()
     {
         $countries = Country::pluck('name', 'id');
-        return view('dashboard.visitors.create', compact('countries'));
+        $genders = Visitor::$acceptedGender;
+        return view('dashboard.visitors.create', compact('countries', 'genders'));
     }
 
     /**

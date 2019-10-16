@@ -52,8 +52,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $relatedNews = News::where('published', 1)->pluck('main_title','id')->all();
-        return view('dashboard.news.create', compact('relatedNews'));
+        $types = News::$types;
+        return view('dashboard.news.create', compact('types'));
     }
 
     /**

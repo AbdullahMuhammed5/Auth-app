@@ -69,7 +69,8 @@ class StaffController extends Controller
     {
         $countries = Country::pluck('name', 'id');
         $jobs = Job::pluck('name', 'id');
-        return view('dashboard.staffs.create', compact('countries', 'jobs'));
+        $genders = Staff::$acceptedGender;
+        return view('dashboard.staffs.create', compact('countries', 'jobs', 'genders'));
     }
 
     /**

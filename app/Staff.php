@@ -9,6 +9,7 @@ class Staff extends Model{
 
     use SoftDeletes;
     protected $table = 'staffs';
+    public static $acceptedGender = ['Male' => 'Male', 'Female' => 'Female'];
 
     /**
      * Override deleting behavior for parent

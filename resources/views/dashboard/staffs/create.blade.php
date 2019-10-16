@@ -51,7 +51,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Gender:</label>
-                {!! Form::select('gender', ['Male'=>'Male', 'Female'=>'Female'], false, array('placeholder'=>'Select Gender', 'class' => 'form-control')) !!}
+                {!! Form::select('gender', $genders, false, array('placeholder'=>'Select Gender', 'class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-6">

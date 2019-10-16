@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Visitor extends Model
 {
     use SoftDeletes;
+    public static $acceptedGender = ['Male' => 'Male', 'Female' => 'Female'];
 
     public static function boot()
     {
