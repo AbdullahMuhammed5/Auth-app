@@ -30,8 +30,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     })->name('dashboard');
 });
 
-Route::resource('cities', 'CityController');
-Route::resource('roles', 'RoleController');
+
 
 Route::prefix('jobs')->group(function(){
     Route::get('', 'JobController@index')->name('jobs.index');
@@ -43,20 +42,27 @@ Route::prefix('jobs')->group(function(){
     Route::delete('{job}', 'JobController@destroy')->middleware('WriterAndReporter')->name('jobs.destroy');
 });
 
+// resources
+Route::resource('cities', 'CityController');
+Route::resource('roles', 'RoleController');
 Route::resource('staffs', 'StaffController');
 Route::resource('visitors', 'VisitorController');
 Route::resource('news', 'NewsController');
+Route::resource('events', 'EventController');
 
+// Toggle buttons APIs
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('staffToggleStatus');
 Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('visitorToggleStatus');
 Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
 
+// File uploads APIs
 Route::prefix('files')->group(function() {
     Route::post('store', 'FileUploadController@fileStore');
     Route::post('delete', 'FileUploadController@fileDestroy');
     Route::get('getById/{id}', 'FileUploadController@getById');
 });
 
+// get data
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getRelated','NewsController@getRelated');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');

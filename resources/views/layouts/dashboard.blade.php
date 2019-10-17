@@ -138,6 +138,18 @@
                         </ul>
                     </li>
                 @endcan
+                @can('event-list')
+                    <li class="{{ Request::is('events', 'events/*') ? 'active' : '' }}">
+                        <a href="{{ route('events.index') }}"><i class="fa fa-calendar"></i><span class="nav-label">Events</span>
+                            <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="{{ route('events.index') }}">All</a></li>
+                            @can('event-create')
+                                <li><a href="{{ route('events.create') }}">Add Event</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
             </ul>
         </div>
     </nav>

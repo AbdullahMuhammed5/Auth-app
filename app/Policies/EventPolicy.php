@@ -2,16 +2,17 @@
 
 namespace App\Policies;
 
+use App\Event;
 use App\User;
 use App\News;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class NewsPolicy
+class EventPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any news.
+     * Determine whether the user can view any event.
      *
      * @param User $user
      * @return mixed
@@ -19,55 +20,54 @@ class NewsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasAnyPermission(['news-list', 'news-create', 'news-update', 'news-delete']);
+        return $user->hasAnyPermission(['event-list', 'event-create', 'event-update', 'event-delete']);
     }
 
     /**
      * Determine whether the user can view the news.
      *
      * @param User $user
-     * @param news $news
      * @return mixed
      * @throws \Exception
      */
-    public function view(User $user, News $news)
+    public function view(User $user)
     {
-        return $user->hasAnyPermission(['news-list', 'news-create', 'news-update', 'news-delete']);
+        return $user->hasAnyPermission(['event-list', 'event-create', 'event-update', 'event-delete']);
     }
 
     /**
-     * Determine whether the user can create news.
+     * Determine whether the user can create newss.
      *
      * @param User $user
      * @return mixed
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('news-create');
+        return $user->hasPermissionTo('event-create');
     }
 
     /**
      * Determine whether the user can update the news.
      *
      * @param User $user
-     * @param news $news
+     * @param Event $event
      * @return mixed
      */
-    public function update(User $user, News $news)
+    public function update(User $user, Event $event)
     {
-        return $user->hasPermissionTo('news-edit');
+        return $user->hasPermissionTo('event-edit');
     }
 
     /**
      * Determine whether the user can delete the news.
      *
      * @param User $user
-     * @param news $news
+     * @param Event $event
      * @return mixed
      */
-    public function delete(User $user, News $news)
+    public function delete(User $user, Event $event)
     {
-        return $user->hasPermissionTo('news-delete');
+        return $user->hasPermissionTo('event-delete');
     }
 
     /**
