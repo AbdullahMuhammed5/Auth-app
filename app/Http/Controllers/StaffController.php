@@ -9,7 +9,7 @@ use App\Http\Requests\StaffRequest;
 use App\Job;
 use App\Staff;
 use App\Country;
-use App\Traits\HelperMethods;
+use App\Traits\UploadFile;
 use Exception;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ use Yajra\DataTables\DataTables;
 
 class StaffController extends Controller
 {
-    use SendsPasswordResetEmails, HelperMethods;
+    use SendsPasswordResetEmails, UploadFile;
 
     public function __construct()
     {
@@ -86,9 +86,7 @@ class StaffController extends Controller
 
         // prepare image path to be stored in database as path
         // if has file image then upload - else assign to default image
-        $imgPath = $request->hasFile('file') ?
-            app('App\Http\Controllers\FileUploadController')->fileStore(null, $request['file']) :
-            "default-user.png";
+        $imgPath = $request->hasFile('file') ?  $this->upload($request['file']) :  "default-user.png";
 
         $inputs['password'] = Hash::make('secret'); // set initial password
 
@@ -142,14 +140,14 @@ class StaffController extends Controller
         $inputs = $request->all();
 
         if ($image = $request['file']){
-            $imgPath = app('App\Http\Controllers\FileUploadController')->fileStore(null, $image);
+            $imgPath = $this->upload($image);
             $staff->image()->update(['path' => $imgPath]);
         }
         $staff->fill($inputs)->save();
         $staff->user->fill($inputs)->save();
 
         return redirect()->route('staffs.index')
-            ->with('success', 'staff updated successfully');
+            ->with('success', 'Staff updated successfully');
     }
 
     /**
@@ -163,7 +161,7 @@ class StaffController extends Controller
     {
         $staff->delete();
         return redirect()->route('staffs.index')
-            ->with('error', 'staff deleted successfully');
+            ->with('error', 'Staff deleted successfully');
     }
 
     public function toggleActivity(Staff $staff){

@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\File as FileModel;
+use App\File;
 use App\Image;
+use App\Traits\UploadFile;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
 {
+    use UploadFile;
     protected $imagesAcceptedTypes = ['jpeg', 'jpg', 'png'];
 
-    public function fileStore(?Request $request, ?UploadedFile $fileData = null)
+    public function fileStore(Request $request)
     {
-        $file = $fileData ? $fileData : $request['file'];
-        $fileName = $fileData ? time().$file->getClientOriginalName() : $file->getClientOriginalName();
-        Storage::disk('local')->put('public/uploads/'.$fileName,  File::get($file));
-        return $fileName;
+        return $this->upload($request['file']);
     }
 
     public function fileDestroy(Request $request)
@@ -29,11 +26,11 @@ class FileUploadController extends Controller
         if (in_array($fileType, $this->imagesAcceptedTypes)){ // if file is image delete from DB if exist
             Image::where('path', $filename)->delete();
         } else{ // if file not image, delete from DB if exist
-            FileModel::where('path', $filename)->delete();
+            File::where('path', $filename)->delete();
         }
-        $exists = Storage::disk('local')->exists("public/uploads/$filename");
+        $exists = Storage::disk('local')->exists("$filename");
         if ($exists) {
-            Storage::delete("public/uploads/$filename"); // delete from storage if exist
+            Storage::delete("$filename"); // delete from storage if exist
         }
         return $filename;
     }
@@ -41,12 +38,12 @@ class FileUploadController extends Controller
     public function getById(Request $request){ // get data for dropzone init function
         $newsId = $request['id'];
         $images = Image::where('imageable_id', $newsId)->get('path');
-        $files = FileModel::where('fileble_id', $newsId)->get('path');
+        $files = File::where('fileble_id', $newsId)->get('path');
         $files = array_merge($files->toArray(), $images->toArray());
         $result = [];
         foreach ($files as $file){
-            $size = Storage::size("public/uploads/".$file['path']);
-            $type = pathinfo(Storage::url("public/uploads/".$file['path']), PATHINFO_EXTENSION);
+            $size = Storage::size($file['path']);
+            $type = pathinfo(Storage::url($file['path']), PATHINFO_EXTENSION);
             array_push($result, ['name' => $file['path'], 'size' => $size, 'type' => $type]);
         }
         return response()->json($result);

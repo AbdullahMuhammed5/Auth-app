@@ -6,9 +6,9 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Http\Requests\VisitorRequest;
 use App\Job;
+use App\Traits\UploadFile;
 use App\Visitor;
 use App\Country;
-use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ use Yajra\DataTables\DataTables;
 
 class VisitorController extends Controller
 {
-    use SendsPasswordResetEmails, HelperMethods;
+    use SendsPasswordResetEmails, UploadFile;
 
     public function __construct()
     {
@@ -76,9 +76,7 @@ class VisitorController extends Controller
 
         // prepare image path to be stored in database as path
         // if has file image then upload - else assign to default image
-        $imgPath = $request->hasFile('file') ?
-            app('App\Http\Controllers\FileUploadController')->fileStore(null, $request['file']) :
-            "default-user.png";
+        $imgPath = $request->hasFile('file') ?  $this->upload($request['file']) :  "default-user.png";
 
         $inputs['password'] = Hash::make('secret'); // set initial password
 
@@ -131,7 +129,7 @@ class VisitorController extends Controller
         $inputs = $request->all();
 
         if ($image = $request['file']){
-            $imgPath = app('App\Http\Controllers\FileUploadController')->fileStore(null, $image);
+            $imgPath = $this->upload($image);
             $visitor->image()->update(['path' => $imgPath]);
         }
         $visitor->fill($inputs)->save();

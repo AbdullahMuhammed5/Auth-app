@@ -11,11 +11,6 @@
                 url: '{{ url("files/store") }}',
                 headers: headers,
                 maxFilesize: 1,
-                renameFile: function(file) {
-                    let dt = new Date();
-                    let time = dt.getTime();
-                    return time+file.name;
-                },
                 acceptedFiles: ".jpeg, .jpg, .png, .pdf, .xlsx",
                 addRemoveLinks: true,
                 removedfile: function(file)
@@ -53,10 +48,17 @@
                             url: '{{ url("/files/getById/$news->id") }}',
                             headers: headers ,
                             success : function(data) {
+
                                 $.each(data, function(key, value){
-                                    let mockFile = { name: value.name, size: value.size, type: value.type };
+                                    let mockFile = { size: value.size, type: value.type };
                                     thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-                                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("uploads/path") }}".replace("path", value.name));
+                                    if(value.type == 'xlsx' || value.type == 'pdf') {
+                                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '{{ asset("img/file.png") }}');
+                                    }else{
+                                        console.log(value.name.replace('public/', ''))
+                                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("path") }}".replace("path", value.name).replace('public/', ''));
+
+                                    }
                                 });
                             },
                             error: (err) => console.log(err)
@@ -67,7 +69,7 @@
                 },
                 success: function(file, response)
                 {
-                    let name = file.upload.filename;
+                    let name = response;
                     if(['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)){
                         $('#dropzone').append('<input type="hidden" name="images[]" value="' + name + '">')
                         uploadedDocumentMap[name] = response.name

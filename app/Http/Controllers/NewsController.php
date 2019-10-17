@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewsRequest;
 use App\News;
 use App\Related;
-use App\Traits\HelperMethods;
+use App\Traits\UploadFile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,7 +14,7 @@ use Yajra\DataTables\DataTables;
 
 class NewsController extends Controller
 {
-    use HelperMethods;
+    use UploadFile;
 
     public function __construct()
     {
@@ -113,6 +113,7 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
+//        dd($request->all());
         $news->update($request->all());
 
         if ($request->related){
