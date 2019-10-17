@@ -18,6 +18,7 @@
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dropzone/basic.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
     <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
@@ -365,6 +366,8 @@
 
 <!-- iCheck -->
 <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
+
+<script src="{{ asset('js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
 
 <!-- ckeditor -->
 <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>

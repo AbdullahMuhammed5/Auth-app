@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class FileUploadController extends Controller
 {
     use UploadFile;
+
     protected $imagesAcceptedTypes = ['jpeg', 'jpg', 'png'];
 
     public function fileStore(Request $request)
@@ -28,19 +29,17 @@ class FileUploadController extends Controller
         } else{ // if file not image, delete from DB if exist
             File::where('path', $filename)->delete();
         }
-        $exists = Storage::disk('local')->exists("$filename");
-        if ($exists) {
-            Storage::delete("$filename"); // delete from storage if exist
-        }
         return $filename;
     }
 
-    public function getById(Request $request){ // get data for dropzone init function
-        $newsId = $request['id'];
-        $images = Image::where('imageable_id', $newsId)->get('path');
-        $files = File::where('fileble_id', $newsId)->get('path');
-        $files = array_merge($files->toArray(), $images->toArray());
+    public function getById($id) // get data for dropzone init function
+    {
+        $images = Image::where('imageable_id', $id)->get('path')->toArray();
+        $files = File::where('fileble_id', $id)->get('path')->toArray();
+
+        $files = array_merge($files, $images);
         $result = [];
+
         foreach ($files as $file){
             $size = Storage::size($file['path']);
             $type = pathinfo(Storage::url($file['path']), PATHINFO_EXTENSION);

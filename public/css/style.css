@@ -8582,3 +8582,11 @@ body.md-skin {
 .dz-image img{
     width: 100%;
 }
+
+#edit-news-form .dz-filename{
+    display: none;
+}
+
+#edit-news-form .dz-progress{
+    display: none;
+}

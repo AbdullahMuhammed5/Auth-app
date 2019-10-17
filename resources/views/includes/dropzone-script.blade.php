@@ -50,14 +50,12 @@
                             success : function(data) {
 
                                 $.each(data, function(key, value){
-                                    let mockFile = { size: value.size, type: value.type };
+                                    let mockFile = { name: value.name,  size: value.size, type: value.type };
                                     thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                                     if(value.type == 'xlsx' || value.type == 'pdf') {
                                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '{{ asset("img/file.png") }}');
                                     }else{
-                                        console.log(value.name.replace('public/', ''))
                                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("path") }}".replace("path", value.name).replace('public/', ''));
-
                                     }
                                 });
                             },

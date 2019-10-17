@@ -3,7 +3,7 @@
 @section('content')
     <h1>Update {{ $news->main_title }}</h1>
     <hr>
-    {!! Form::model($news, ['method' => 'PATCH','route' => ['news.update', $news->id], 'files' => true]) !!}
+    {!! Form::model($news, ['method' => 'PATCH','route' => ['news.update', $news->id], 'files' => true, 'id' => 'edit-news-form']) !!}
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="form-group">
