@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>Update {{ $news->main_title }}</h1>
+    <h1>Update {{ $event->main_title }}</h1>
     <hr>
-    {!! Form::model($news, ['method' => 'PATCH','route' => ['news.update', $news->id], 'files' => true, 'id' => 'edit-news-form']) !!}
+    {!! Form::model($event, ['method' => 'PATCH','route' => ['events.update', $event->id], 'files' => true, 'id' => 'edit-events-form']) !!}
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="form-group">
@@ -15,45 +15,36 @@
                 {!! Form::text('secondary_title', null, array('placeholder' => 'Secondary Title','class' => 'form-control')) !!}
             </div>
         </div>
-        <div class="col-sm-12  col-md-6">
-            <div class="form-group">
-                <label>Type:</label>
-                {!! Form::select('type', [ 'Article' => 'Article', 'News' => 'News' ], null,
-                array('placeholder' => 'Select Type','class' => 'form-control get-data-ajax-request', 'id'=>'news-type')) !!}
-            </div>
-            <div class="form-group" id="author-wrapper">
-                <label>Author:</label>
-                {!! Form::select('author_id', $authors , $news->staff->id, array('class' => 'form-control', 'id'=>'author')) !!}
-            </div>
-        </div>
         <div class="col-sm-12 ">
             <div class="form-group">
                 <label>Content:</label>
                 {!! Form::textarea('content',  null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
             </div>
         </div>
+
         <div class="col-sm-12">
-            <div class="col-sm-2">
-                <div class="form-group">
-                    <label>{!! Form::radio('published' , 0, null, ['class'=>'i-checks']) !!} Draft</label>
-                    <label>{!! Form::radio('published', 1, null, ['class'=>'i-checks']) !!} Publish</label>
-                </div>
-            </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
-                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select">
-                        @foreach($allNews as $key => $value)
-                            @if(in_array($key, $relatedNews))
+                    <select data-placeholder="Select Visitors ..." name="visitors[]" multiple class="chosen-select">
+                        @foreach($allVisitors as $key => $value)
+                            @if(in_array($key, $invited))
                                 <option value="{{ $key }}" selected>{{ $value }}</option>
                             @else
                                 <option value="{{ $key }}" >{{ $value }}</option>
                             @endif
                         @endforeach
                     </select>
-                    <span class="invalid-feedback" id="maxValueFeedback"
-                          style="display: @if(count($relatedNews) > 10) block @else none @endif">
-                        You just hit the maximum length of related news.</span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group" id="data_5">
+                    <label class="font-normal">Range select</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
+                        <span class="input-group-addon">to</span>
+                        {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
+                    </div>
                 </div>
             </div>
         </div>

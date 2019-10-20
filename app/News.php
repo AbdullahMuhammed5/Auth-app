@@ -50,7 +50,7 @@ class News extends Model
     }
 
     /**
-     * Scope a query to only include published enws.
+     * Scope a query to only include published news.
      *
      * @param Builder $query
      * @return void

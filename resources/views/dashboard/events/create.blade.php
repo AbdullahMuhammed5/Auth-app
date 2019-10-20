@@ -17,18 +17,6 @@
                 {!! Form::text('secondary_title', null, array('placeholder' => 'Secondary Title','class' => 'form-control')) !!}
             </div>
         </div>
-{{--        <div class="col-sm-12  col-md-6">--}}
-{{--            <div class="form-group">--}}
-{{--                <label>Type:</label>--}}
-{{--                {!! Form::select('type', $types, null,--}}
-{{--                array('placeholder' => 'Select Type','class' => 'form-control get-data-ajax-request', 'id'=>'news-type')) !!}--}}
-{{--            </div>--}}
-{{--            <div class="form-group" style="display: none" id="author-wrapper">--}}
-{{--                <label>Author:</label>--}}
-{{--                {!! Form::select('location', [] , null, --}}
-{{--                array('placeholder' => 'Secondary Title','class' => 'form-control', 'id'=>'author')) !!}--}}
-{{--            </div>--}}
-{{--        </div>--}}
         <div class="col-sm-12 ">
             <div class="form-group">
                 <label>Content:</label>
@@ -37,12 +25,16 @@
             </div>
         </div>
         <div class="col-sm-12" style=" margin-bottom: 30px;">
-{{--            <div class="col-sm-6">--}}
-{{--                <div class="form-group">--}}
-{{--                    <label>{!! Form::radio('published' , 0, true, ['class'=>'i-checks']) !!} Draft</label>--}}
-{{--                    <label>{!! Form::radio('published', 1, false, ['class'=>'i-checks']) !!} Publish</label>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="col-sm-6">
+                <div class="form-group" id="data_5">
+                    <label class="font-normal">Range select</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start_date" value="{{ date("y/m/d") }}"/>
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control" name="end_date" value="{{ date("y/m/d") }}" />
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Invited users: </label>
@@ -53,12 +45,22 @@
                           style="display: none">You just hit the maximum length of Invited users</span>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="address_address">Location</label>
+                <input type="text" id="address-input" name="location" class="form-control map-input">
+                <input type="hidden" name="address_latitude" id="address-latitude" value="0" />
+                <input type="hidden" name="address_longitude" id="address-longitude" value="0" />
+            </div>
+            <div id="address-map-container" style="width:100%;height:400px;margin-bottom: 40px; ">
+                <div style="width: 100%; height: 100%" id="address-map"></div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label for="document">Documents</label>
+            <div class="dropzone" id="dropzone">
 
-            <div class="col-sm-12">
-                <label for="document">Documents</label>
-                <div class="dropzone" id="dropzone">
-
-                </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-12 text-center">

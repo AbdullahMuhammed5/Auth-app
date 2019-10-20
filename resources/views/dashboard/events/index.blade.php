@@ -11,7 +11,7 @@
             <th>Location</th>
             <th>content</th>
             <th>Published</th>
-        @canany(['event-edit', 'event-delete', 'event-list'])
+            @canany(['event-edit', 'event-delete', 'event-list'])
             <th>Options</th>
             @endcanany
         </tr>

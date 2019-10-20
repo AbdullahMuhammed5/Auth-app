@@ -19,9 +19,9 @@ class CreateEventsTable extends Migration
             $table->string('secondary_title', 150)->nullable();
             $table->string('location', 100);
             $table->text('content');
-            $table->date('start-date');
-            $table->date('end-date');
-            $table->boolean('published');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('published')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -13,9 +13,22 @@ class CreateInvitedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('inviteds', function (Blueprint $table) {
+        Schema::create('invited', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')
+                ->references('id')
+                ->on('events')
+                ->onDelete('cascade');
+
+            $table->unsignedBigInteger('invited_id');
+            $table->foreign('invited_id')
+                ->references('id')
+                ->on('visitors')
+                ->onDelete('cascade');
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

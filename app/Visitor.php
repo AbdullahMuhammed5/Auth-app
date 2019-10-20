@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -47,5 +48,16 @@ class Visitor extends Model
     public function image()
     {
         return $this->morphOne('App\Image', 'imageable');
+    }
+
+    /**
+     * Scope a query to only include Active Visitors.
+     *
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeActive($query)
+    {
+        $query->whereIsActive(True);
     }
 }

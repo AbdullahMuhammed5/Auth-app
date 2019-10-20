@@ -1,12 +1,12 @@
-@canany(['news-edit', 'news-delete', 'news-list'])
+@canany(['event-edit', 'event-delete', 'event-list'])
     <div class="actions-td">
-        <a href="{{ route('news.show', $id) }}"><i class="fa fa-eye fa-2x"></i></a>
-        @can('news-edit')
-            <a href="{{ route('news.edit', $id) }}" style="color: #1AB394"><i class="fa fa-edit fa-2x"></i></a>
+        <a href="{{ route('events.show', $id) }}"><i class="fa fa-eye fa-2x"></i></a>
+        @can('event-edit')
+            <a href="{{ route('events.edit', $id) }}" style="color: #1AB394"><i class="fa fa-edit fa-2x"></i></a>
         @endcan
 
-        @can('news-delete')
-            <form method="POST" action='{{ route('news.destroy', $id) }}'  style='display: inline' id="deleteForm">
+        @can('event-delete')
+            <form method="POST" action='{{ route('events.destroy', $id) }}'  style='display: inline' id="deleteForm">
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">

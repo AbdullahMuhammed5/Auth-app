@@ -20,7 +20,9 @@
     <link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
+{{--    <link href="{{ asset('css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
     <link href="{{ asset('css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
@@ -296,7 +298,7 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @if (!Request::is('staffs/*') && !Request::is('visitors/*') && !Request::is('news/*'))
+                    @if (!Request::is('staffs/*') && !Request::is('visitors/*') && !Request::is('news/*' && !Request::is('news/*')))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>
@@ -387,9 +389,22 @@
 <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 
+<!-- Data picker -->
+<script src="{{asset('js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+
+<!-- Date range use moment.js same as full calendar plugin -->
+{{--<script src="{{ asset('js/plugins/fullcalendar/moment.min.js') }}"></script>--}}
+
+<!-- Date range picker -->
+{{--<script src="{{ asset('js/plugins/daterangepicker/daterangepicker.js') }}"></script>--}}
+
 <!-- DROPZONE -->
 <script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>--}}
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize" async defer></script>
+<script src="{{ asset('js/mapInput.js') }}"></script>
+
 <!-- Custom Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
@@ -412,6 +427,14 @@
             });
         }
     });
+
+    $('#data_5 .input-daterange').datepicker({
+        keyboardNavigation: false,
+        format: 'yy/mm/dd',
+        forceParse: false,
+        autoclose: true
+    });
+
 </script>
 @stack('dropzone-config')
 </body>

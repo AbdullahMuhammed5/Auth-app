@@ -98,7 +98,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        $allNews = News::where('published', 1)->pluck('main_title', 'id')->all();
+        $allNews = News::published()->pluck('main_title', 'id')->all();
         $relatedNews = Related::where('news_id', $news->id)->pluck( 'related_id')->all();
         $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($news->type);
         return view('dashboard.news.edit', compact('news', 'authors', 'relatedNews', 'allNews'));

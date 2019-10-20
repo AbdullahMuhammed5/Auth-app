@@ -40,27 +40,31 @@
                         fileRef.parentNode.removeChild(file.previewElement) : void 0;
                 },
                 init: function() {
-                    @if(isset($news))
+                    @if(isset($news) || isset($event))
 
                         let thisDropzone = this;
 
                         $.get({
+                        @if(isset($news))
                             url: '{{ url("/files/getById/$news->id") }}',
-                            headers: headers ,
-                            success : function(data) {
+                            @elseif(isset($event))
+                            url: '{{ url("/files/getById/$event->id") }}',
+                        @endif
+                        headers: headers ,
+                        success : function(data) {
 
-                                $.each(data, function(key, value){
-                                    let mockFile = { name: value.name,  size: value.size, type: value.type };
-                                    thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-                                    if(value.type == 'xlsx' || value.type == 'pdf') {
-                                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '{{ asset("img/file.png") }}');
-                                    }else{
-                                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("path") }}".replace("path", value.name).replace('public/', ''));
-                                    }
-                                });
-                            },
-                            error: (err) => console.log(err)
-                        });
+                            $.each(data, function(key, value){
+                                let mockFile = { name: value.name,  size: value.size, type: value.type };
+                                thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                                if(value.type == 'xlsx' || value.type == 'pdf') {
+                                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '{{ asset("img/file.png") }}');
+                                }else{
+                                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("path") }}".replace("path", value.name).replace('public/', ''));
+                                }
+                            });
+                        },
+                        error: (err) => console.log(err)
+                    });
 
                     @endif
 

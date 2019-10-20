@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use App\Http\Requests\EventRequest;
+use App\Invited;
 use App\Traits\UploadFile;
+use App\Visitor;
 use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class EventController extends Controller
@@ -33,9 +36,9 @@ class EventController extends Controller
             $data = Event::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', 'dashboard.event.ActionButtons')
+                ->addColumn('action', 'dashboard.events.ActionButtons')
                 ->addColumn('published', function($row){
-                    return view('dashboard.event.toggleButton', compact('row'));
+                    return view('dashboard.events.toggleButton', compact('row'));
                 })
                 ->rawColumns(['action', 'published'])
                 ->make(true);
@@ -61,12 +64,11 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-        dd($request->all());
 
         $inserted = Event::create($request->all());
 
         if ($visitors = $request['visitors']){
-            $inserted->related()->createMany($this->getInputs($visitors, 'visitor_id'));
+            $inserted->invitedVisitors()->createMany($this->getInputs($visitors, 'invited_id'));
         }
         if ($images = $request['images']){
             $inserted->images()->createMany($this->getInputs($images, 'path'));
@@ -97,9 +99,11 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        $allEvent = Event::where('published', 1)->pluck('main_title', 'id')->all();
-        $relatedEvent = Related::where('event_id', $event->id)->pluck( 'related_id')->all();
-        return view('dashboard.event.edit', compact('event', 'authors', 'relatedEvent', 'allEvent'));
+        $allVisitors = Visitor::active()
+            ->with('user:id,first_name,last_name')->get()
+            ->pluck('user.full_name', 'id');
+        $invited = Invited::where('event_id', $event->id)->pluck('invited_id')->all();
+        return view('dashboard.events.edit', compact('event', 'invited', 'allVisitors'));
     }
 
     /**
@@ -111,12 +115,11 @@ class EventController extends Controller
      */
     public function update(EventRequest $request, Event $event)
     {
-        dd($request->all());
         $event->update($request->all());
 
-        if ($request->related){
+        if ($visitors = $request->visitors){
             $event->invitedVisitors()->delete(); // delete old invitedVisitors event
-            $event->invitedVisitors()->createMany($this->getInputs($request->invitedVisitors, 'related_id'));
+            $event->invitedVisitors()->createMany($this->getInputs($visitors, 'invited_id'));
         }
         if ($images = $request['images']){
             $event->images()->createMany($this->getInputs($images, 'path'));
@@ -171,19 +174,34 @@ class EventController extends Controller
     }
 
     // get related event based on search
-//    public function getInvited(Request $request){
-//        $term = trim($request['search']);
-//
-//        if (empty($term)) {
-//            return \Response::json([]);
-//        }
-//        $result = Event::where('main_title', 'like', "%$term%")->select('main_title', 'id')->get();
-//        $formatted_event = [];
-//
-//        foreach ($result as $event) {
-//            $formatted_event[] = ['id' => $event->id, 'text' => $event->main_title];
-//        }
-//
-//        return \Response::json($formatted_event);
-//    }
+    public function getInvited(Request $request){
+        $term = trim($request['search']);
+
+        if (empty($term)) {
+            return \Response::json([]);
+        }
+//        $result = DB::table('visitors')
+//            ->join('users', 'users.id', '=', 'visitors.user_id')
+//            ->select(DB::raw("CONCAT(users.first_name,' ',users.last_name) as full_name"), 'visitors.id')
+//            ->where('users.first_name', 'like', "%$term%")
+//            ->orWhere('users.last_name', 'like', "%$term%")
+//            ->get();
+
+        $result = Visitor::whereHas('user' , function ($q) use ($term){
+            $q->where('first_name', 'like', "%$term%")
+                ->orWhere('last_name', 'like', "%$term%")
+                ->select(DB::raw("CONCAT(first_name,' ',last_name) as full_name"));
+        })->get();
+        $result = $result->pluck("user.full_name", "id");
+
+//        dd($result);
+
+        $formatted_events = [];
+
+        foreach ($result as $id => $name) {
+            $formatted_events[] = ['id' => $id, 'text' => $name];
+        }
+
+        return \Response::json($formatted_events);
+    }
 }

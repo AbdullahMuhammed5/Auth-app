@@ -25,7 +25,7 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'main_title', 'secondary_title', 'start_date', 'end_date', 'content', 'published'
+        'main_title', 'secondary_title', 'start_date', 'end_date', 'content', 'published', 'location', 'address_latitude', 'address_longitude'
     ];
 
     public function images(){
@@ -37,7 +37,7 @@ class Event extends Model
     }
 
     public function invitedVisitors(){
-        return $this->hasMany(invited::class, 'news_id');
+        return $this->hasMany(invited::class, 'event_id');
     }
 
     /**

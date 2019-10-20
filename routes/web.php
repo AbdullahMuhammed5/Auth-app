@@ -14,7 +14,11 @@
 //use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+DB::listen(function ($query) {
+   logger($query->sql)  ;
+    // $query->bindings
+    // $query->time
+});
 Route::get('/', function () {
     return view('landing');
 });
@@ -65,5 +69,6 @@ Route::prefix('files')->group(function() {
 // get data
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getRelated','NewsController@getRelated');
+Route::get('/getInvited','EventController@getInvited');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');
 

@@ -23,13 +23,13 @@ $(function () {
             $('span#maxValueFeedback').css('display', 'none');
         }
     });
-
+    // let chosenSelectUrl = {{ $route }} ==
     // file chosen select
     $(".chosen-select").select2({
         ajax: {
             dataType: 'json',
             type: "GET",
-            url: `${window.location.origin}/getRelated`,
+            url: `${window.location.origin}/getInvited`,
             data: function (params) {
                 if (params){
                     return {
