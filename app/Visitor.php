@@ -60,4 +60,10 @@ class Visitor extends Model
     {
         $query->whereIsActive(True);
     }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class );
+    }
+
 }

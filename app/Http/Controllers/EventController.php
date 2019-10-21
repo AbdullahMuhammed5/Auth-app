@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\Events\InvitationEvent;
 use App\Http\Requests\EventRequest;
 use App\Invited;
 use App\Traits\UploadFile;
@@ -64,17 +65,15 @@ class EventController extends Controller
     public function store(EventRequest $request)
     {
 
-        $inserted = Event::create($request->all());
+        $event = Event::create($request->all());
 
         if ($visitors = $request['visitors']){
-            $inserted->invitedVisitors()->createMany($this->getInputs($visitors, 'invited_id'));
+            $event->visitors()->attach($visitors);
         }
         if ($images = $request['images']){
-            $inserted->images()->createMany($this->getInputs($images, 'path'));
+            $event->images()->createMany($this->getInputs($images, 'path'));
         }
-        if ($files = $request['files']){
-            $inserted->files()->createMany($this->getInputs($files, 'path'));
-        }
+        event(new InvitationEvent($event));
         return redirect()->route('events.index')
             ->with('success', 'Event created successfully');
     }
@@ -117,14 +116,11 @@ class EventController extends Controller
         $event->update($request->all());
 
         if ($visitors = $request->visitors){
-            $event->invitedVisitors()->delete(); // delete old invitedVisitors event
-            $event->invitedVisitors()->createMany($this->getInputs($visitors, 'invited_id'));
+            $event->visitors()->delete(); // delete old invitedVisitors event
+            $event->visitors()->attach($visitors);
         }
         if ($images = $request['images']){
             $event->images()->createMany($this->getInputs($images, 'path'));
-        }
-        if ($files = $request['files']){
-            $event->files()->createMany($this->getInputs($files, 'path'));
         }
         return redirect()->route('events.index')
             ->with('success', 'event updated successfully');
@@ -180,7 +176,7 @@ class EventController extends Controller
             return \Response::json([]);
         }
 
-        $result = Visitor::whereHas('user' , function ($q) use ($term){
+        $result = Visitor::active()->whereHas('user' , function ($q) use ($term){
             $q->where('first_name', 'like', "%$term%")
                 ->orWhere('last_name', 'like', "%$term%")
                 ->select(DB::raw("CONCAT(first_name,' ',last_name) as full_name"));

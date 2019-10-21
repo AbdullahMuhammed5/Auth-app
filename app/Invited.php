@@ -18,6 +18,10 @@ class Invited extends Model
     ];
 
     public function event(){
-        return $this->belongsTo(Event::class, 'invited_id');
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function visitors(){
+        return $this->hasMany(Visitor::class, 'invited_id');
     }
 }

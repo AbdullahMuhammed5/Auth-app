@@ -18,6 +18,8 @@ class CreateEventsTable extends Migration
             $table->string('main_title', 150);
             $table->string('secondary_title', 150)->nullable();
             $table->string('location', 100);
+            $table->double('address_latitude');
+            $table->double('address_longitude');
             $table->text('content');
             $table->date('start_date');
             $table->date('end_date');

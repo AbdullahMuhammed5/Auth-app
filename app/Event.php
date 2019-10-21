@@ -36,8 +36,8 @@ class Event extends Model
         return $this->morphMany(File::class, 'fileble');
     }
 
-    public function invitedVisitors(){
-        return $this->hasMany(Invited::class, 'event_id');
+    public function visitors(){
+        return $this->belongsToMany(Visitor::class);
     }
 
     /**

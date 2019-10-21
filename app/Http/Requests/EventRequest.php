@@ -31,7 +31,6 @@ class EventRequest extends FormRequest
             'location' => 'string',
             'content'=> 'required|string',
             'images.*' => 'string',
-            'files.*' => 'string',
             'visitors' => 'array|max:10'
         ];
     }

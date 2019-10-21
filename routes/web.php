@@ -14,11 +14,7 @@
 //use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-DB::listen(function ($query) {
-   logger($query->sql)  ;
-    // $query->bindings
-    // $query->time
-});
+
 Route::get('/', function () {
     return view('landing');
 });
@@ -33,7 +29,6 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         return view('dashboard.index');
     })->name('dashboard');
 });
-
 
 
 Route::prefix('jobs')->group(function(){
