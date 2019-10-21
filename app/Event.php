@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,10 @@ class Event extends Model
         'main_title', 'secondary_title', 'start_date', 'end_date',
         'content', 'published', 'location', 'address_latitude', 'address_longitude'
     ];
+
+//    protected $dates = [
+//        'start_date', 'end_date', 'created_at', 'updated_at', 'deleted_at'
+//    ];
 
     public function images(){
         return $this->morphMany(Image::class, 'imageable');
@@ -40,13 +45,13 @@ class Event extends Model
         $query->whereIsPublished(True);
     }
 
-    public function getStartDateAttribute($date)
+    public function setStartDateAttribute($date)
     {
-        return Carbon::parse($date);
+        return $this->attributes['start_date'] = Carbon::parse($date);
     }
 
-    public function getEndDateAttribute($date)
+    public function setEndDateAttribute($date)
     {
-        return Carbon::parse($date);
+        return $this->attributes['end_date'] =  Carbon::parse($date);
     }
 }

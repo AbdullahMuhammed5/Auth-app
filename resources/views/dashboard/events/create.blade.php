@@ -32,14 +32,14 @@
                         <div class='input-group date datetimepicker'>
                         {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
                             <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
+                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <span class="input-group-addon">to</span>
                         <div class='input-group date datetimepicker'>
                         {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
                             <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
+                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                     </div>
@@ -84,4 +84,9 @@
 
     @include('includes/dropzone-script')
 
+@endpush
+
+@push('JSValidatorScript')
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\EventRequest') !!}
 @endpush

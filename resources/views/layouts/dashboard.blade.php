@@ -439,5 +439,6 @@
 
 </script>
 @stack('dropzone-config')
+@stack('JSValidatorScript')
 </body>
 </html>

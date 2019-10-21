@@ -64,7 +64,7 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-        dd($request->all());
+//        dd($request->all());
         $event = Event::create($request->all());
 
         if ($visitors = $request['visitors']){

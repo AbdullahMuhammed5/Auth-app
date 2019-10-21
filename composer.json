@@ -17,7 +17,8 @@
         "laravelcollective/html": "^6.0",
         "spatie/laravel-permission": "^3.0",
         "webpatser/laravel-countries": "dev-master",
-        "yajra/laravel-datatables-oracle": "^9.6"
+        "yajra/laravel-datatables-oracle": "^9.6",
+        "proengsoft/laravel-jsvalidation": ">2.5.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
