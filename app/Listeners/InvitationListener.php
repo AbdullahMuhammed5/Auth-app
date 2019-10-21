@@ -28,7 +28,7 @@ class InvitationListener
     public function handle($event)
     {
         foreach ($event->event->visitors as $visitor){
-            Mail::to($visitor->user['email'])->send(new InvitationEmail($visitor));
+            Mail::to($visitor->user['email'])->send(new InvitationEmail($visitor, $event->event));
         }
     }
 }

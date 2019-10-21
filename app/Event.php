@@ -8,24 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     /**
-     * Override deleting behavior for parent
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function($event)
-        {
-            $event->invitedVisitors()->delete();
-        });
-    }
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'main_title', 'secondary_title', 'start_date', 'end_date', 'content', 'published', 'location', 'address_latitude', 'address_longitude'
+        'main_title', 'secondary_title', 'start_date', 'end_date',
+        'content', 'published', 'location', 'address_latitude', 'address_longitude'
     ];
 
     public function images(){
@@ -49,5 +38,15 @@ class Event extends Model
     public function scopePublished($query)
     {
         $query->whereIsPublished(True);
+    }
+
+    public function getStartDateAttribute($date)
+    {
+        return Carbon::parse($date);
+    }
+
+    public function getEndDateAttribute($date)
+    {
+        return Carbon::parse($date);
     }
 }

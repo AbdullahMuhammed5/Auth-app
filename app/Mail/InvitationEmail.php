@@ -15,15 +15,18 @@ class InvitationEmail extends Mailable
      * @var Visitor
      */
     public $visitor;
+    public $event;
 
     /**
      * Create a new message instance.
      *
      * @param Visitor $visitor
+     * @param $event
      */
-    public function __construct($visitor)
+    public function __construct($visitor, $event)
     {
         $this->visitor = $visitor;
+        $this->event = $event;
     }
 
     /**
@@ -34,6 +37,7 @@ class InvitationEmail extends Mailable
     public function build()
     {
         $visitor = $this->visitor;
-        return $this->markdown('emails.invitation', compact('visitor'));
+        $event = $this->event;
+        return $this->markdown('emails.invitation', compact('visitor', 'event'));
     }
 }

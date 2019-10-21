@@ -64,7 +64,7 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-
+        dd($request->all());
         $event = Event::create($request->all());
 
         if ($visitors = $request['visitors']){
@@ -100,7 +100,7 @@ class EventController extends Controller
         $allVisitors = Visitor::active()
             ->with('user:id,first_name,last_name')->get()
             ->pluck('user.full_name', 'id');
-        $invited = Invited::where('event_id', $event->id)->pluck('invited_id')->all();
+        $invited = $event->visitors()->get()->pluck('id')->all();
         return view('dashboard.events.edit', compact('event', 'invited', 'allVisitors'));
     }
 

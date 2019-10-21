@@ -21,8 +21,8 @@ class CreateEventsTable extends Migration
             $table->double('address_latitude');
             $table->double('address_longitude');
             $table->text('content');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
             $table->boolean('published')->default(0);
             $table->timestamps();
             $table->softDeletes();

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\News;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,6 +31,8 @@ class EventRequest extends FormRequest
             'secondary_title' => 'min:3|max:250',
             'location' => 'string',
             'content'=> 'required|string',
+            'start_date' => 'required|after_or_equal:'.Carbon::today()->toDateString(),
+            'end_date' => 'required|after_or_equal:start_date',
             'images.*' => 'string',
             'visitors' => 'array|max:10'
         ];
