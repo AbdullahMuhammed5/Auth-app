@@ -16,7 +16,7 @@ class Event extends Model
 
         static::deleting(function($event)
         {
-            $event->invited()->delete();
+            $event->invitedVisitors()->delete();
         });
     }
     /**
@@ -37,7 +37,7 @@ class Event extends Model
     }
 
     public function invitedVisitors(){
-        return $this->hasMany(invited::class, 'event_id');
+        return $this->hasMany(Invited::class, 'event_id');
     }
 
     /**

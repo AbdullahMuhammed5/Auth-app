@@ -7,7 +7,6 @@ use App\Http\Requests\EventRequest;
 use App\Invited;
 use App\Traits\UploadFile;
 use App\Visitor;
-use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -180,12 +179,6 @@ class EventController extends Controller
         if (empty($term)) {
             return \Response::json([]);
         }
-//        $result = DB::table('visitors')
-//            ->join('users', 'users.id', '=', 'visitors.user_id')
-//            ->select(DB::raw("CONCAT(users.first_name,' ',users.last_name) as full_name"), 'visitors.id')
-//            ->where('users.first_name', 'like', "%$term%")
-//            ->orWhere('users.last_name', 'like', "%$term%")
-//            ->get();
 
         $result = Visitor::whereHas('user' , function ($q) use ($term){
             $q->where('first_name', 'like', "%$term%")
@@ -193,8 +186,6 @@ class EventController extends Controller
                 ->select(DB::raw("CONCAT(first_name,' ',last_name) as full_name"));
         })->get();
         $result = $result->pluck("user.full_name", "id");
-
-//        dd($result);
 
         $formatted_events = [];
 

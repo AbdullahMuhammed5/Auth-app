@@ -29,9 +29,9 @@
                 <div class="form-group" id="data_5">
                     <label class="font-normal">Range select</label>
                     <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" class="input-sm form-control" name="start_date" value="{{ date("y/m/d") }}"/>
+                        {!! Form::text('start_date', date("y/m/d"), array('class' => 'input-sm form-control')) !!}
                         <span class="input-group-addon">to</span>
-                        <input type="text" class="input-sm form-control" name="end_date" value="{{ date("y/m/d") }}" />
+                        {!! Form::text('end_date', date("y/m/d"), array('class' => 'input-sm form-control')) !!}
                     </div>
                 </div>
             </div>
@@ -49,9 +49,9 @@
         <div class="col-sm-12">
             <div class="form-group">
                 <label for="address_address">Location</label>
-                <input type="text" id="address-input" name="location" class="form-control map-input">
-                <input type="hidden" name="address_latitude" id="address-latitude" value="0" />
-                <input type="hidden" name="address_longitude" id="address-longitude" value="0" />
+                {!! Form::text('location', null, array('class' => 'map-input form-control', 'id'=>'address-input')) !!}
+                {!! Form::hidden('address_latitude', null, array('class' => 'input-sm form-control', 'id' => "address-latitude")) !!}
+                {!! Form::hidden('address_longitude', null, array('class' => 'input-sm form-control', 'id'=>'address-longitude')) !!}
             </div>
             <div id="address-map-container" style="width:100%;height:400px;margin-bottom: 40px; ">
                 <div style="width: 100%; height: 100%" id="address-map"></div>

@@ -49,6 +49,17 @@
             </div>
         </div>
         <div class="col-sm-12">
+            <div class="form-group">
+                <label for="location">Location</label>
+                {!! Form::text('location', null, array('class' => 'map-input form-control', 'id'=>'address-input')) !!}
+                {!! Form::hidden('address_latitude', null, array('class' => 'input-sm form-control', 'id' => "address-latitude")) !!}
+                {!! Form::hidden('address_longitude', null, array('class' => 'input-sm form-control', 'id'=>'address-longitude')) !!}
+            </div>
+            <div id="address-map-container" style="width:100%;height:400px;margin-bottom: 40px; ">
+                <div style="width: 100%; height: 100%" id="address-map"></div>
+            </div>
+        </div>
+        <div class="col-sm-12">
             <label for="document">Documents</label>
             <div class="dropzone" id="dropzone">
 

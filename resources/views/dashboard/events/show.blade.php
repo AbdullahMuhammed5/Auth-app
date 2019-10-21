@@ -5,40 +5,43 @@
     <table class="table table-striped table-bordered table-hover" >
         <thead>
         <tr>
-            <th>Author</th>
             <th>Main Title</th>
             <th>Second Title</th>
-            <th>Type</th>
+            <th>location</th>
             <th>Content</th>
-            <th>Related News</th>
-            @canany(['news-edit', 'news-delete'])
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Visitors</th>
+            @canany(['event-edit', 'event-delete'])
                 <th>Options</th>
             @endcanany
         </tr>
         </thead>
         <tbody>
+        @dd($event->invitedVisitors)
             <tr class="gradeX">
-                <td>{{ $news->staff->user->full_name }}</td>
-                <td>{{ $news->main_title }}</td>
-                <td>{{ $news->secondary_title }}</td>
-                <td>{{ $news->type }}</td>
-                <td>{{ $news->content }}</td>
+                <td>{{ $event->main_title }}</td>
+                <td>{{ $event->secondary_title }}</td>
+                <td>{{ $event->location}}</td>
+                <td>{{ $event->start_Date }}</td>
+                <td>{{ $event->end_Date }}</td>
+                <td>{{ $event->content }}</td>
                 <td>
                     <ul>
-                        @foreach ($news->related as $related )
+                        @foreach ($event->invitedVisitors as $visitor )
                             <li class="badge badge-success">
-                                <a href="{{url('/news', $related->news->id)}}" style="color: white">{{ $related->news->main_title }}</a>
+                                <a href="{{url('/events', $visitor->event->id)}}" style="color: white">{{ $visitor->event->main_title }}</a>
                             </li>
                         @endforeach
                     </ul>
                 </td>
-                @canany(['news-edit', 'news-delete'])
+                @canany(['event-edit', 'event-delete'])
                     <td>
-                        @can('news-edit')
-                            <a href="{{ route('news.edit', $news->id) }}" class="btn btn-primary">edit</a>
+                        @can('event-edit')
+                            <a href="{{ route('events.edit', $event->id) }}" class="btn btn-primary">edit</a>
                         @endcan
-                        @can('news-delete')
-                            {!! Form::open(['method' => 'DELETE','route' => ['news.destroy', $news->id],'style'=>'display:inline']) !!}
+                        @can('event-delete')
+                            {!! Form::open(['method' => 'DELETE','route' => ['events.destroy', $event->id],'style'=>'display:inline']) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
                         @endcan
