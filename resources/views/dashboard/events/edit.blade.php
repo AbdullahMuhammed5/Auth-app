@@ -45,15 +45,16 @@
                             <div class='input-group date datetimepicker'>
                                 {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
                                 <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                             </span>
                             </div>
                             <span class="input-group-addon">to</span>
                             <div class='input-group date datetimepicker'>
                                 {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
                                 <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                             </div>
                         </div>
                     </div>

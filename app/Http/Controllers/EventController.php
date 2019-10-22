@@ -38,6 +38,7 @@ class EventController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.events.ActionButtons')
                 ->addColumn('published', function($row){
+                    $this->togglePublishing($row);
                     return view('dashboard.events.toggleButton', compact('row'));
                 })
                 ->rawColumns(['action', 'published'])
@@ -167,7 +168,18 @@ class EventController extends Controller
 
     // publish event or un publish it
     public function togglePublishing(Event $event){
-        $event->update(['published' => !$event->published ]);
+        $start = strtotime($event->start_date);
+        $end = strtotime($event->end_date);
+        $today = strtotime(date("Y-m-d h:i:s"));
+
+        $published = true;
+        if ($today >= $start && $today <= $end){
+//            dump("date has been come");
+            $event->update(['published' => $published ]);
+        }else{
+//            dump("not yet");
+            $event->update(['published' => !$published ]);
+        }
     }
 
     // get related event based on search

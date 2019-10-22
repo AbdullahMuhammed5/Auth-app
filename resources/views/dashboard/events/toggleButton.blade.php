@@ -5,6 +5,4 @@
     </div>
 </td>
 
-<script>
 
-</script>
