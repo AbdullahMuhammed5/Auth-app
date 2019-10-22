@@ -23,6 +23,7 @@ class CreateEventsTable extends Migration
             $table->text('content');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->string('cover', 250);
             $table->boolean('published')->default(0);
             $table->timestamps();
             $table->softDeletes();

@@ -41,9 +41,21 @@
                 <div class="form-group" id="data_5">
                     <label class="font-normal">Range select</label>
                     <div class="input-daterange input-group" id="datepicker">
-                        {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
-                        <span class="input-group-addon">to</span>
-                        {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
+                        <div class="input-daterange input-group" id="datepicker">
+                            <div class='input-group date datetimepicker'>
+                                {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            </div>
+                            <span class="input-group-addon">to</span>
+                            <div class='input-group date datetimepicker'>
+                                {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

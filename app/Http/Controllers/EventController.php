@@ -149,6 +149,8 @@ class EventController extends Controller
             ['data' => 'secondary_title', 'name' => 'secondary_title'],
             ['data' => 'location', 'name' => 'location'],
             ['data' => 'content', 'name' => 'content'],
+            ['data' => 'start_date', 'name' => 'start_date'],
+            ['data' => 'end_date', 'name' => 'end_date'],
             ['data' => 'published', 'name' => 'published'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]
         ];

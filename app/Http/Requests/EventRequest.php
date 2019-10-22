@@ -34,6 +34,7 @@ class EventRequest extends FormRequest
             'start_date' => 'required|after_or_equal:'.Carbon::today()->toDateString(),
             'end_date' => 'required|after_or_equal:start_date',
             'images.*' => 'string',
+            'cover' => 'string',
             'visitors' => 'array|max:10'
         ];
     }

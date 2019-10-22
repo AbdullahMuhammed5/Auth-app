@@ -15,7 +15,7 @@ class Event extends Model
      */
     protected $fillable = [
         'main_title', 'secondary_title', 'start_date', 'end_date',
-        'content', 'published', 'location', 'address_latitude', 'address_longitude'
+        'content', 'published', 'location', 'address_latitude', 'address_longitude', 'cover'
     ];
 
 //    protected $dates = [
@@ -54,4 +54,20 @@ class Event extends Model
     {
         return $this->attributes['end_date'] =  Carbon::parse($date);
     }
+
+//    public function getStartDateAttribute($date)
+//    {
+////        $date = Carbon::parse($date);
+////        $days = $date->diffInDays($date);
+////        dd($days);
+////        $hours = $date->copy()->addDays($days)->diffInHours($date);
+////        $minutes = $date->copy()->addDays($days)->addHours($hours)->diffInMinutes($date);
+////        return $minutes;
+//        return Carbon::parse($date)->diffForHumans();
+//    }
+
+//    public function getEndDateAttribute($date)
+//    {
+//        return Carbon::parse($date)->diffForHumans();
+//    }
 }

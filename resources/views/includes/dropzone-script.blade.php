@@ -61,6 +61,10 @@
                                 }else{
                                     thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::url("path") }}".replace("path", value.name).replace('public/', ''));
                                 }
+                                @if($route == 'events')
+                                    let previewElem = $('.dz-preview').has('img[alt="'+value.name+'"]').last();
+                                    $(previewElem).append('Select as cover <input type="radio" name="cover" value="'+value.name+'" class="cover-radio">')
+                                @endif
                             });
                         },
                         error: (err) => console.log(err)
@@ -79,6 +83,10 @@
                         $('#dropzone').append('<input type="hidden" name="files[]" value="' + name + '">')
                         uploadedDocumentMap[name] = response.name
                     }
+                    @if($route == 'events')
+                        let previewElem = $('.dz-preview').has('img[alt="'+file.name+'"]').last();
+                        $(previewElem).append('Select as cover <input type="radio" name="cover" value="'+name+'" class="cover-radio">')
+                    @endif
                 },
                 error: function(file, response)
                 {

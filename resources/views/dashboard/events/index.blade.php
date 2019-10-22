@@ -10,6 +10,8 @@
             <th>Secondary Title</th>
             <th>Location</th>
             <th>content</th>
+            <th>Start Date</th>
+            <th>End Date</th>
             <th>Published</th>
             @canany(['event-edit', 'event-delete', 'event-list'])
             <th>Options</th>
