@@ -63,7 +63,11 @@
                                 }
                                 @if($route == 'events')
                                     let previewElem = $('.dz-preview').has('img[alt="'+value.name+'"]').last();
-                                    $(previewElem).append('Select as cover <input type="radio" name="cover" value="'+value.name+'" class="cover-radio">')
+                                    if('{{$event->cover}}' == value.name){
+                                        $(previewElem).append('Select as cover <input type="radio" name="cover" checked value="'+value.name+'" class="cover-radio">')
+                                    } else{
+                                        $(previewElem).append('Select as cover <input type="radio" name="cover" value="'+value.name+'" class="cover-radio">')
+                                    }
                                 @endif
                             });
                         },

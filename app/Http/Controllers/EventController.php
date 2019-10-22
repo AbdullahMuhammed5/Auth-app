@@ -174,10 +174,8 @@ class EventController extends Controller
 
         $published = true;
         if ($today >= $start && $today <= $end){
-//            dump("date has been come");
             $event->update(['published' => $published ]);
         }else{
-//            dump("not yet");
             $event->update(['published' => !$published ]);
         }
     }

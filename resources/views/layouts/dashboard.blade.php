@@ -390,7 +390,7 @@
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 
 <!-- Data picker -->
-<script src="{{asset('js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+{{--<script src="{{asset('js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>--}}
 
 <!-- Date range use moment.js same as full calendar plugin -->
 <script src="{{ asset('js/plugins/fullcalendar/moment.min.js') }}"></script>
@@ -425,17 +425,11 @@
                 responsive: true
             });
         }
-        $('.datetimepicker').datetimepicker();
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            minDate: new Date(),
+        });
     });
-
-    // $('#data_5 .input-daterange').datepicker({
-    //     keyboardNavigation: false,
-    //     format: 'yy/mm/dd',
-    //     forceParse: false,
-    //     autoclose: true
-    // });
-
-
 
 </script>
 @stack('dropzone-config')

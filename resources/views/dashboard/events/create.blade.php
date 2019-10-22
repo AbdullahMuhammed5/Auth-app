@@ -26,9 +26,9 @@
         </div>
         <div class="col-sm-12" style=" margin-bottom: 30px;">
             <div class="col-sm-6">
-                <div class="form-group" id="data_5">
+                <div class="form-group">
                     <label class="font-normal">Range select</label>
-                    <div class="input-daterange input-group" id="datepicker">
+                    <div class="input-group">
                         <div class='input-group date datetimepicker'>
                         {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
                             <span class="input-group-addon">

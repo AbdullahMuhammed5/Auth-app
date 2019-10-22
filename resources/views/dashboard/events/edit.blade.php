@@ -25,7 +25,7 @@
         <div class="col-sm-12">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Related News:</label>
+                    <label>Invited users:</label>
                     <select data-placeholder="Select Visitors ..." name="visitors[]" multiple class="chosen-select">
                         @foreach($allVisitors as $key => $value)
                             @if(in_array($key, $invited))
@@ -41,26 +41,24 @@
                 <div class="form-group" id="data_5">
                     <label class="font-normal">Range select</label>
                     <div class="input-daterange input-group" id="datepicker">
-                        <div class="input-daterange input-group" id="datepicker">
-                            <div class='input-group date datetimepicker'>
-                                {!! Form::text('start_date', null, array('class' => 'input-sm form-control')) !!}
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                        <div class='input-group date datetimepicker'>
+                            {!! Form::text('start_date', null , array('class' => 'input-sm form-control')) !!}
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                            </div>
-                            <span class="input-group-addon">to</span>
-                            <div class='input-group date datetimepicker'>
-                                {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
+                        </div>
+                        <span class="input-group-addon">to</span>
+                        <div class='input-group date datetimepicker'>
+                            {!! Form::text('end_date', null, array('class' => 'input-sm form-control')) !!}
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-12">
             <div class="form-group">
                 <label for="location">Location</label>
