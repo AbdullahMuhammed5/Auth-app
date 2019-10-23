@@ -45,6 +45,20 @@ class Event extends Model
         $query->whereIsPublished(True);
     }
 
+    public function scopeDateHasCame($query)
+    {
+        $now_formatted = Carbon::now()->format('Y-m-d H:i:s');
+        $query->where('start_date', '<=', $now_formatted) // start date passed today
+            ->where('end_date', '>=', $now_formatted); // end date not passed today
+    }
+
+    public function scopeDateNotComeYet($query)
+    {
+        $now_formatted = Carbon::now()->format('Y-m-d H:i:s');
+        $query->where('start_date', '>=', $now_formatted) // today not come yet
+            ->orWhere('end_date', '<=', $now_formatted); // today is passed
+    }
+
     public function setStartDateAttribute($date)
     {
         return $this->attributes['start_date'] = Carbon::parse($date);

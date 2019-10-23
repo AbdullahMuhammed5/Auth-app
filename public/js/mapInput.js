@@ -1,6 +1,7 @@
 function initialize() {
 
     $('form').on('keyup keypress', function(e) {
+        console.log(this)
         let keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
             e.preventDefault();

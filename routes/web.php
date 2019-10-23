@@ -53,7 +53,6 @@ Route::resource('events', 'EventController');
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('staffToggleStatus');
 Route::put('toggleVisitorStatus/{visitor}', 'VisitorController@toggleActivity')->name('visitorToggleStatus');
 Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name('togglePublishNews');
-Route::put('checkPublishing/{event}', 'EventController@togglePublishing')->name('checkPublishing');
 
 // File uploads APIs
 Route::prefix('files')->group(function() {

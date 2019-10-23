@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Event;
 use App\Events\InvitationEvent;
 use App\Http\Requests\EventRequest;
-use App\Invited;
 use App\Traits\UploadFile;
 use App\Visitor;
 use Illuminate\Http\Request;
@@ -38,10 +37,10 @@ class EventController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', 'dashboard.events.ActionButtons')
                 ->addColumn('published', function($row){
-                    $this->togglePublishing($row);
                     return view('dashboard.events.toggleButton', compact('row'));
                 })
-                ->rawColumns(['action', 'published'])
+                ->addColumn('cover', 'dashboard.events.image')
+                ->rawColumns(['action', 'published', 'cover'])
                 ->make(true);
         }
         return view('dashboard.events.index', compact('columns'));
@@ -65,7 +64,6 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-//        dd($request->all());
         $event = Event::create($request->all());
 
         if ($visitors = $request['visitors']){
@@ -117,7 +115,7 @@ class EventController extends Controller
         $event->update($request->all());
 
         if ($visitors = $request->visitors){
-            $event->visitors()->delete(); // delete old invitedVisitors event
+            $event->visitors()->delete(); // delete old invitedVisitors
             $event->visitors()->attach($visitors);
         }
         if ($images = $request['images']){
@@ -146,6 +144,7 @@ class EventController extends Controller
     {
         return [
             ['data' => 'id', 'name' => 'id'],
+            ['data' => 'cover', 'name' => 'cover'],
             ['data' => 'main_title', 'name' => 'main_title'],
             ['data' => 'secondary_title', 'name' => 'secondary_title'],
             ['data' => 'location', 'name' => 'location'],
@@ -164,20 +163,6 @@ class EventController extends Controller
             array_push($inputs, [$fillableColumn => $value]);
         }
         return $inputs;
-    }
-
-    // publish event or un publish it
-    public function togglePublishing(Event $event){
-        $start = strtotime($event->start_date);
-        $end = strtotime($event->end_date);
-        $today = strtotime(date("Y-m-d h:i:s"));
-
-        $published = true;
-        if ($today >= $start && $today <= $end){
-            $event->update(['published' => $published ]);
-        }else{
-            $event->update(['published' => !$published ]);
-        }
     }
 
     // get related event based on search

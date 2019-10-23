@@ -6,6 +6,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>Cover</th>
             <th>Main Title</th>
             <th>Secondary Title</th>
             <th>Location</th>
