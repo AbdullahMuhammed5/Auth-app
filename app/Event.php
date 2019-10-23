@@ -26,10 +26,6 @@ class Event extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function files(){
-        return $this->morphMany(File::class, 'fileble');
-    }
-
     public function visitors(){
         return $this->belongsToMany(Visitor::class);
     }
@@ -69,19 +65,19 @@ class Event extends Model
         return $this->attributes['end_date'] =  Carbon::parse($date);
     }
 
-//    public function getStartDateAttribute($date)
-//    {
-////        $date = Carbon::parse($date);
-////        $days = $date->diffInDays($date);
-////        dd($days);
-////        $hours = $date->copy()->addDays($days)->diffInHours($date);
-////        $minutes = $date->copy()->addDays($days)->addHours($hours)->diffInMinutes($date);
-////        return $minutes;
-//        return Carbon::parse($date)->diffForHumans();
-//    }
+    public function getStartDateAttribute($date)
+    {
+//        $date = Carbon::parse($date);
+//        $days = $date->diffInDays($date);
+//        dd($days);
+//        $hours = $date->copy()->addDays($days)->diffInHours($date);
+//        $minutes = $date->copy()->addDays($days)->addHours($hours)->diffInMinutes($date);
+//        return $minutes;
+        return Carbon::parse($date)->diffForHumans();
+    }
 
-//    public function getEndDateAttribute($date)
-//    {
-//        return Carbon::parse($date)->diffForHumans();
-//    }
+    public function getEndDateAttribute($date)
+    {
+        return Carbon::parse($date)->diffForHumans();
+    }
 }

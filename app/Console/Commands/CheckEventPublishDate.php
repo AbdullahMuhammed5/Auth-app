@@ -38,7 +38,6 @@ class CheckEventPublishDate extends Command
      */
     public function handle()
     {
-        date_default_timezone_set('Africa/Cairo');
         Event::DateHasCame()->update(['published' => true]);
         Event::DateNotComeYet()->update(['published' => false]);
         $this->info('All events status has been checked and updated!');
