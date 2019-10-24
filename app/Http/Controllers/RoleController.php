@@ -14,8 +14,6 @@ use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
-    use HelperMethods;
-
     public function __construct()
     {
         $this->authorizeResource(Role::class);

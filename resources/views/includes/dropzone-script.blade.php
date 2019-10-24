@@ -46,11 +46,13 @@
 
                         $.get({
                         @if(isset($news))
-                            url: '{{ url("/files/getById/$news->id") }}',
+                            url: '{{ url("/files/getFiles", $news) }}',
                             @elseif(isset($event))
-                            url: '{{ url("/files/getById/$event->id") }}',
+{{--                            @dd($event)--}}
+                            url: '{{ url("/files/getFiles" , $event) }}',
+                            data: { data: '{{$event}}' },
                         @endif
-                        headers: headers ,
+                        headers: headers,
                         success : function(data) {
 
                             $.each(data, function(key, value){

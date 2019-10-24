@@ -32,10 +32,12 @@ class FileUploadController extends Controller
         return $filename;
     }
 
-    public function getById($id) // get data for dropzone init function
+    public function getFiles(Request $request) // get data for dropzone init function
     {
-        $images = Image::where('imageable_id', $id)->get('path')->toArray();
-        $files = File::where('fileble_id', $id)->get('path')->toArray();
+        dd($request['data']);
+        $images = $model->images;
+dd($images);
+        $files = File::$model->files;
 
         $files = array_merge($files, $images);
         $result = [];

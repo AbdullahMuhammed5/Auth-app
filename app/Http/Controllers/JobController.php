@@ -14,8 +14,6 @@ use Yajra\DataTables\DataTables;
 
 class JobController extends Controller
 {
-    use HelperMethods;
-
     public function __construct()
     {
         $this->authorizeResource(Job::class);

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -50,10 +51,25 @@ class Staff extends Model{
     }
 
     /**
+     * Scope a query to only include Active Visitors.
+     *
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeActive($query)
+    {
+        $query->whereIsActive(True);
+    }
+
+    /**
      * Get the Staff's image.
      */
     public function image()
     {
         return $this->morphOne('App\Image', 'imageable');
+    }
+
+    public function folders(){
+        return $this->belongsToMany(Folder::class);
     }
 }

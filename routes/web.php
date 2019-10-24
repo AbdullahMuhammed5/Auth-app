@@ -28,8 +28,10 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/dashboard', function () {
         return view('dashboard.index');
     })->name('dashboard');
+//    Route::get('/library', function () {
+//        return view('dashboard.library.folders.index');
+//    })->name('library');
 });
-
 
 Route::prefix('jobs')->group(function(){
     Route::get('', 'JobController@index')->name('jobs.index');
@@ -48,6 +50,7 @@ Route::resource('staffs', 'StaffController');
 Route::resource('visitors', 'VisitorController');
 Route::resource('news', 'NewsController');
 Route::resource('events', 'EventController');
+Route::resource('folders', 'FolderController');
 
 // Toggle buttons APIs
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('staffToggleStatus');
@@ -58,12 +61,13 @@ Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name(
 Route::prefix('files')->group(function() {
     Route::post('store', 'FileUploadController@fileStore');
     Route::post('delete', 'FileUploadController@fileDestroy');
-    Route::get('getById/{id}', 'FileUploadController@getById');
+    Route::get('getFiles/{model}', 'FileUploadController@getFiles')->name('files.getFiles');
 });
 
 // get data
 Route::get('/getCities/{id}','CityController@getCities');
 Route::get('/getRelated','NewsController@getRelated');
 Route::get('/getInvited','EventController@getInvited');
+Route::get('/getAuthorized','FolderController@getAuthorized');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');
 

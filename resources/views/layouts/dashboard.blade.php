@@ -19,6 +19,7 @@
     <link href="{{ asset('css/plugins/dropzone/basic.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/codemirror/codemirror.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
 {{--    <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
@@ -148,6 +149,18 @@
                             <li><a href="{{ route('events.index') }}">All</a></li>
                             @can('event-create')
                                 <li><a href="{{ route('events.create') }}">Add Event</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
+                @can('folder-list')
+                    <li class="{{ Request::is('folders', 'folders/*') ? 'active' : '' }}">
+                        <a href="{{ route('folders.index') }}"><i class="fa fa-files-o"></i><span class="nav-label">Library</span>
+                            <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="{{ route('folders.index') }}">All</a></li>
+                            @can('folder-create')
+                                <li><a href="{{ route('folders.create') }}">Add Folder</a></li>
                             @endcan
                         </ul>
                     </li>
@@ -298,7 +311,9 @@
                         use Illuminate\Support\Facades\DB;
                         $segments = '';
                         ?>
-                    @if (!Request::is('staffs/*') && !Request::is('visitors/*') && !Request::is('news/*' && !Request::is('news/*')))
+                    @if (!Request::is('staffs/*') && !Request::is('visitors/*')
+                        && !Request::is('news/*') && !Request::is('events/*')
+                        && !Request::is('folders/*') && !Request::is('library'))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>
@@ -400,6 +415,8 @@
 <!-- DROPZONE -->
 <script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>--}}
+
+
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize" async defer></script>
 <script src="{{ asset('js/mapInput.js') }}"></script>
