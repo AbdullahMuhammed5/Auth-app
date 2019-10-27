@@ -23,12 +23,13 @@ class FolderController extends Controller
         $columns = json_encode($this->getColumns());
 //        dd($data);
         if ($request->ajax()) {
-            $data = Folder::latest()->with('authorizedUsers.user')->get();
+            $data = Folder::latest()->with('authorizedUsers.user');
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('actions', 'includes.ActionButtons')
+                ->addColumn('name', 'dashboard.library.folders.image')
+                ->addColumn('actions', 'dashboard.library.folders.ActionButtons')
                 ->addColumn('authorized_users', 'dashboard.library.folders.authorizedUsers')
-                ->rawColumns(['actions', 'authorized_users'])
+                ->rawColumns(['name', 'actions', 'authorized_users'])
                 ->make(true);
         }
         return view('dashboard.library.folders.index', compact('columns'));
@@ -55,9 +56,9 @@ class FolderController extends Controller
         $folder = Folder::create($request->all());
 
         if ($users = $request['users']){
-            $folder->authorizedUsers()->attach($users);
+            $folder->authorizedUsers()->sync($users);
         }
-        return redirect()->route('library.folders.index')
+        return redirect()->route('folders.index')
             ->with('success', 'Folder created successfully');
     }
 
@@ -75,35 +76,45 @@ class FolderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Folder  $folder
+     * @param Folder $folder
      * @return Response
      */
     public function edit(Folder $folder)
     {
-        //
+        $authorizedUsers = $folder->authorizedUsers()
+            ->with('user:id,first_name,last_name')->get()
+            ->pluck('user.full_name', 'id');
+        $selected = $folder->authorizedUsers->pluck('id')->all();
+        return view('dashboard.library.folders.edit', compact('folder', 'authorizedUsers', 'selected'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Folder  $folder
+     * @param Folder $folder
      * @return Response
      */
     public function update(Request $request, Folder $folder)
     {
-        //
+        $folder->update($request->all());
+        $folder->authorizedUsers()->sync($request['users']);
+        return redirect()->route('folders.index')
+            ->with('success', 'Folder updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Folder  $folder
+     * @param Folder $folder
      * @return Response
+     * @throws \Exception
      */
     public function destroy(Folder $folder)
     {
-        //
+        $folder->delete();
+        return redirect()->route('folders.index')
+            ->with('error', 'Folder deleted successfully');
     }
 
     public function getColumns()
@@ -111,6 +122,7 @@ class FolderController extends Controller
         return [
             ['data' => 'id', 'name' => 'id'],
             ['data'=> 'name', 'name'=> 'name'],
+            ['data'=> 'description', 'name'=> 'description'],
             ['data'=> 'authorized_users', 'name'=> 'authorized_users'],
             ['data'=> 'actions', 'name'=> 'actions', 'orderable'=> false, 'searchable'=> false],
         ];

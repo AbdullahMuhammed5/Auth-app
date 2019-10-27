@@ -12,9 +12,9 @@ class Folder extends Model
     protected $table = 'folders';
 
     protected $fillable = [
-        'name'
+        'name' ,'description'
     ];
-    
+
     public function images(){
         return $this->morphMany(Image::class, 'imageable');
     }

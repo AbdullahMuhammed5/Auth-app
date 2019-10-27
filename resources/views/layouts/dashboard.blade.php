@@ -27,6 +27,7 @@
     <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
     <link href="{{ asset('css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css')}}" rel="stylesheet">
 
 </head>
 

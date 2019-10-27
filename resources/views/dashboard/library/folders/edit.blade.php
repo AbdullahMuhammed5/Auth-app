@@ -1,21 +1,20 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>Create new File</h1>
+    <h1>{{$folder->name}}</h1>
     <hr>
-    {!! Form::open(array('route' => 'folders.store','method'=>'POST', 'files' => true)) !!}
+    {!! Form::model($folder, ['method' => 'PATCH','route' => ['folders.update', $folder->id]]) !!}
     <div class="row">
-
         <div class="col-sm-6">
             <div class="form-group">
-                <label>Folder Name:</label>
-                {!! Form::text('name', null, ['class' => "form-control", 'placeholder'=>'Name']) !!}
+                <strong>Name:</strong>
+                {!! Form::text('name', null, array('class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Authorized Users:</label>
-                {!! Form::select('users[]', [], null, ["data-placeholder"=>"Select Authorized Users ...", 'multiple', "class"=>"chosen-select"]) !!}
+                {!! Form::select('users[]', $authorizedUsers, $selected, ["data-placeholder"=>"Select Authorized Users ...", 'multiple', "class"=>"chosen-select"]) !!}
             </div>
         </div>
         <div class="col-sm-12">
@@ -29,9 +28,5 @@
         </div>
     </div>
     {!! Form::close() !!}
-@endsection
 
-@push('code-mirror')
-    <script href="{{ asset('js/plugins/codemirror/codemirror.js') }}" rel="stylesheet"></script>
-    <script src="{{ asset('js/plugins/codemirror/mode/xml/xml.js') }}"></script>
-@endpush
+@endsection

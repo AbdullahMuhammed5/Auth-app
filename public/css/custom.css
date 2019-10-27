@@ -1,0 +1,30 @@
+.actions-td{
+    display: flex;
+    place-items: flex-end;
+    justify-content: space-evenly;
+}
+
+#output {
+    padding: 20px;
+    background: #dadada;
+}
+
+#select-related {
+    width: 300px;
+}
+
+.dz-image img{
+    width: 100%;
+}
+
+#edit-news-form .dz-filename{
+    display: none;
+}
+
+#edit-news-form .dz-progress{
+    display: none;
+}
+
+td:has(img[alt='Folder Icon']){
+    text-align: center;
+}

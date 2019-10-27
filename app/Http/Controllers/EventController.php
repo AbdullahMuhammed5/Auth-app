@@ -115,8 +115,7 @@ class EventController extends Controller
         $event->update($request->all());
 
         if ($visitors = $request->visitors){
-            $event->visitors()->delete(); // delete old invitedVisitors
-            $event->visitors()->attach($visitors);
+            $event->visitors()->sync($visitors);
         }
         if ($images = $request['images']){
             $event->images()->createMany($this->getInputs($images, 'path'));

@@ -48,7 +48,6 @@
                         @if(isset($news))
                             url: '{{ url("/files/getFiles", $news) }}',
                             @elseif(isset($event))
-{{--                            @dd($event)--}}
                             url: '{{ url("/files/getFiles" , $event) }}',
                             data: { data: '{{$event}}' },
                         @endif

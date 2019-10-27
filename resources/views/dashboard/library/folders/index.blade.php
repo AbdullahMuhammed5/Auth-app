@@ -7,6 +7,7 @@
         <tr>
             <th>ID</th>
             <th>Folder Name</th>
+            <th>Description</th>
             <th>Users</th>
             @canany(['folder-edit', 'folder-delete', 'folder-list'])
                 <th>Options</th>
