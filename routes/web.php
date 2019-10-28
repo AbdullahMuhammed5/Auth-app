@@ -28,9 +28,6 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/dashboard', function () {
         return view('dashboard.index');
     })->name('dashboard');
-//    Route::get('/library', function () {
-//        return view('dashboard.library.folders.index');
-//    })->name('library');
 });
 
 Route::prefix('jobs')->group(function(){
@@ -51,6 +48,10 @@ Route::resource('visitors', 'VisitorController');
 Route::resource('news', 'NewsController');
 Route::resource('events', 'EventController');
 Route::resource('folders', 'FolderController');
+Route::resource('files', 'FileController');
+Route::resource('images', 'ImageController');
+Route::resource('videos', 'VideoController');
+
 
 // Toggle buttons APIs
 Route::put('toggleStaffStatus/{staff}', 'StaffController@toggleActivity')->name('staffToggleStatus');

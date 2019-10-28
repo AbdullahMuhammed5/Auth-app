@@ -3,12 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class File extends Model
+class Video extends Model
 {
-//    use SoftDeletes;
-
     protected $fillable = [
         'path'
     ];
@@ -16,10 +13,8 @@ class File extends Model
     /**
      * Get the owning imageable model.
      */
-    public function fileble()
+    public function videoable()
     {
         return $this->morphTo();
     }
-
-
 }

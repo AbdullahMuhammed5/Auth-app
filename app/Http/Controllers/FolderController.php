@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Folder;
 use App\Staff;
 use Illuminate\Http\Request;
@@ -70,7 +71,13 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        //
+        $files = $folder->library()->get();
+        $filePath = $folder->files()->pluck('path')->first();
+        $imgPath = $folder->images()->pluck('path')->first();
+        $vidPath = $folder->videos()->pluck('path')->first();
+//        dd($vidPath);
+        $paths = ['filePath' => $filePath, 'imgPath' => $imgPath,'vidPath' => $vidPath];
+        return view('dashboard.library.folders.show', compact('files', 'folder', 'paths'));
     }
 
     /**

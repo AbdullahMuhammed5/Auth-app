@@ -21,7 +21,7 @@
         <div class="col-sm-12">
             <div class="form-group">
                 <label>Description:</label>
-                {!! Form::textarea('description', null, ['class' => "form-control", 'placeholder'=>'Description']) !!}
+                {!! Form::textarea('description', null, ['class' => "form-control", 'placeholder'=>'Description','rows'=>3]) !!}
             </div>
         </div>
         <div class="col-sm-12 text-center">
