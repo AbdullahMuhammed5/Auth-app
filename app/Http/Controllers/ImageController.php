@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LibraryRequest;
 use App\Library;
+use App\LibraryImage;
 use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -44,11 +45,12 @@ class ImageController extends Controller
      */
     public function store(LibraryRequest $request)
     {
-        $image = Library::create(array_merge($request->all(), ['type' => $this->type]));
+//        dd($request->all());
+        $image = Library::create($request->all());
 
         if($request->hasFile('image')){
             $path = $this->upload($request['image']);
-            $image->folder->images()->create(['path' => $path]);
+            $image->image()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -74,7 +76,8 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $image = LibraryImage::whereId($id)->first();
+        return view('dashboard.library.images.edit', compact('image'));
     }
 
     /**
@@ -86,7 +89,16 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $image = LibraryImage::whereId($id)->first();
+        $image->update($request->all());
+
+        if($request->hasFile('image')){
+            $path = $this->upload($request['image']);
+            $image->image()->update(['path' => $path]);
+        }
+
+        return redirect()->route('folders.show', $image->folder->id)
+            ->with('success', 'File created successfully');
     }
 
     /**
@@ -97,6 +109,9 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $image = LibraryImage::whereId($id)->first();
+        $image->delete();
+        return redirect()->route('folders.show', $image->folder->id)
+            ->with('success', 'File deleted successfully');
     }
 }

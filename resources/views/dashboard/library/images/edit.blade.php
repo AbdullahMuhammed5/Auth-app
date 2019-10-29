@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <h1>{{$folder->name}}</h1>
+    <h1>Edit {{$image->name}}</h1>
     <hr>
-    {!! Form::model($folder, ['method' => 'PATCH','route' => ['folders.update', $folder->id]]) !!}
+    {!! Form::model($image, ['method' => 'PATCH','route' => ['images.update', $image->id], 'files'=>true]) !!}
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -13,8 +13,19 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <label>Authorized Users:</label>
-                {!! Form::select('users[]', $authorizedUsers, $selected, ["data-placeholder"=>"Select Authorized Users ...", 'multiple', "class"=>"chosen-select"]) !!}
+                <label>Select Image:</label>
+                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="form-control" data-trigger="fileinput">
+                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                        <span class="fileinput-filename"></span>
+                    </div>
+                    <span class="input-group-addon btn btn-default btn-file">
+                    <span class="fileinput-new">Select Image</span>
+                    <span class="fileinput-exists">Change</span>
+                    {!! Form::file('image') !!}
+                </span>
+                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                </div>
             </div>
         </div>
         <div class="col-sm-12">

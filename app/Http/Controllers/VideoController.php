@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Library;
+use App\LibraryVideo;
 use App\Traits\UploadFile;
 use App\Video;
 use Illuminate\Http\Request;
@@ -44,11 +45,14 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        $video = Library::create(array_merge($request->all(), ['type' => $this->type]));
+        $video = Library::create($request->all());
 
         if($request->hasFile('video')){
             $path = $this->upload($request['video']);
-            $video->folder->videos()->create(['path' => $path]);
+            $video->video()->create(['path' => $path]);
+        } else if($request->video){
+            $path = $this->getYoutubeID($request['video']);
+            $video->video()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -69,34 +73,65 @@ class VideoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Video  $video
+     * @param $id
      * @return Response
      */
-    public function edit(Video $video)
+    public function edit($id)
     {
-        //
+        $video = LibraryVideo::whereId($id)->first();
+        return view('dashboard.library.videos.edit', compact('video'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Video  $video
+     * @param $id
      * @return Response
      */
-    public function update(Request $request, Video $video)
+    public function update(Request $request, $id)
     {
-        //
+        $video = Library::whereId($id)->first();
+        $video->update($request->all());
+
+        if($request->hasFile('video')){
+            $path = $this->upload($request['video']);
+            $video->video()->update(['path' => $path]);
+        } else if($request->video){
+            $path = $this->getYoutubeID($request['video']);
+            $video->video()->update(['path' => $path]);
+        }
+
+        return redirect()->route('folders.show', $video->folder->id)
+            ->with('success', 'Video created successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Video  $video
-     * @return Response
+     * @param $id
+     * @return void
      */
-    public function destroy(Video $video)
+    public function destroy($id)
     {
-        //
+        $video = LibraryVideo::whereId($id)->first();
+        $video->delete();
+        return redirect()->route('folders.show', $video->folder->id)
+            ->with('success', 'Video deleted successfully');
     }
+
+    public function getYoutubeID($url)
+    {
+        if(strlen($url) > 11)
+        {
+            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match))
+            {
+                return $match[1];
+            }
+            else
+                return false;
+        }
+        return $url;
+    }
+
 }

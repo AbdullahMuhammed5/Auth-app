@@ -22,18 +22,18 @@
         @foreach($files as $file)
             <tr class="gradeX">
                 <td>{{ $file->id }}</td>
-                @if($file->type == 'Image')
-                <td><img src="{{Storage::url( $paths['imgPath'] )}}" style="width: 40px" alt=""></td>
-                @elseif($file->type == 'File')
-                <td><img src="{{asset('img/file.png')}}" alt="" style="width: 40px"></td>
-                @elseif($file->type == 'Video')
-                <td><img src="{{asset('img/video.jpg')}}" alt="" style="width: 40px"></td>
+                @if($file->image && $rowRoute = 'images')
+                <td style="text-align: center"><img src="{{Storage::url( $file->image->path )}}" style="width: 40px" alt=""></td>
+                @elseif($file->file && $rowRoute = 'files')
+                    <td style="text-align: center"><img src="{{asset('img/file.png')}}" alt="" style="width: 40px"></td>
+                @elseif($file->video && $rowRoute = 'videos')
+                    <td style="text-align: center"><img src="{{asset('img/video.jpg')}}" alt="" style="width: 40px"></td>
                 @endif
                 <td>{{ $file->name }}</td>
                 <td>{{ $file->description }}</td>
                 <td>
-                    <a href="{{ route('file.edit', $city->id) }}" class="btn btn-primary">edit</a>
-                    {!! Form::open(['method' => 'DELETE','route' => ['cities.destroy', $city->id],'style'=>'display:inline']) !!}
+                    <a href="{{ route($rowRoute.'.edit', $file->id) }}" class="btn btn-primary">edit</a>
+                    {!! Form::open(['method' => 'DELETE','route' => [$rowRoute.'.destroy', $file->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                 </td>

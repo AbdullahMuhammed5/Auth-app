@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Folder;
 use App\Http\Requests\LibraryRequest;
 use App\Library;
+use App\LibraryFile;
 use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -45,11 +45,12 @@ class FileController extends Controller
      */
     public function store(LibraryRequest $request)
     {
-        $file = Library::create(array_merge($request->all(), ['type' => $this->type]));
+//        dd($request->all());
+        $file = Library::create($request->all());
 
         if($request->hasFile('file')){
             $path = $this->upload($request['file']);
-            $file->folder->files()->create(['path' => $path]);
+            $file->file()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -75,7 +76,8 @@ class FileController extends Controller
      */
     public function edit($id)
     {
-        //
+        $file = LibraryFile::whereId($id)->first();
+        return view('dashboard.library.files.edit', compact('file'));
     }
 
     /**
@@ -87,7 +89,16 @@ class FileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $file = LibraryFile::whereId($id)->first();
+        $file->update($request->all());
+
+        if($request->hasFile('file')){
+            $path = $this->upload($request['file']);
+            $file->file()->update(['path' => $path]);
+        }
+
+        return redirect()->route('folders.show', $file->folder->id)
+            ->with('success', 'File created successfully');
     }
 
     /**
@@ -98,6 +109,9 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $file = LibraryFile::whereId($id)->first();
+        $file->delete();
+        return redirect()->route('folders.show', $file->folder->id)
+            ->with('success', 'File deleted successfully');
     }
 }

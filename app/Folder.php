@@ -15,18 +15,6 @@ class Folder extends Model
         'name' ,'description'
     ];
 
-    public function images(){
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
-    public function files(){
-        return $this->morphMany(File::class, 'fileble');
-    }
-
-    public function videos(){
-        return $this->morphMany(Video::class, 'videoable');
-    }
-
     public function library()
     {
         return $this->hasMany(Library::class);

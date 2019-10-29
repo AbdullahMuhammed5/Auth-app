@@ -22,7 +22,6 @@ class CreateLibraryTable extends Migration
                 ->references('id')
                 ->on('folders')
                 ->onDelete('cascade');
-            $table->string('type', 50);
             $table->timestamps();
             $table->softDeletes();
         });

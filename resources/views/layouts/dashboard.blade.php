@@ -314,7 +314,9 @@
                         ?>
                     @if (!Request::is('staffs/*') && !Request::is('visitors/*')
                         && !Request::is('news/*') && !Request::is('events/*')
-                        && !Request::is('folders/*') && !Request::is('library'))
+                        && !Request::is('folders/*') && !Request::is('library')
+                        && !Request::is('files/*') && !Request::is('videos/*')
+                        && !Request::is('images/*'))
                         @foreach(Request::segments() as $segment)
                             <?php $segments .= '/'.$segment;?>
                             <li>

@@ -26,7 +26,6 @@ class LibraryRequest extends FormRequest
         return [
             'name' => 'required|max:150|min:3',
             'description' => 'required|max:250|min:3',
-            'folder_id' => 'required',
         ];
     }
 }

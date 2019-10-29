@@ -22,7 +22,6 @@ class FolderController extends Controller
     public function index(Request $request)
     {
         $columns = json_encode($this->getColumns());
-//        dd($data);
         if ($request->ajax()) {
             $data = Folder::latest()->with('authorizedUsers.user');
             return Datatables::of($data)
@@ -72,12 +71,7 @@ class FolderController extends Controller
     public function show(Folder $folder)
     {
         $files = $folder->library()->get();
-        $filePath = $folder->files()->pluck('path')->first();
-        $imgPath = $folder->images()->pluck('path')->first();
-        $vidPath = $folder->videos()->pluck('path')->first();
-//        dd($vidPath);
-        $paths = ['filePath' => $filePath, 'imgPath' => $imgPath,'vidPath' => $vidPath];
-        return view('dashboard.library.folders.show', compact('files', 'folder', 'paths'));
+        return view('dashboard.library.folders.show', compact( 'folder', 'files'));
     }
 
     /**

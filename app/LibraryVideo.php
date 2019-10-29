@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class LibraryImage extends Model
+class LibraryVideo extends Model
 {
     use SoftDeletes;
 
