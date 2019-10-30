@@ -22,11 +22,11 @@
         @foreach($files as $file)
             <tr class="gradeX">
                 <td>{{ $file->id }}</td>
-                @if($file->image && $rowRoute = 'images')
-                <td style="text-align: center"><img src="{{Storage::url( $file->image->path )}}" style="width: 40px" alt=""></td>
-                @elseif($file->file && $rowRoute = 'files')
+                @if(count($file->images) && $rowRoute = 'images')
+                <td style="text-align: center"><img src="{{Storage::url( $file->images[0]['path'] )}}" style="width: 40px" alt=""></td>
+                @elseif(count($file->files) && $rowRoute = 'files')
                     <td style="text-align: center"><img src="{{asset('img/file.png')}}" alt="" style="width: 40px"></td>
-                @elseif($file->video && $rowRoute = 'videos')
+                @elseif(count($file->videos) && $rowRoute = 'videos')
                     <td style="text-align: center"><img src="{{asset('img/video.jpg')}}" alt="" style="width: 40px"></td>
                 @endif
                 <td>{{ $file->name }}</td>

@@ -8,6 +8,7 @@ use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
 class FolderController extends Controller
@@ -22,8 +23,17 @@ class FolderController extends Controller
     public function index(Request $request)
     {
         $columns = json_encode($this->getColumns());
+//        dd($userPermissions);
+//        dump($data);
         if ($request->ajax()) {
-            $data = Folder::latest()->with('authorizedUsers.user');
+            if (auth()->user()->hasRole('Admin')){
+                $data = Folder::latest()->with('authorizedUsers.user.permissions')->get();
+            }else{
+                $userPermissions = auth()->user()->permissions()->where('name', 'like', '%crud%')->pluck('id');
+                $data = Folder::whereHas('authorizedUsers.user.permissions', function ($query) use ($userPermissions){
+                    $query->whereIn('permission_id', $userPermissions);
+                })->with('authorizedUsers.user')->get();
+            }
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', 'dashboard.library.folders.image')
@@ -54,9 +64,13 @@ class FolderController extends Controller
     public function store(Request $request)
     {
         $folder = Folder::create($request->all());
-
         if ($users = $request['users']){
-            $folder->authorizedUsers()->sync($users);
+            $folder->authorizedUsers()->attach($users);
+            $newPermission = Permission::create(['name' => $folder->name.'-crud']);
+            $authorizedUSer = $folder->authorizedUsers()->with('user')->get();
+            foreach ($authorizedUSer as $user){
+                $user->user->givePermissionTo($newPermission);
+            }
         }
         return redirect()->route('folders.index')
             ->with('success', 'Folder created successfully');

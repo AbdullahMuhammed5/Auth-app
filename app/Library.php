@@ -10,26 +10,26 @@ class Library extends Model
     use SoftDeletes;
 
     protected $table = 'library';
-    protected $with = ['file', 'image', 'video'];
+    protected $with = ['files', 'images', 'videos'];
 
     protected $fillable = [
         'name' ,'description', 'type', 'folder_id'
     ];
 
-    public function folders()
+    public function folder()
     {
         return $this->belongsTo(Folder::class);
     }
 
-    public function file(){
-        return $this->morphOne(File::class, 'fileble');
+    public function files(){
+        return $this->morphMany(File::class, 'fileble');
     }
 
-    public function image(){
-        return $this->morphOne(Image::class, 'imageable');
+    public function images(){
+        return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function video(){
-        return $this->morphOne(Video::class, 'videoable');
+    public function videos(){
+        return $this->morphMany(Video::class, 'videoable');
     }
 }

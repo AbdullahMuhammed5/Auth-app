@@ -50,7 +50,7 @@ class ImageController extends Controller
 
         if($request->hasFile('image')){
             $path = $this->upload($request['image']);
-            $image->image()->create(['path' => $path]);
+            $image->images()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -76,7 +76,7 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        $image = LibraryImage::whereId($id)->first();
+        $image = Library::whereId($id)->first();
         return view('dashboard.library.images.edit', compact('image'));
     }
 
@@ -89,12 +89,12 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $image = LibraryImage::whereId($id)->first();
+        $image = Library::whereId($id)->first();
         $image->update($request->all());
 
         if($request->hasFile('image')){
             $path = $this->upload($request['image']);
-            $image->image()->update(['path' => $path]);
+            $image->images()->update(['path' => $path]);
         }
 
         return redirect()->route('folders.show', $image->folder->id)
@@ -109,7 +109,7 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        $image = LibraryImage::whereId($id)->first();
+        $image = Library::whereId($id)->first();
         $image->delete();
         return redirect()->route('folders.show', $image->folder->id)
             ->with('success', 'File deleted successfully');

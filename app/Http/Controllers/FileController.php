@@ -45,12 +45,11 @@ class FileController extends Controller
      */
     public function store(LibraryRequest $request)
     {
-//        dd($request->all());
         $file = Library::create($request->all());
 
         if($request->hasFile('file')){
             $path = $this->upload($request['file']);
-            $file->file()->create(['path' => $path]);
+            $file->files()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -76,7 +75,7 @@ class FileController extends Controller
      */
     public function edit($id)
     {
-        $file = LibraryFile::whereId($id)->first();
+        $file = Library::whereId($id)->first();
         return view('dashboard.library.files.edit', compact('file'));
     }
 
@@ -89,12 +88,12 @@ class FileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $file = LibraryFile::whereId($id)->first();
+        $file = Library::whereId($id)->first();
         $file->update($request->all());
 
         if($request->hasFile('file')){
             $path = $this->upload($request['file']);
-            $file->file()->update(['path' => $path]);
+            $file->files()->update(['path' => $path]);
         }
 
         return redirect()->route('folders.show', $file->folder->id)
@@ -109,7 +108,7 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
-        $file = LibraryFile::whereId($id)->first();
+        $file = Library::whereId($id)->first();
         $file->delete();
         return redirect()->route('folders.show', $file->folder->id)
             ->with('success', 'File deleted successfully');

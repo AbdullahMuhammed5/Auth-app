@@ -20,13 +20,13 @@
         <div class="col-sm-6">
             <div class="form-group">
                 {!! Form::label('Upload from your computer', null) !!}
-                {!! Form::radio('uploadMethod', 1, null, ['class'=>'i-checks']) !!}
+                {!! Form::radio('uploadMethod', 1, null, ['class'=>'i-checks', 'id'=>'computer', 'checked']) !!}
                 <br>
                 {!! Form::label('Upload from Youtube', null) !!}
-                {!! Form::radio('uploadMethod', 0, null, ['class'=>'i-checks']) !!}
+                {!! Form::radio('uploadMethod', 0, null, ['class'=>'i-checks', 'id'=>'youtube']) !!}
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6" id="from-computer">
             <div class="form-group">
                 <label>Select Video:</label>
                 <div class="fileinput fileinput-new input-group" data-provides="fileinput">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6" id="youtube-url-input" style="display: none">
             <div class="form-group">
                 <label>Youtube video:</label>
                 {!! Form::text('video', null, ['class' => "form-control", 'placeholder'=>'Youtube video url']) !!}

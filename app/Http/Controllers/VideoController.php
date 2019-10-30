@@ -49,10 +49,10 @@ class VideoController extends Controller
 
         if($request->hasFile('video')){
             $path = $this->upload($request['video']);
-            $video->video()->create(['path' => $path]);
+            $video->videos()->create(['path' => $path]);
         } else if($request->video){
             $path = $this->getYoutubeID($request['video']);
-            $video->video()->create(['path' => $path]);
+            $video->videos()->create(['path' => $path]);
         }
 
         return redirect()->route('folders.index')
@@ -78,7 +78,7 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        $video = LibraryVideo::whereId($id)->first();
+        $video = Library::whereId($id)->first();
         return view('dashboard.library.videos.edit', compact('video'));
     }
 
@@ -96,10 +96,10 @@ class VideoController extends Controller
 
         if($request->hasFile('video')){
             $path = $this->upload($request['video']);
-            $video->video()->update(['path' => $path]);
+            $video->videos()->update(['path' => $path]);
         } else if($request->video){
             $path = $this->getYoutubeID($request['video']);
-            $video->video()->update(['path' => $path]);
+            $video->videos()->update(['path' => $path]);
         }
 
         return redirect()->route('folders.show', $video->folder->id)
@@ -114,7 +114,7 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        $video = LibraryVideo::whereId($id)->first();
+        $video = Library::whereId($id)->first();
         $video->delete();
         return redirect()->route('folders.show', $video->folder->id)
             ->with('success', 'Video deleted successfully');

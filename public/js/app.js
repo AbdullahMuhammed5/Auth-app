@@ -142,11 +142,18 @@ $(function () {
         });
     });
 
-    $('input[type="radio"]').click(function () {
-        // if ($(this).is(':checked'))
-        // {
-            alert($(this).val());
-        // }
-    })
+    $('input[name="uploadMethod"]').on('ifClicked', function(event){
+        let fromComputer = $('#from-computer');
+        let youtubeInput = $('#youtube-url-input')
+        let id = event.target.id;
+
+        if (id === 'computer'){
+            $(fromComputer).show();
+            $(youtubeInput).hide();
+        } else if (id === 'youtube'){
+            $(fromComputer).hide();
+            $(youtubeInput).show();
+        }
+    });
 
 });
