@@ -13,18 +13,6 @@ class VideoController extends Controller
 {
     use UploadFile;
 
-    public $type = 'Video';
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -57,17 +45,6 @@ class VideoController extends Controller
 
         return redirect()->route('folders.index')
             ->with('success', 'Video created successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Video  $video
-     * @return Response
-     */
-    public function show(Video $video)
-    {
-        //
     }
 
     /**

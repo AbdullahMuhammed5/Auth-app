@@ -26,15 +26,9 @@ class FolderController extends Controller
     public function index(Request $request)
     {
         $columns = json_encode($this->getColumns());
+        $isAdmin = auth()->user()->hasRole('Admin');
         if ($request->ajax()) {
-            if (auth()->user()->hasRole('Admin')){
-                $data = Folder::latest();
-            }else{
-                $staffId = auth()->user()->staff->id;
-                $data = Folder::whereHas('authorizedUsers', function ($query) use ($staffId){
-                    $query->where('staff_id', $staffId);
-                })->get();
-            }
+            $data = $isAdmin ? Folder::latest() : auth()->user()->staff->folders;
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', 'dashboard.library.folders.image')

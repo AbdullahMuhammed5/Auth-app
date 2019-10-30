@@ -13,18 +13,6 @@ class ImageController extends Controller
 {
     use UploadFile;
 
-    public $type = 'Image';
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -40,12 +28,11 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param LibraryRequest $request
+     * @param Request $request
      * @return Response
      */
-    public function store(LibraryRequest $request)
+    public function store(Request $request)
     {
-//        dd($request->all());
         $image = Library::create($request->all());
 
         if($request->hasFile('image')){
@@ -57,16 +44,6 @@ class ImageController extends Controller
             ->with('success', 'Image created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

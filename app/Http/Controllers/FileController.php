@@ -12,18 +12,6 @@ use Illuminate\Http\Response;
 class FileController extends Controller
 {
     use UploadFile;
-    public $type = 'File';
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function index(Request $request)
-    {
-
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -54,17 +42,6 @@ class FileController extends Controller
 
         return redirect()->route('folders.index')
             ->with('success', 'File created successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
