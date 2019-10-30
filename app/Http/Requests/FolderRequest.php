@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LibraryImageRequest extends FormRequest
+class FolderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,7 @@ class LibraryImageRequest extends FormRequest
         return [
             'name' => 'required|max:150|min:3',
             'description' => 'required|max:250|min:3',
-            'folder_id' => 'required',
-            'image' => 'required|image|mimes:png,jpeg,jpg',
+            'users' => 'required|array',
         ];
     }
 }

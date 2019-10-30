@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\File;
 use App\Folder;
+use App\Http\Requests\FolderRequest;
 use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
 class FolderController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Folder::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,22 +26,19 @@ class FolderController extends Controller
     public function index(Request $request)
     {
         $columns = json_encode($this->getColumns());
-//        dd($userPermissions);
-//        dump($data);
         if ($request->ajax()) {
             if (auth()->user()->hasRole('Admin')){
-                $data = Folder::latest()->with('authorizedUsers.user.permissions')->get();
+                $data = Folder::latest();
             }else{
-                $userPermissions = auth()->user()->permissions()->where('name', 'like', '%crud%')->pluck('id');
-                $data = Folder::whereHas('authorizedUsers.user.permissions', function ($query) use ($userPermissions){
-                    $query->whereIn('permission_id', $userPermissions);
-                })->with('authorizedUsers.user')->get();
+                $staffId = auth()->user()->staff->id;
+                $data = Folder::whereHas('authorizedUsers', function ($query) use ($staffId){
+                    $query->where('staff_id', $staffId);
+                })->get();
             }
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', 'dashboard.library.folders.image')
                 ->addColumn('actions', 'dashboard.library.folders.ActionButtons')
-                ->addColumn('authorized_users', 'dashboard.library.folders.authorizedUsers')
                 ->rawColumns(['name', 'actions', 'authorized_users'])
                 ->make(true);
         }
@@ -58,19 +58,14 @@ class FolderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param FolderRequest $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(FolderRequest $request)
     {
         $folder = Folder::create($request->all());
         if ($users = $request['users']){
             $folder->authorizedUsers()->attach($users);
-            $newPermission = Permission::create(['name' => $folder->name.'-crud']);
-            $authorizedUSer = $folder->authorizedUsers()->with('user')->get();
-            foreach ($authorizedUSer as $user){
-                $user->user->givePermissionTo($newPermission);
-            }
         }
         return redirect()->route('folders.index')
             ->with('success', 'Folder created successfully');
@@ -106,11 +101,11 @@ class FolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param FolderRequest $request
      * @param Folder $folder
      * @return Response
      */
-    public function update(Request $request, Folder $folder)
+    public function update(FolderRequest $request, Folder $folder)
     {
         $folder->update($request->all());
         $folder->authorizedUsers()->sync($request['users']);
@@ -138,7 +133,6 @@ class FolderController extends Controller
             ['data' => 'id', 'name' => 'id'],
             ['data'=> 'name', 'name'=> 'name'],
             ['data'=> 'description', 'name'=> 'description'],
-            ['data'=> 'authorized_users', 'name'=> 'authorized_users'],
             ['data'=> 'actions', 'name'=> 'actions', 'orderable'=> false, 'searchable'=> false],
         ];
     }

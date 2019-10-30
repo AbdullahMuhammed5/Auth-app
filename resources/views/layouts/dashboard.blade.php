@@ -154,15 +154,13 @@
                         </ul>
                     </li>
                 @endcan
-                @can('folder-list')
+                @can('folder-create')
                     <li class="{{ Request::is('folders', 'folders/*') ? 'active' : '' }}">
                         <a href="{{ route('folders.index') }}"><i class="fa fa-files-o"></i><span class="nav-label">Library</span>
                             <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="{{ route('folders.index') }}">All</a></li>
-                            @can('folder-create')
                                 <li><a href="{{ route('folders.create') }}">Add Folder</a></li>
-                            @endcan
                         </ul>
                     </li>
                 @endcan

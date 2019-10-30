@@ -41,5 +41,9 @@ class User extends Authenticatable
     public function getFullNameAttribute(){
         return $this['first_name'].' '.$this['last_name'];
     }
+
+    public function staff(){
+        return $this->hasOne(Staff::class);
+    }
 }
 
