@@ -35,7 +35,7 @@ class EventController extends Controller
             $data = Event::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', 'dashboard.events.ActionButtons')
+                ->addColumn('action', 'includes.ActionButtons')
                 ->addColumn('published', function($row){
                     return view('dashboard.events.toggleButton', compact('row'));
                 })

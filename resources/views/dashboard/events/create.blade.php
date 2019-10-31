@@ -48,7 +48,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Invited users: </label>
-                    <select data-placeholder="Select Invited Users ..." name="visitors[]" multiple class="chosen-select">
+                    <select data-placeholder="Select Invited Users ..." name="visitors[]" multiple class="chosen-select" id="get-invited">
 
                     </select>
                     <span class="invalid-feedback" id="maxValueFeedback"
@@ -89,4 +89,10 @@
 @push('JSValidatorScript')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest('App\Http\Requests\EventRequest') !!}
+@endpush
+
+@push('JSValidatorScript')
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"
+            async defer></script>
+    <script src="{{ asset('js/mapInput.js') }}"></script>
 @endpush

@@ -24,3 +24,7 @@
     </table>
 
 @stop
+
+@push('datatable')
+    @include('includes/datatable')
+@endpush

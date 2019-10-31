@@ -15,7 +15,8 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Authorized Users:</label>
-                {!! Form::select('users[]', [], null, ["data-placeholder"=>"Select Authorized Users ...", 'multiple', "class"=>"chosen-select"]) !!}
+                {!! Form::select('users[]', [], null, ["data-placeholder"=>"Select Authorized Users ...",
+                'multiple', "class"=>"chosen-select", 'id' => 'get-authorized']) !!}
             </div>
         </div>
         <div class="col-sm-12">

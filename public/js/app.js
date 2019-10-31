@@ -8,10 +8,7 @@ $(function () {
 
     // Ckeditor
     if ($('#editor').length){
-        CKEDITOR.replace('editor', {
-            filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: 'form'
-        });
+        CKEDITOR.replace('editor');
     }
 
     // handle maximum value exceeded
@@ -24,12 +21,19 @@ $(function () {
         }
     });
     // let chosenSelectUrl = '{{ $route }}';
+    if ($('#get-related').length){
+        var select2Url = 'getRelated';
+    } else if ($('#get-invited').length){
+        var select2Url = 'getInvited';
+    } else if ($('#get-authorized').length){
+        var select2Url = 'getAuthorized';
+    }
     // file chosen select
     $(".chosen-select").select2({
         ajax: {
             dataType: 'json',
             type: "GET",
-            url: `${window.location.origin}/getAuthorized`,
+            url: `${window.location.origin}/${select2Url}`,
             data: function (params) {
                 if (params){
                     return {
@@ -154,6 +158,11 @@ $(function () {
             $(fromComputer).hide();
             $(youtubeInput).show();
         }
+    });
+
+    Dropzone.autoDiscover = false;
+    $('.datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
     });
 
 });

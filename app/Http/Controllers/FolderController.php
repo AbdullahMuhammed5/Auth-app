@@ -32,7 +32,7 @@ class FolderController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', 'dashboard.library.folders.image')
-                ->addColumn('actions', 'dashboard.library.folders.ActionButtons')
+                ->addColumn('actions', 'includes.ActionButtons')
                 ->rawColumns(['name', 'actions', 'authorized_users'])
                 ->make(true);
         }

@@ -6,13 +6,13 @@
         @endcan
 
         @can('news-delete')
-            <form method="POST" action='{{ route('news.destroy', $id) }}'  style='display: inline' id="deleteForm">
+            <form method="POST" action='{{ route('news.destroy', $id) }}'  style='display: inline' id="{{'news'.$id}}">
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
             <div class="form-group">
                 <a href="#" id="deleteButton" style="color: red"
                    onclick="return confirm('Are you sure you want to delete this item?'),
-                   document.getElementById('deleteForm').submit(); ">
+                   document.getElementById('{{'news'.$id}}').submit(); ">
                     <i class="fa fa-trash fa-2x"></i></a>
             </div>
             </form>

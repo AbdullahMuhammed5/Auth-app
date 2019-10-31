@@ -402,7 +402,7 @@
 <!-- ckeditor -->
 <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
-<script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+<!-- Select2 -->
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 
 <!-- Data picker -->
@@ -411,45 +411,18 @@
 <!-- Date range use moment.js same as full calendar plugin -->
 <script src="{{ asset('js/plugins/fullcalendar/moment.min.js') }}"></script>
 
-<!-- Date range picker -->
+<!-- Date time picker -->
 <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+
 <!-- DROPZONE -->
 <script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>--}}
-
-
-
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize" async defer></script>
-<script src="{{ asset('js/mapInput.js') }}"></script>
 
 <!-- Custom Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
-<script type="text/javascript">
-    Dropzone.autoDiscover = false;
-    $(function () {
-        if($('.data-table').length > 0  ) {
-            let table = $('.data-table').DataTable({
-                processing: true,
-                serverSide: true,
-                @if(Request::segments()[0] != "dashboard")
-                ajax: "{{ route(Request::segments()[0].'.index') }}",
-                @endif
-                columns: JSON.parse(@json($columns ?? "default")),
-                dom: 'lfrtipB',
-                buttons: [
-                    'copy', 'excel', 'pdf'
-                ],
-                responsive: true
-            });
-        }
-        $('.datetimepicker').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-        });
-    });
-
-</script>
+@stack('datatable')
 @stack('dropzone-config')
 @stack('JSValidatorScript')
+@stack('googleMap-script')
 </body>
 </html>

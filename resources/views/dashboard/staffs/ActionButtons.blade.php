@@ -1,9 +1,6 @@
 @canany(['staff-edit', 'staff-delete'])
-
     <div class="actions-td">
-
         <a href="{{ route('staffs.show', $id) }}"><i class="fa fa-eye fa-2x"></i></a>
-
         @can('staff-edit')
             <a href="{{ route('staffs.edit', $id) }}" style="color: #1ab394"><i class="fa fa-edit fa-2x"></i></a>
         @endcan
@@ -20,7 +17,5 @@
                 </div>
             </form>
         @endcan
-
     </div>
-
 @endcanany

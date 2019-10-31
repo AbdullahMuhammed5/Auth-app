@@ -11,7 +11,7 @@ class FolderPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any news.
+     * Determine whether the user can view any folder.
      *
      * @param User $user
      * @return mixed
@@ -23,7 +23,7 @@ class FolderPolicy
     }
 
     /**
-     * Determine whether the user can view the news.
+     * Determine whether the user can view the folder.
      *
      * @param User $user
      * @param Folder $folder
@@ -37,7 +37,7 @@ class FolderPolicy
     }
 
     /**
-     * Determine whether the user can create news.
+     * Determine whether the user can create folder.
      *
      * @param User $user
      * @return mixed
@@ -48,7 +48,7 @@ class FolderPolicy
     }
 
     /**
-     * Determine whether the user can update the news.
+     * Determine whether the user can update the folder.
      *
      * @param User $user
      * @param Folder $folder
@@ -62,7 +62,7 @@ class FolderPolicy
     }
 
     /**
-     * Determine whether the user can delete the news.
+     * Determine whether the user can delete the folder.
      *
      * @param User $user
      * @param Folder $folder

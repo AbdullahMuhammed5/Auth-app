@@ -42,7 +42,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
-                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select">
+                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select" id="get-related">
                         @foreach($allNews as $key => $value)
                             @if(in_array($key, $relatedNews))
                                 <option value="{{ $key }}" selected>{{ $value }}</option>

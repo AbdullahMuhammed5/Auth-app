@@ -12,7 +12,6 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Country;
 use App\Http\Requests\CityRequest;
-use App\Traits\HelperMethods;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,8 +19,6 @@ use Yajra\DataTables\DataTables;
 
 class CityController extends Controller
 {
-//    use HelperMethods;
-
     public function __construct()
     {
         $this->authorizeResource(City::class);
@@ -41,7 +38,7 @@ class CityController extends Controller
             $data = City::latest()->with('country');
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', 'dashboard.cities.ActionButtons')
+                ->addColumn('action', 'includes.ActionButtons')
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -50,8 +47,7 @@ class CityController extends Controller
 
     public function getCities($id)
     {
-        $cities= City::where("country_id", $id)
-            ->pluck("name", "id");
+        $cities= City::where("country_id", $id)->pluck("name", "id");
         return response()->json($cities);
     }
 

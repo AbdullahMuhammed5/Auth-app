@@ -18,7 +18,6 @@
         </tr>
         </thead>
         <tbody>
-        @dd($event->invitedVisitors)
             <tr class="gradeX">
                 <td>{{ $event->main_title }}</td>
                 <td>{{ $event->secondary_title }}</td>

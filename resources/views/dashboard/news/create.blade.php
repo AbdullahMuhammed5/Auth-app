@@ -42,7 +42,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
-                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select">
+                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select" id="get-related">
 
                     </select>
                     <span class="invalid-feedback" id="maxValueFeedback"

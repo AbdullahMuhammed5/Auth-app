@@ -26,7 +26,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Invited users:</label>
-                    <select data-placeholder="Select Visitors ..." name="visitors[]" multiple class="chosen-select">
+                    <select data-placeholder="Select Visitors ..." name="visitors[]" multiple class="chosen-select" id="get-invited">
                         @foreach($allVisitors as $key => $value)
                             @if(in_array($key, $invited))
                                 <option value="{{ $key }}" selected>{{ $value }}</option>
@@ -87,5 +87,16 @@
 
     @include('includes/dropzone-script')
 
+@endpush
+
+@push('JSValidatorScript')
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\EventRequest') !!}
+@endpush
+
+@push('JSValidatorScript')
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"
+            async defer></script>
+    <script src="{{ asset('js/mapInput.js') }}"></script>
 @endpush
 
