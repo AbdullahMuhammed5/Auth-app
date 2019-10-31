@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LibraryRequest;
 use App\Library;
-use App\LibraryFile;
 use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,7 +39,7 @@ class FileController extends Controller
             $file->files()->create(['path' => $path]);
         }
 
-        return redirect()->route('folders.index')
+        return redirect()->route('folders.show', $file->folder->id)
             ->with('success', 'File created successfully');
     }
 
@@ -59,11 +58,11 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param LibraryRequest $request
+     * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(LibraryRequest $request, $id)
     {
         $file = Library::whereId($id)->first();
         $file->update($request->all());

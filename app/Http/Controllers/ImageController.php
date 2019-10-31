@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LibraryRequest;
 use App\Library;
-use App\LibraryImage;
 use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,10 +27,10 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param LibraryRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(LibraryRequest $request)
     {
         $image = Library::create($request->all());
 
@@ -40,7 +39,7 @@ class ImageController extends Controller
             $image->images()->create(['path' => $path]);
         }
 
-        return redirect()->route('folders.index')
+        return redirect()->route('folders.show', $image->folder->id)
             ->with('success', 'Image created successfully');
     }
 
@@ -60,11 +59,11 @@ class ImageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param LibraryRequest $request
+     * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(LibraryRequest $request, $id)
     {
         $image = Library::whereId($id)->first();
         $image->update($request->all());

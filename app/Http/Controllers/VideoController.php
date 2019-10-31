@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LibraryRequest;
 use App\Library;
-use App\LibraryVideo;
 use App\Traits\UploadFile;
-use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -28,10 +27,10 @@ class VideoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param LibraryRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(LibraryRequest $request)
     {
         $video = Library::create($request->all());
 
@@ -43,7 +42,7 @@ class VideoController extends Controller
             $video->videos()->create(['path' => $path]);
         }
 
-        return redirect()->route('folders.index')
+        return redirect()->route('folders.show', $video->folder->id)
             ->with('success', 'Video created successfully');
     }
 
@@ -62,11 +61,11 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param LibraryRequest $request
      * @param $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(LibraryRequest $request, $id)
     {
         $video = Library::whereId($id)->first();
         $video->update($request->all());

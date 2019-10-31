@@ -27,9 +27,9 @@ class LibraryRequest extends FormRequest
             'name' => 'required|max:150|min:3',
             'description' => 'required|max:250|min:3',
             'folder_id' => 'required',
-//            'image' => 'required|image|mimes:png,jpeg,jpg',
-//            'file' => 'required|file|mimes:png,jpeg,jpg',
-//            'video' => 'required|image|mimes:png,jpeg,jpg',
+            'image' => 'sometimes|required|image|mimes:png,jpeg,jpg',
+            'file' => 'sometimes|required|file|mimes:pdf,xlsx',
+            'video' => 'sometimes|required|image|mimes:mp4',
         ];
     }
 }

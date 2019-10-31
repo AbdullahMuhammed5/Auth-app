@@ -19,7 +19,7 @@ class FolderPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasAnyPermission(['news-create']);
+        return $user->hasAnyPermission(['folder-create']);
     }
 
     /**
@@ -32,7 +32,8 @@ class FolderPolicy
      */
     public function view(User $user, Folder $folder)
     {
-        return $user->hasAnyPermission(['news-create']);
+        $isAuthorized = in_array($folder->id, $user->staff->folders->pluck('id')->all());
+        return $user->hasAnyPermission(['folder-create']) && $isAuthorized;
     }
 
     /**
@@ -43,7 +44,7 @@ class FolderPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('news-create');
+        return $user->hasPermissionTo('folder-create');
     }
 
     /**
@@ -52,10 +53,12 @@ class FolderPolicy
      * @param User $user
      * @param Folder $folder
      * @return mixed
+     * @throws \Exception
      */
     public function update(User $user, Folder $folder)
     {
-        return $user->hasPermissionTo('news-create');
+        $isAuthorized = in_array($folder->id, $user->staff->folders->pluck('id')->all());
+        return $user->hasAnyPermission(['folder-create']) && $isAuthorized;
     }
 
     /**
@@ -64,33 +67,12 @@ class FolderPolicy
      * @param User $user
      * @param Folder $folder
      * @return mixed
+     * @throws \Exception
      */
     public function delete(User $user, Folder $folder)
     {
-        return $user->hasPermissionTo('news-create');
+        $isAuthorized = in_array($folder->id, $user->staff->folders->pluck('id')->all());
+        return $user->hasAnyPermission(['folder-create']) && $isAuthorized;
     }
 
-    /**
-     * Determine whether the user can restore the news.
-     *
-     * @param User $user
-     * @param Folder $folder
-     * @return mixed
-     */
-    public function restore(User $user, Folder $folder)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the news.
-     *
-     * @param User $user
-     * @param Folder $folder
-     * @return mixed
-     */
-    public function forceDelete(User $user, Folder $folder)
-    {
-        //
-    }
 }

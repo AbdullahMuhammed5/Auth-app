@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
+//    use SoftDeletes;
+
     protected $fillable = [
         'path'
     ];
@@ -17,4 +19,5 @@ class Video extends Model
     {
         return $this->morphTo();
     }
+
 }
