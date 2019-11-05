@@ -10,7 +10,10 @@ use App\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Kreait\Firebase\ServiceAccount;
 use Yajra\DataTables\DataTables;
+use Kreait\Firebase\Factory;
+//use Kreait\Firebase;
 
 class EventController extends Controller
 {
@@ -30,6 +33,12 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+//        $factory = new Firebase\Factory();
+//
+//        $dynamicLinksDomain = 'https://example.page.link';
+//        $dynamicLinks = $factory->createDynamicLinksService($dynamicLinksDomain);
+//
+
         $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = Event::latest()->get();
@@ -186,5 +195,18 @@ class EventController extends Controller
         }
 
         return \Response::json($formatted_events);
+    }
+
+
+    public function getFromFirebase(){
+        $firebase = (new Factory)
+            ->withServiceAccount(base_path().'/firebase_credentials.json')
+            ->withDatabaseUri('https://news-app-f607c.firebaseio.com/');
+        $database = $firebase->createDatabase();
+        $reference = $database->getReference('events');
+        $snapshot = $reference->getSnapshot();
+        $data = $snapshot->getValue();
+
+        return view('firebase', compact('data'));
     }
 }

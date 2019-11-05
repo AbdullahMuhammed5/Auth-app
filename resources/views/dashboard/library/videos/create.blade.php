@@ -46,7 +46,7 @@
         <div class="col-sm-6" id="youtube-url-input" style="display: none">
             <div class="form-group">
                 <label>Youtube video:</label>
-                {!! Form::text('video', null, ['class' => "form-control", 'placeholder'=>'Youtube video url']) !!}
+                {!! Form::text('youtube_video', null, ['class' => "form-control", 'placeholder'=>'Youtube video url']) !!}
             </div>
         </div>
         <div class="col-sm-6">

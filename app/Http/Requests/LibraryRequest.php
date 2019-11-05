@@ -26,10 +26,11 @@ class LibraryRequest extends FormRequest
         return [
             'name' => 'required|max:150|min:3',
             'description' => 'required|max:250|min:3',
-            'folder_id' => 'required',
+            'folder_id' => 'sometimes|required',
             'image' => 'sometimes|required|image|mimes:png,jpeg,jpg',
             'file' => 'sometimes|required|file|mimes:pdf,xlsx',
-            'video' => 'sometimes|required|image|mimes:mp4',
+            'video' => 'sometimes|required|file|mimes:mp4',
+            'youtube_video' => 'sometimes|required|string',
         ];
     }
 }

@@ -72,3 +72,4 @@ Route::get('/getInvited','EventController@getInvited');
 Route::get('/getAuthorized','FolderController@getAuthorized');
 Route::get('/getAuthorsByJob/{id}','StaffController@getAuthorsByJob');
 
+Route::get('/firebase', 'EventController@getFromFirebase');

@@ -37,8 +37,8 @@ class VideoController extends Controller
         if($request->hasFile('video')){
             $path = $this->upload($request['video']);
             $video->videos()->create(['path' => $path]);
-        } else if($request->video){
-            $path = $this->getYoutubeID($request['video']);
+        } else if($request['youtube_video']){
+            $path = $this->getYoutubeID($request['youtube_video']);
             $video->videos()->create(['path' => $path]);
         }
 
@@ -72,6 +72,7 @@ class VideoController extends Controller
 
         if($request->hasFile('video')){
             $path = $this->upload($request['video']);
+            dd($path);
             $video->videos()->update(['path' => $path]);
         } else if($request->video){
             $path = $this->getYoutubeID($request['video']);

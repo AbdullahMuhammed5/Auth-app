@@ -30,6 +30,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
+
         $columns = json_encode($this->getColumns());
         if ($request->ajax()) {
             $data = News::latest()->with('staff.user');
@@ -113,7 +114,6 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
-//        dd($request->all());
         $news->update($request->all());
 
         if ($request->related){

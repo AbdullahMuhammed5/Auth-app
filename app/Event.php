@@ -67,12 +67,6 @@ class Event extends Model
 
     public function getStartDateAttribute($date)
     {
-//        $date = Carbon::parse($date);
-//        $days = $date->diffInDays($date);
-//        dd($days);
-//        $hours = $date->copy()->addDays($days)->diffInHours($date);
-//        $minutes = $date->copy()->addDays($days)->addHours($hours)->diffInMinutes($date);
-//        return $minutes;
         return Carbon::parse($date)->diffForHumans();
     }
 

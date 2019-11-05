@@ -13,7 +13,7 @@ class Video extends Model
     ];
 
     /**
-     * Get the owning imageable model.
+     * Get the owning videoable model.
      */
     public function videoable()
     {

@@ -19,7 +19,6 @@ class CreateFilesTable extends Migration
             $table->integer('fileble_id');
             $table->string('fileble_type');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

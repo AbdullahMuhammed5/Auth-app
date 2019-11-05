@@ -166,6 +166,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
+        Kreait\Laravel\Firebase\ServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
