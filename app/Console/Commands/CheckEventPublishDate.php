@@ -47,7 +47,7 @@ class CheckEventPublishDate extends Command
 
         // get published news and push them to firebase
         $publishedEvents = Event::where('published' , true)->get();
-        $unPublishedEvents = Event::where('published' , false)->get();
+        $unPublishedEvents = Event::where('published' , false)->pluck('id')->all();
 
         $firebase = (new Factory)
             ->withServiceAccount(base_path().'/firebase_credentials.json')
@@ -58,18 +58,17 @@ class CheckEventPublishDate extends Command
 
         if (is_array($fbEvents)){ // check if there is events in firebase
             foreach ($fbEvents as $key => $value){ // get ids to compare later with the new events
-                $ids[] = $value['id'];
+                if (in_array($value['id'], $unPublishedEvents)){
+                    $database->getReference('events/'.$key)->remove();
+                } else{
+                    $ids[] = $value['id'];
+                }
             }
             foreach ($publishedEvents as $event){ // check if not exist in firebase then add it
                 if (! in_array($event->id, $ids)){
                     $database->getReference('events')->push($event);
                 }
             }
-//            foreach ($unPublishedEvents as $event){ // check if not exist in firebase then add it
-//                if (in_array($event->id, $ids)){
-//                    $database->getReference('events')->push($event);
-//                }
-//            }
         } else{ // work first time when no events in firebase
             foreach ($publishedEvents as $event){
                 $database->getReference('events')->push($event);
