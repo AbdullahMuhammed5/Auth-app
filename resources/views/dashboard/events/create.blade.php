@@ -48,9 +48,8 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Invited users: </label>
-                    <select data-placeholder="Select Invited Users ..." name="visitors[]" multiple class="chosen-select" id="get-invited">
-
-                    </select>
+                    {!! Form::select('visitors[]', [], null, ["data-placeholder"=>"Select invited Users ...",
+                    'multiple', "class"=>"chosen-select", 'id' => 'get-invited']) !!}
                     <span class="invalid-feedback" id="maxValueFeedback"
                           style="display: none">You just hit the maximum length of Invited users</span>
                 </div>
@@ -81,9 +80,7 @@
 @endsection
 
 @push('dropzone-config')
-
     @include('includes/dropzone-script')
-
 @endpush
 
 @push('JSValidatorScript')
@@ -91,8 +88,13 @@
     {!! JsValidator::formRequest('App\Http\Requests\EventRequest') !!}
 @endpush
 
-@push('JSValidatorScript')
+@push('googleMap-script')
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"
             async defer></script>
     <script src="{{ asset('js/mapInput.js') }}"></script>
+@endpush
+
+@push('ckeditor')
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 @endpush

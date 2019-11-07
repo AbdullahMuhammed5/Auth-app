@@ -131,7 +131,7 @@ class CityController extends Controller
         return [
             ['data' => 'id', 'name' => 'id'],
             ['data' => 'name', 'name' => 'name'],
-            ['data' => 'country.name', 'name' => 'country'],
+            ['data' => 'country.name', 'name' => 'country_id'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false],
         ];
     }

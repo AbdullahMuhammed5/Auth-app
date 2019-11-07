@@ -8,7 +8,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Permissions</th>
+            <th style="width: 400px">Permissions</th>
             @canany(['role-edit', 'role-delete', 'role-list'])
             <th>Options</th>
             @endcanany
@@ -20,6 +20,11 @@
 
 @stop
 
+@push('datatable-css')
+    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+@endpush
+
 @push('datatable')
     @include('includes/datatable')
 @endpush
+

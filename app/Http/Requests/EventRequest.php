@@ -35,7 +35,7 @@ class EventRequest extends FormRequest
             'start_date' => 'required',
             'end_date' => 'required|after_or_equal:start_date',
             'images.*' => 'string',
-//            'cover' => 'required|string',
+            'cover' => 'required|string',
             'visitors' => 'array|max:10'
         ];
     }

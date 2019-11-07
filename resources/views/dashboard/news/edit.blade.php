@@ -25,7 +25,7 @@
                 <label>Author:</label>
                 {!! Form::select('author_id', $authors , $news->staff->id, array('class' => 'form-control', 'id'=>'author')) !!}
             </div>
-        </div>
+        </div>a
         <div class="col-sm-12 ">
             <div class="form-group">
                 <label>Content:</label>
@@ -42,17 +42,12 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
-                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select" id="get-related">
-                        @foreach($allNews as $key => $value)
-                            @if(in_array($key, $relatedNews))
-                                <option value="{{ $key }}" selected>{{ $value }}</option>
-                            @else
-                                <option value="{{ $key }}" >{{ $value }}</option>
-                            @endif
-                        @endforeach
-                    </select>
+
+                    {!! Form::select('related[]', $allNews, null, ["data-placeholder"=>"Select related Users ...",
+                    'multiple', "class"=>"chosen-select", 'id' => 'get-related']) !!}
+
                     <span class="invalid-feedback" id="maxValueFeedback"
-                          style="display: @if(count($relatedNews) > 10) block @else none @endif">
+                          style="display: @if(count($allNews) > 10) block @else none @endif">
                         You just hit the maximum length of related news.</span>
                 </div>
             </div>
@@ -64,15 +59,21 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-12 text-center">
-            {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Save Changes', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
     {!! Form::close() !!}
 @endsection
 
 @push('dropzone-config')
-
     @include('includes/dropzone-script')
-
 @endpush
 
+@push('ckeditor')
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+@endpush
+
+@push('icheck-css')
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+@endpush

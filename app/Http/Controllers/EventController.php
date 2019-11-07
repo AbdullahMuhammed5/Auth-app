@@ -105,11 +105,10 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        $allVisitors = Visitor::active()
+        $invited = $event->visitors()
             ->with('user:id,first_name,last_name')->get()
             ->pluck('user.full_name', 'id');
-        $invited = $event->visitors()->get()->pluck('id')->all();
-        return view('dashboard.events.edit', compact('event', 'invited', 'allVisitors'));
+        return view('dashboard.events.edit', compact('event', 'invited'));
     }
 
     /**

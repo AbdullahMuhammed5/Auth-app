@@ -64,8 +64,11 @@
         </div>
     </div>
     <div class="text-center">
-        {!! Form::submit('Submit!', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit('Save Changes!', ['class' => 'btn btn-primary']) !!}
     </div>
     {!! Form::close() !!}
 @endsection
 
+@push('icheck-css')
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+@endpush

@@ -42,12 +42,14 @@ class Visitor extends Model
         return $this->belongsTo(City::Class);
     }
 
-    /**
-     * Get the Visitor's image.
-     */
     public function image()
     {
         return $this->morphOne('App\Image', 'imageable');
+    }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class );
     }
 
     /**
@@ -59,11 +61,6 @@ class Visitor extends Model
     public function scopeActive($query)
     {
         $query->whereIsActive(True);
-    }
-
-    public function events()
-    {
-        return $this->belongsToMany(Event::class );
     }
 
 }

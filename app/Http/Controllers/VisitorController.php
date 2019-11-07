@@ -163,11 +163,11 @@ class VisitorController extends Controller
         return [
             ['data' => 'id', 'name' => 'id'],
             ['data' => 'image', 'name' => 'image'],
-            ['data' => 'user.first_name', 'name' => 'name'],
-            ['data' => 'user.email', 'name' => 'email'],
-            ['data' => 'user.phone', 'name' => 'phone'],
-            ['data' => 'city.name', 'name' => 'city'],
-            ['data' => 'country.name', 'name' => 'country'],
+            ['data' => 'user.first_name', 'name' => 'user.first_name'],
+            ['data' => 'user.email', 'name' => 'user.email'],
+            ['data' => 'user.phone', 'name' => 'user.phone'],
+            ['data' => 'city.name', 'name' => 'city_id'],
+            ['data' => 'country.name', 'name' => 'country_id'],
             ['data' => 'gender', 'name' => 'gender'],
             ['data' => 'is_active', 'name' => 'is_active'],
             ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]

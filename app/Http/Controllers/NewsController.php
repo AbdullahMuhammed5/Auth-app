@@ -100,9 +100,8 @@ class NewsController extends Controller
     public function edit(News $news)
     {
         $allNews = News::published()->pluck('main_title', 'id')->all();
-        $relatedNews = Related::where('news_id', $news->id)->pluck( 'related_id')->all();
         $authors = app('App\Http\Controllers\StaffController')->getAuthorsByJob($news->type);
-        return view('dashboard.news.edit', compact('news', 'authors', 'relatedNews', 'allNews'));
+        return view('dashboard.news.edit', compact('news', 'authors', 'allNews'));
     }
 
     /**
@@ -149,7 +148,7 @@ class NewsController extends Controller
     {
         return [
             ['data' => 'id', 'name' => 'id'],
-            ['data' => 'staff.user.first_name', 'name' => 'image'],
+            ['data' => 'staff.user.first_name', 'name' => 'staff.user.first_name'],
             ['data' => 'main_title', 'name' => 'main_title'],
             ['data' => 'secondary_title', 'name' => 'secondary_title'],
             ['data' => 'type', 'name' => 'type'],

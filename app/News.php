@@ -57,6 +57,6 @@ class News extends Model
      */
     public function scopePublished($query)
     {
-        $query->whereIsPublished(True);
+        $query->wherePublished(True);
     }
 }

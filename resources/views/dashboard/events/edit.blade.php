@@ -18,7 +18,7 @@
         <div class="col-sm-12 ">
             <div class="form-group">
                 <label>Content:</label>
-                {!! Form::textarea('content',  null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
+                {!! Form::textarea('content', null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
             </div>
         </div>
 
@@ -26,15 +26,8 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Invited users:</label>
-                    <select data-placeholder="Select Visitors ..." name="visitors[]" multiple class="chosen-select" id="get-invited">
-                        @foreach($allVisitors as $key => $value)
-                            @if(in_array($key, $invited))
-                                <option value="{{ $key }}" selected>{{ $value }}</option>
-                            @else
-                                <option value="{{ $key }}" >{{ $value }}</option>
-                            @endif
-                        @endforeach
-                    </select>
+                    {!! Form::select('visitors[]', $invited, null, ["data-placeholder"=>"Select invited Users ...",
+                    'multiple', "class"=>"chosen-select", 'id' => 'get-invited']) !!}
                 </div>
             </div>
             <div class="col-sm-6">
@@ -77,16 +70,14 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-12 text-center">
-            {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Save Changes', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
     {!! Form::close() !!}
 @endsection
 
 @push('dropzone-config')
-
     @include('includes/dropzone-script')
-
 @endpush
 
 @push('JSValidatorScript')
@@ -94,9 +85,14 @@
     {!! JsValidator::formRequest('App\Http\Requests\EventRequest') !!}
 @endpush
 
-@push('JSValidatorScript')
+@push('googleMap-script')
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"
             async defer></script>
     <script src="{{ asset('js/mapInput.js') }}"></script>
+@endpush
+
+@push('ckeditor')
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 @endpush
 

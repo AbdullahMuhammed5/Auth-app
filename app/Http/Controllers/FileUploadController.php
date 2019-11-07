@@ -32,12 +32,10 @@ class FileUploadController extends Controller
         return $filename;
     }
 
-    public function getFiles(Request $request) // get data for dropzone init function
+    public function getFiles($id, $type) // get data for dropzone init function
     {
-        dd($request['data']);
-        $images = $model->images;
-dd($images);
-        $files = File::$model->files;
+        $images = Image::where('imageable_id', $id)->where('imageable_type', 'App\\'.$type)->get()->toArray();
+        $files = File::where('fileble_id', $id)->where('fileble_type', 'App\\'.$type)->get()->toArray();
 
         $files = array_merge($files, $images);
         $result = [];
@@ -47,6 +45,7 @@ dd($images);
             $type = pathinfo(Storage::url($file['path']), PATHINFO_EXTENSION);
             array_push($result, ['name' => $file['path'], 'size' => $size, 'type' => $type]);
         }
+
         return response()->json($result);
     }
 

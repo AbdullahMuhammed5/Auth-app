@@ -68,6 +68,7 @@
     {!! Form::close() !!}
 @endsection
 
-
-
+@push('icheck-css')
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+@endpush
 

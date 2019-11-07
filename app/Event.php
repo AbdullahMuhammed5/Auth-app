@@ -18,10 +18,6 @@ class Event extends Model
         'content', 'published', 'location', 'address_latitude', 'address_longitude', 'cover'
     ];
 
-//    protected $dates = [
-//        'start_date', 'end_date', 'created_at', 'updated_at', 'deleted_at'
-//    ];
-
     public function images(){
         return $this->morphMany(Image::class, 'imageable');
     }

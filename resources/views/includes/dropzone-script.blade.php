@@ -40,16 +40,15 @@
                         fileRef.parentNode.removeChild(file.previewElement) : void 0;
                 },
                 init: function() {
-                    @if(isset($news) || isset($event))
+                    @if(isset($news) || isset($event)) // on edit news or events
 
                         let thisDropzone = this;
 
                         $.get({
                         @if(isset($news))
-                            url: '{{ url("/files/getFiles", $news) }}',
+                            url: '{{ url("/files/getFiles", ['id'=>$news->id, 'type'=>'News']) }}',
                             @elseif(isset($event))
-                            url: '{{ url("/files/getFiles" , $event) }}',
-                            data: { data: '{{$event}}' },
+                            url: '{{ url("/files/getFiles", ['id'=>$event->id, 'type'=>'Event']) }}',
                         @endif
                         headers: headers,
                         success : function(data) {

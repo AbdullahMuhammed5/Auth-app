@@ -23,13 +23,15 @@
             </div>
             <div class="form-group" style="display: none" id="author-wrapper">
                 <label>Author:</label>
-                {!! Form::select('author_id', [] , null, array('placeholder' => 'Secondary Title','class' => 'form-control', 'id'=>'author')) !!}
+                {!! Form::select('author_id', [] , null,
+                array('placeholder' => 'Secondary Title','class' => 'form-control', 'id'=>'author')) !!}
             </div>
         </div>
         <div class="col-sm-12 ">
             <div class="form-group">
                 <label>Content:</label>
-                {!! Form::textarea('content',  null, array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
+                {!! Form::textarea('content',  null,
+                array('placeholder' => 'Content goes here','class' => 'form-control', 'id'=>'editor')) !!}
             </div>
         </div>
         <div class="col-sm-12" style=" margin-bottom: 30px;">
@@ -42,9 +44,8 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Related News:</label>
-                    <select data-placeholder="Select related news ..." name="related[]" multiple class="chosen-select" id="get-related">
-
-                    </select>
+                    {!! Form::select('related[]', [], null, ["data-placeholder"=>"Select related Users ...",
+                    'multiple', "class"=>"chosen-select", 'id' => 'get-related']) !!}
                     <span class="invalid-feedback" id="maxValueFeedback"
                           style="display: none">You just hit the maximum length of related news.</span>
                 </div>
@@ -65,7 +66,14 @@
 @endsection
 
 @push('dropzone-config')
-
     @include('includes/dropzone-script')
+@endpush
 
+@push('ckeditor')
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+@endpush
+
+@push('icheck-css')
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 @endpush

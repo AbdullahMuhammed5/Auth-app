@@ -26,6 +26,10 @@
 
 @stop
 
+@push('datatable-css')
+    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+@endpush
+
 @push('datatable')
     @include('includes/datatable')
 @endpush

@@ -62,7 +62,7 @@ Route::put('togglePublishNews/{news}', 'NewsController@togglePublishing')->name(
 Route::prefix('files')->group(function() {
     Route::post('store', 'FileUploadController@fileStore');
     Route::post('delete', 'FileUploadController@fileDestroy');
-    Route::get('getFiles/{model}', 'FileUploadController@getFiles')->name('files.getFiles');
+    Route::get('getFiles/{id}/{type}', 'FileUploadController@getFiles')->name('files.getFiles');
 });
 
 // get data

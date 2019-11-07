@@ -13,15 +13,13 @@
 
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+    @stack('datatable-css')
+    @stack('icheck-css')
     <link href="{{ asset('css/plugins/dropzone/basic.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/codemirror/codemirror.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
-{{--    <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('css/toggleButton.css')}}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
@@ -375,7 +373,6 @@
 </div>
 
 <!-- Mainly scripts -->
-
 <script src="{{asset('js/jquery-3.1.1.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
@@ -399,9 +396,6 @@
 
 <script src="{{ asset('js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
 
-<!-- ckeditor -->
-<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-
 <!-- Select2 -->
 <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 
@@ -421,6 +415,7 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- Page-Level Scripts -->
 @stack('datatable')
+@stack('ckeditor')
 @stack('dropzone-config')
 @stack('JSValidatorScript')
 @stack('googleMap-script')

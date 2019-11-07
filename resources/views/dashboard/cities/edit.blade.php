@@ -14,7 +14,7 @@
             {!! Form::select('country_id', $countries, null, ['class' => 'form-control']) !!}
         </div>
         <div class="col-sm-2">
-            {!! Form::submit('Submit!', ['class' => 'btn btn-primary', 'style'=>'margin-top: 23px']) !!}
+            {!! Form::submit('Save Changes!', ['class' => 'btn btn-primary', 'style'=>'margin-top: 23px']) !!}
         </div>
     </div>
     {!! Form::close() !!}
